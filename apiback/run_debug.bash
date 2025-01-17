@@ -1,0 +1,1 @@
+DEBUG=apiback:* npm start
