@@ -132,3 +132,4 @@ dist
 # Virtual environment
 venv/
 apiback/.idea/
+apiback/public_portal/

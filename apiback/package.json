@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "debug": "run_debug",
+    "debug": ".\\bin\\debug",
     "start": "node ./bin/www"
   },
   "dependencies": {
