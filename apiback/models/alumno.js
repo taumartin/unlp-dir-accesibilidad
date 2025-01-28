@@ -18,6 +18,11 @@ const Alumno = dbConnection.define('Alumno', {
                 key: 'id',
             }
         },
+        legajo: {
+            type: DataTypes.STRING(10),
+            allowNull: false,
+            unique: true,
+        },
         tieneCertificado: {
             type: DataTypes.BOOLEAN,
             allowNull: false,

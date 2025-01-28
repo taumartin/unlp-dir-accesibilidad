@@ -20,11 +20,6 @@ const Persona = dbConnection.define('Persona', {
             allowNull: false,
             unique: true,
         },
-        legajo: {
-            type: DataTypes.STRING(10),
-            allowNull: false,
-            unique: true,
-        },
         telefono: {
             type: DataTypes.STRING(25),
             allowNull: false,
