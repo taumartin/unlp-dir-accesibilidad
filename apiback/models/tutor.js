@@ -1,32 +1,26 @@
-import {Persona} from "./persona";
-import {DataTypes} from 'sequelize';
+'use strict';
+const {
+    Model
+} = require('sequelize');
 
-const {dbConnection} = require('../config/db');
+module.exports = (sequelize, DataTypes) => {
+    class Tutor extends Model {
+        static associate(models) {
+            Tutor.belongsTo(models.Persona, {
+                as: 'persona',
+                foreignKey: 'personaId',
+            });
+        }
+    }
 
-const Tutor = dbConnection.define('Tutor', {
-        id: {
-            type: DataTypes.BIGINT,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        personaId: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-            field: 'persona_id',
-            references: {
-                model: Persona,
-                key: 'id',
-            }
-        },
-        horasAsignadas: {
-            type: DataTypes.SMALLINT,
-            allowNull: false,
-            defaultValue: 0,
-            field: 'horas_asignadas',
-        },
+    Tutor.init({
+        id: DataTypes.INTEGER,
+        personaId: DataTypes.INTEGER,
+        horasAsignadas: DataTypes.SMALLINT,
     }, {
+        sequelize,
+        modelName: 'Tutor',
         tableName: 'tutores',
-    },
-);
-
-module.exports.Tutor = Tutor;
+    });
+    return Tutor;
+};

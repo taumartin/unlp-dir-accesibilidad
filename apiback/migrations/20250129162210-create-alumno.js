@@ -1,0 +1,51 @@
+'use strict';
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+    async up(queryInterface, Sequelize) {
+        await queryInterface.createTable('alumnos', {
+            id: {
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true,
+                type: Sequelize.INTEGER
+            },
+            personaId: {
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                unique: true,
+                field: 'persona_id',
+                references: {
+                    model: 'personas',
+                    key: 'id',
+                }
+            },
+            legajo: {
+                type: Sequelize.STRING(10),
+                allowNull: false,
+                unique: true,
+            },
+            tieneCertificado: {
+                type: Sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue: false,
+                field: 'tiene_certificado',
+            },
+            situacion: {
+                type: Sequelize.TEXT,
+                allowNull: false,
+                defaultValue: '',
+            },
+            createdAt: {
+                allowNull: false,
+                type: Sequelize.DATE
+            },
+            updatedAt: {
+                allowNull: false,
+                type: Sequelize.DATE
+            }
+        });
+    },
+    async down(queryInterface, Sequelize) {
+        await queryInterface.dropTable('alumnos');
+    }
+};

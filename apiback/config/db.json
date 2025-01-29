@@ -1,0 +1,10 @@
+{
+  "development": {
+    "use_env_variable": "DB_CONNECTION_STRING_DEV",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DB_CONNECTION_STRING_PROD",
+    "dialect": "postgres"
+  }
+}

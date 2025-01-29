@@ -1,38 +1,30 @@
-const {dbConnection} = require('../config/db');
-import {DataTypes} from 'sequelize';
+'use strict';
+const {
+    Model
+} = require('sequelize');
 
-const Persona = dbConnection.define('Persona', {
-        id: {
-            type: DataTypes.BIGINT,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        nombre: {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-        },
-        apellido: {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-        },
-        dni: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            unique: true,
-        },
-        telefono: {
-            type: DataTypes.STRING(25),
-            allowNull: false,
-            defaultValue: '',
-        },
-        mail: {
-            type: DataTypes.STRING(100),
-            allowNull: false,
-            unique: true,
-        },
+module.exports = (sequelize, DataTypes) => {
+    class Persona extends Model {
+        static associate(models) {
+            // None.
+        }
+
+        getNombreCompleto() {
+            return [this.nombre, this.apellido].join(' ');
+        }
+    }
+
+    Persona.init({
+        id: DataTypes.INTEGER,
+        nombre: DataTypes.STRING,
+        apellido: DataTypes.STRING,
+        dni: DataTypes.INTEGER,
+        telefono: DataTypes.STRING,
+        email: DataTypes.STRING,
     }, {
+        sequelize,
+        modelName: 'Persona',
         tableName: 'personas',
-    },
-);
-
-module.exports.Persona = Persona;
+    });
+    return Persona;
+};

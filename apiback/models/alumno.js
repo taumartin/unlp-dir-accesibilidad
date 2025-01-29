@@ -1,42 +1,29 @@
-import {Persona} from "./persona";
-import {DataTypes} from 'sequelize';
+'use strict';
+const {
+    Model
+} = require('sequelize');
 
-const {dbConnection} = require('../config/db');
+module.exports = (sequelize, DataTypes) => {
+    class Alumno extends Model {
+        static associate(models) {
+            Alumno.belongsTo(models.Persona, {
+                as: 'persona',
+                foreignKey: 'personaId',
+            });
+        }
+    }
 
-const Alumno = dbConnection.define('Alumno', {
-        id: {
-            type: DataTypes.BIGINT,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        personaId: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-            field: 'persona_id',
-            references: {
-                model: Persona,
-                key: 'id',
-            }
-        },
-        legajo: {
-            type: DataTypes.STRING(10),
-            allowNull: false,
-            unique: true,
-        },
-        tieneCertificado: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false,
-            field: 'tiene_certificado',
-        },
-        situacion: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-            defaultValue: '',
-        },
+    Alumno.init({
+        id: DataTypes.INTEGER,
+        personaId: DataTypes.INTEGER,
+        legajo: DataTypes.STRING,
+        tieneCertificado: DataTypes.BOOLEAN,
+        situacion: DataTypes.TEXT,
     }, {
+        sequelize,
+        modelName: 'Alumno',
         tableName: 'alumnos',
-    },
-);
+    });
 
-module.exports.Alumno = Alumno;
+    return Alumno;
+};
