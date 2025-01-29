@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const {logging, reqLogger, logger} = require('./config/logging');
-const {dbConnection} = require('./config/db');
+const dbConnection = require('./models').sequelize;
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const createError = require('http-errors');

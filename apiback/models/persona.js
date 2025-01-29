@@ -15,16 +15,40 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     Persona.init({
-        id: DataTypes.INTEGER,
-        nombre: DataTypes.STRING,
-        apellido: DataTypes.STRING,
-        dni: DataTypes.INTEGER,
-        telefono: DataTypes.STRING,
-        email: DataTypes.STRING,
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        nombre: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+        },
+        apellido: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+        },
+        dni: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            unique: true,
+        },
+        telefono: {
+            type: DataTypes.STRING(25),
+            allowNull: false,
+            defaultValue: '',
+        },
+        email: {
+            type: DataTypes.STRING(100),
+            allowNull: false,
+            unique: true,
+        },
     }, {
         sequelize,
         modelName: 'Persona',
         tableName: 'personas',
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
     });
     return Persona;
 };
