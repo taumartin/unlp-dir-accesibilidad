@@ -1,1 +1,1 @@
-set DEBUG=myapp:* & npm start
+set DEBUG=apiback:* & nodemon

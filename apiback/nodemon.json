@@ -1,0 +1,14 @@
+{
+  "watch": [
+    "config",
+    "controllers",
+    "models",
+    "routes",
+    "app.js"
+  ],
+  "ext": "js,json",
+  "ignore": [
+    "node_modules"
+  ],
+  "exec": "node ./bin/www"
+}

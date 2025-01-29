@@ -1,1 +1,1 @@
-DEBUG=apiback:* npm start
+DEBUG=apiback:* nodemon

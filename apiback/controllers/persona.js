@@ -1,4 +1,4 @@
-const Persona = require('../models').Persona;
+const {Persona} = require('../models');
 
 module.exports.create = function (req, res) {
     return Persona.create({
@@ -19,7 +19,7 @@ module.exports.listAll = function (req, res) {
 };
 
 module.exports.findById = function (req, res) {
-    return Persona.findByPk(req.params.id)
+    return Persona.findByPk(req.params.id, null)
         .then(persona => res.status((persona === null) ? 404 : 200).send(persona))
         .catch(error => res.status(400).send(error))
 };
