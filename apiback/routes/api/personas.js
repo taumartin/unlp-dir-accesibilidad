@@ -6,5 +6,7 @@ const personaController = require('../../controllers/persona');
 router.post('/', personaController.create);
 router.get('/', personaController.listAll);
 router.get('/:id', personaController.findById);
+router.post('/:id', personaController.update);
+router.delete('/:id', personaController.delete);
 
 module.exports = router;
