@@ -19,6 +19,16 @@ module.exports = {
                     key: 'id',
                 }
             },
+            usuarioId:{
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                field: 'usuario_id',
+                unique: true,
+                refereces: {
+                    model: 'usuarios',
+                    key: 'id',
+                }
+            },
             horasAsignadas: {
                 type: Sequelize.SMALLINT,
                 allowNull: false,
