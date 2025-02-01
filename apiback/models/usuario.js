@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
             field: 'es_admin',
             defaultValue: false,
         },
+        fotoDePerfil:{
+            type: DataTypes.STRING(255),
+            field: 'foto_de_perfil',
+        }
     }, {
         sequelize,
         modelName: 'Usuario',
