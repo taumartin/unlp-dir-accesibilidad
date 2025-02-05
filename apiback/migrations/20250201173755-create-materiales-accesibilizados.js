@@ -12,10 +12,18 @@ module.exports = {
       tipoDeMaterialId: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          unique: true,
           field: 'tipo_de_material_id',
           references: {
-              model: 'tiposDeMaterial',
+              model: 'TiposDeMateriales',
+              key: 'id',
+          }
+      },
+      materiaId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          field: 'materia_id',
+          references: {
+              model: 'Materia',
               key: 'id',
           }
       },

@@ -2,22 +2,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Semestres', {
+    await queryInterface.createTable('MediosDeComunicacions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      anio: {
-        type: Sequelize.INTEGER,
+      nombre: {
+        type: Sequelize.STRING(40), //"Mail", "Teléfono", "Presencial", "WhatsApp" y "Videollamada".
         allowNull: false,
-      },
-      esPrimerSemestre: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        default: true,
-        field:'es_primer_semestre'
+        unique: true,
       },
       createdAt: {
         allowNull: false,
@@ -30,14 +25,8 @@ module.exports = {
         field: 'updated_at'
       }
     });
-
-    await queryInterface.addIndex('semestres', ['anio', 'es_primer_semestre'], {
-      unique: true,
-      name: 'unique_anio_es_primer_semestre'
-    });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('Semestres', 'unique_anio_es_primer_semestre');
-    await queryInterface.dropTable('Semestres');
+    await queryInterface.dropTable('MediosDeComunicacions');
   }
 };

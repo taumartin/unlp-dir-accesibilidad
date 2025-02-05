@@ -2,40 +2,41 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Apoyos', {
+    await queryInterface.createTable('EventosParaAlumnos', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      semestreId: {
+      eventoId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        field: 'semestre_id',
+        unique: true,
+        field: 'evento_id',
         references: {
-            model: 'Semestres',
+            model: 'Eventos',
             key: 'id',
         }
       },
-      tutorId: {
+      tipoDeEventoId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        field: 'tutor_id',
+        field: 'tipo_de_evento_id',
         references: {
-            model: 'Tutor',
+            model: 'TiposDeEventos',
             key: 'id',
         }
-    },
-    alumnoId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      field: 'alumno_id',
-      references: {
-          model: 'Alumno',
-          key: 'id',
-      }
-    },
+      },
+      materiaId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        field: 'materia_id',
+        references: {
+            model: 'Materia',
+            key: 'id',
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -47,14 +48,8 @@ module.exports = {
         field:'updated_at'
       }
     });
-
-    await queryInterface.addIndex('apoyos', ['tutor_id', 'alumno_id','semestre_id'], {
-      unique: true,
-      name: 'unique_tutor_id_alumno_id_semestre_id'
-    });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('Apoyos', 'unique_tutor_id_alumno_id_semestre_id');
-    await queryInterface.dropTable('Apoyos');
+    await queryInterface.dropTable('EventosParaAlumnos');
   }
 };

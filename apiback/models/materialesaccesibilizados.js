@@ -4,16 +4,15 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class MaterialesAccesibilizados extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       MaterialesAccesibilizados.belongsTo(models.TiposDeMateriales, {
         as: 'tipoDeMaterial',
         foreignKey: 'tipoDeMaterialId',
     });
+    MaterialesAccesibilizados.belongsTo(models.Materia, {
+      as: 'materia',
+      foreignKey: 'materiaId',
+  });
     }
   }
   MaterialesAccesibilizados.init({
@@ -25,10 +24,18 @@ module.exports = (sequelize, DataTypes) => {
     tipoDeMaterialId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true,
         field: 'tipo_de_material_id',
         references: {
             model: 'TiposDeMateriales',
+            key: 'id',
+        }
+    },
+    materiaId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: 'materia_id',
+        references: {
+            model: 'Materia',
             key: 'id',
         }
     },

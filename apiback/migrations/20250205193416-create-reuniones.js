@@ -2,23 +2,28 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Apoyos', {
+    await queryInterface.createTable('Reuniones', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      semestreId: {
+      fechaYHora: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        field:'fecha_y_hora',
+      },
+      mediosDeComunicacionId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        field: 'semestre_id',
+        field: 'medios_de_comunicacion_id',
         references: {
-            model: 'Semestres',
+            model: 'MediosDeComunicacion',
             key: 'id',
         }
-      },
-      tutorId: {
+    },
+    tutorId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         field: 'tutor_id',
@@ -27,34 +32,23 @@ module.exports = {
             key: 'id',
         }
     },
-    alumnoId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      field: 'alumno_id',
-      references: {
-          model: 'Alumno',
-          key: 'id',
-      }
-    },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        field:'created_at'
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-        field:'updated_at'
+        type: Sequelize.DATE
       }
     });
 
-    await queryInterface.addIndex('apoyos', ['tutor_id', 'alumno_id','semestre_id'], {
+    await queryInterface.addIndex('reuniones', ['tutor_id', 'fecha_y_hora'], {
       unique: true,
-      name: 'unique_tutor_id_alumno_id_semestre_id'
+      name: 'unique_tutor_id_fecha_y_hora'
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('Apoyos', 'unique_tutor_id_alumno_id_semestre_id');
-    await queryInterface.dropTable('Apoyos');
+    await queryInterface.removeIndex('Reuniones', 'unique_tutor_id_fecha_y_hora');
+    await queryInterface.dropTable('Reuniones');
   }
 };

@@ -2,42 +2,40 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Semestres', {
+    await queryInterface.createTable('EventosParaDireccion', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      anio: {
+      eventoId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: true,
+        field: 'evento_id',
+        references: {
+            model: 'Eventos',
+            key: 'id',
+        }
       },
-      esPrimerSemestre: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        default: true,
-        field:'es_primer_semestre'
+      lugar: {
+        type:Sequelize.STRING(100),
+        allowNull:false
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        field: 'created_at'
+        field:'created_at'
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        field: 'updated_at'
+        field:'updated_at'
       }
-    });
-
-    await queryInterface.addIndex('semestres', ['anio', 'es_primer_semestre'], {
-      unique: true,
-      name: 'unique_anio_es_primer_semestre'
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('Semestres', 'unique_anio_es_primer_semestre');
-    await queryInterface.dropTable('Semestres');
+    await queryInterface.dropTable('EventosParaDireccion');
   }
 };

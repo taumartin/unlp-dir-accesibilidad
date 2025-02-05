@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'semestreId',
     });
 
-      Apoyos.belongsTo(models,tutor,{
+      Apoyos.belongsTo(models.Tutor,{
           as: 'tutor',
           foreignKey: 'tutorId',
       })
 
-      Apoyos.belongsTo(models,alumno,{
+      Apoyos.belongsTo(models.Alumno,{
         as: 'alumno',
         foreignKey: 'alumnoId',
     })
@@ -35,30 +35,27 @@ module.exports = (sequelize, DataTypes) => {
     semestreId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
       field: 'semestre_id',
       references: {
-          model: 'semestres',
+          model: 'Semestres',
           key: 'id',
       }
     },
     tutorId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
       field: 'tutor_id',
       references: {
-          model: 'tutores',
+          model: 'Tutor',
           key: 'id',
       }
   },
   alumnoId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true,
     field: 'alumno_id',
     references: {
-        model: 'alumnos',
+        model: 'Alumno',
         key: 'id',
     }
   },
