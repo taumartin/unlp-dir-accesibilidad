@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Semestres', {
+    await queryInterface.createTable('semestres', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -37,7 +37,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('Semestres', 'unique_anio_es_primer_semestre');
-    await queryInterface.dropTable('Semestres');
+    await queryInterface.removeIndex('semestres', 'unique_anio_es_primer_semestre');
+    await queryInterface.dropTable('semestres');
   }
 };

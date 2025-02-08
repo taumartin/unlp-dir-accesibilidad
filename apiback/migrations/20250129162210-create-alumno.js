@@ -15,7 +15,7 @@ module.exports = {
                 unique: true,
                 field: 'persona_id',
                 references: {
-                    model: 'Persona',
+                    model: 'personas',
                     key: 'id',
                 }
             },

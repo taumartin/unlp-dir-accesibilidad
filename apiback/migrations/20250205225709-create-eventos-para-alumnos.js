@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('EventosParaAlumnos', {
+    await queryInterface.createTable('eventos_alumnos', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,7 +15,7 @@ module.exports = {
         unique: true,
         field: 'evento_id',
         references: {
-            model: 'Eventos',
+            model: 'eventos',
             key: 'id',
         }
       },
@@ -24,7 +24,7 @@ module.exports = {
         allowNull: false,
         field: 'tipo_de_evento_id',
         references: {
-            model: 'TiposDeEventos',
+            model: 'tipos_eventos',
             key: 'id',
         }
       },
@@ -33,7 +33,7 @@ module.exports = {
         allowNull: false,
         field: 'materia_id',
         references: {
-            model: 'Materia',
+            model: 'materias',
             key: 'id',
         }
       },
@@ -50,6 +50,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('EventosParaAlumnos');
+    await queryInterface.dropTable('eventos_alumnos');
   }
 };

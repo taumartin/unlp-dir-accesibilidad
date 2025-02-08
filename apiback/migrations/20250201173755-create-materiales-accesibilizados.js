@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('materialesAccesibilizados', {
+    await queryInterface.createTable('materiales_accesibilizados', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -14,7 +14,7 @@ module.exports = {
           allowNull: false,
           field: 'tipo_de_material_id',
           references: {
-              model: 'TiposDeMateriales',
+              model: 'tipos_materiales',
               key: 'id',
           }
       },
@@ -55,6 +55,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('materialesAccesibilizados');
+    await queryInterface.dropTable('materiales_accesibilizados');
   }
 };

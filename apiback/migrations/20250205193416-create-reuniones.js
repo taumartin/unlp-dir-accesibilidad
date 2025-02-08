@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Reuniones', {
+    await queryInterface.createTable('reuniones', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,7 +19,7 @@ module.exports = {
         allowNull: false,
         field: 'medios_de_comunicacion_id',
         references: {
-            model: 'MediosDeComunicacion',
+            model: 'medios_comunicacion',
             key: 'id',
         }
     },
@@ -28,7 +28,7 @@ module.exports = {
         allowNull: false,
         field: 'tutor_id',
         references: {
-            model: 'Tutor',
+            model: 'tutores',
             key: 'id',
         }
     },
@@ -48,7 +48,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('Reuniones', 'unique_tutor_id_fecha_y_hora');
-    await queryInterface.dropTable('Reuniones');
+    await queryInterface.removeIndex('reuniones', 'unique_tutor_id_fecha_y_hora');
+    await queryInterface.dropTable('reuniones');
   }
 };

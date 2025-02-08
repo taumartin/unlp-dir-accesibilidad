@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('SemestresDeAlumnos', {
+    await queryInterface.createTable('semestres_alumnos', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -19,7 +19,7 @@ module.exports = {
       allowNull: false,
       field: 'alumno_id',
       references: {
-          model: 'Alumno',
+          model: 'alumnos',
           key: 'id',
       }
     },
@@ -28,7 +28,7 @@ module.exports = {
       allowNull: false,
       field: 'semestre_id',
       references: {
-          model: 'Semestres',
+          model: 'semestres',
           key: 'id',
       }
   },
@@ -44,13 +44,13 @@ module.exports = {
       }
     });
 
-    await queryInterface.addIndex('semestres_de_alumnos', ['semestre_id', 'alumno_id'], {
+    await queryInterface.addIndex('semestres_alumnos', ['semestre_id', 'alumno_id'], {
       unique: true,
       name: 'unique_semestre_id_alumno_id'
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeIndex('SemestresDeAlumnos', 'unique_semestre_id_alumno_id');
-    await queryInterface.dropTable('SemestresDeAlumnos');
+    await queryInterface.removeIndex('semestres_alumnos', 'unique_semestre_id_alumno_id');
+    await queryInterface.dropTable('semestres_alumnos');
   }
 };
