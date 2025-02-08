@@ -15,7 +15,17 @@ module.exports = {
                 field: 'persona_id',
                 unique: true,
                 references: {
-                    model: 'personas',
+                    model: 'Persona',
+                    key: 'id',
+                }
+            },
+            usuarioId:{
+                type: Sequelize.INTEGER,
+                allowNull: false,
+                field: 'usuario_id',
+                unique: true,
+                refereces: {
+                    model: 'Usuario',
                     key: 'id',
                 }
             },
