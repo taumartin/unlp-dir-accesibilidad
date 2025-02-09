@@ -26,7 +26,7 @@
         @if (navLinkItem.children?.length) {
           <button type="button" class="btn btn-link nav-link" data-toggle="collapse"
                   [class.collapsed]="navLinkItem.isCollapsed"
-                  (click)="collapse.toggle()"
+                  (click)="toggleNavLinkItem(navLinkItem)"
                   [attr.aria-expanded]="!navLinkItem.isCollapsed"
                   [attr.aria-controls]="collapse">
             @if (navLinkItem.icon) {

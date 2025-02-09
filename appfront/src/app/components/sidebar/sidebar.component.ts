@@ -241,4 +241,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.windowResizeSubscription = null;
     }
   }
+
+  public toggleNavLinkItem(navLinkItem: NavLink): void {
+    if (navLinkItem.isCollapsed === true) {
+      const openLink = this.navLinkGroups
+        .flatMap(navGroup => navGroup.navLinks)
+        .find(navLink => (navLink.isCollapsed === false));
+      if (openLink) {
+        openLink.isCollapsed = true;
+      }
+    }
+    navLinkItem.isCollapsed = !navLinkItem.isCollapsed;
+  }
 }
