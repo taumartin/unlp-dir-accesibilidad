@@ -1,5 +1,5 @@
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"
-    [class.toggled]="toggled">
+<ul ngbAccordion class="navbar-nav bg-gradient-primary sidebar sidebar-dark" id="accordionSidebar"
+    [closeOthers]="true" [class.toggled]="toggled">
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
     <div class="sidebar-brand-icon">
@@ -9,47 +9,61 @@
   </a>
 
   <!-- Sidebar - Navigation -->
-  <ng-container *ngFor="let navGroup of navLinkGroups; let isFirst = first">
+  @for (navGroup of navLinkGroups; track navGroup.id; let isFirst = $first) {
     <!-- Divider -->
     <hr class="sidebar-divider" [class.my-0]="isFirst">
 
     <!-- Heading -->
-    <div class="sidebar-heading" *ngIf="navGroup.heading">
-      {{ navGroup.heading }}
-    </div>
+    @if (navGroup.heading) {
+      <div class="sidebar-heading">
+        {{ navGroup.heading }}
+      </div>
+    }
 
     <!-- Nav Item -->
-    <li class="nav-item" routerLinkActive="active" *ngFor="let navLinkItem of navGroup.navLinks">
-      <ng-container *ngIf="navLinkItem.children?.length; else pepe">
-        <a class="nav-link" data-toggle="collapse" href="javascript:void(0);"
-           [class.collapsed]="navLinkItem.isCollapsed"
-           (click)="collapse.toggle()"
-           [attr.aria-expanded]="!navLinkItem.isCollapsed"
-           [attr.aria-controls]="collapse">
-          <fa-icon *ngIf="navLinkItem.icon" [fixedWidth]="true" [icon]="navLinkItem.icon"></fa-icon>
-          <span #label>{{ navLinkItem.label }}</span>
-          <fa-icon class="icon-after" [icon]="navLinkItem.isCollapsed ? iconRight : iconDown"></fa-icon>
-        </a>
-        <div class="collapse" [attr.aria-labelledby]="label" data-parent="#accordionSidebar"
-             #collapse="ngbCollapse" [(ngbCollapse)]="navLinkItem.isCollapsed!">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <ng-container *ngFor="let child of navLinkItem.children; let isChildFirst = first">
-              <div *ngIf="!isChildFirst" class="collapse-divider"></div>
-              <h6 *ngIf="child.heading" class="collapse-header">{{ child.heading }}</h6>
-              <a *ngFor="let childLink of child.navLinks" class="collapse-item" routerLinkActive="active"
-                 [routerLink]="childLink.route">{{ childLink.label }}</a>
-            </ng-container>
+    @for (navLinkItem of navGroup.navLinks; track navLinkItem.id) {
+      <li class="nav-item" routerLinkActive="active">
+        @if (navLinkItem.children?.length) {
+          <button type="button" class="btn btn-link nav-link" data-toggle="collapse"
+                  [class.collapsed]="navLinkItem.isCollapsed"
+                  (click)="collapse.toggle()"
+                  [attr.aria-expanded]="!navLinkItem.isCollapsed"
+                  [attr.aria-controls]="collapse">
+            @if (navLinkItem.icon) {
+              <fa-icon [fixedWidth]="true" [icon]="navLinkItem.icon"></fa-icon>
+            }
+            <span #label>{{ navLinkItem.label }}</span>
+            <fa-icon class="icon-after d-none" [icon]="navLinkItem.isCollapsed ? iconRight : iconDown"
+                     [class.d-md-inline]="!toggled"></fa-icon>
+          </button>
+          <div class="collapse" [attr.aria-labelledby]="label" data-parent="#accordionSidebar"
+               #collapse="ngbCollapse" [(ngbCollapse)]="navLinkItem.isCollapsed!">
+            <div class="bg-white py-2 collapse-inner rounded">
+              @for (child of navLinkItem.children; track child.id; let isChildFirst = $first) {
+                @if (!isChildFirst) {
+                  <div class="collapse-divider"></div>
+                }
+                @if (child.heading) {
+                  <h6 class="collapse-header">{{ child.heading }}</h6>
+                }
+                @for (childLink of child.navLinks; track childLink.id) {
+                  <a class="collapse-item" routerLinkActive="active"
+                     [routerLink]="childLink.route">{{ childLink.label }}</a>
+                }
+              }
+            </div>
           </div>
-        </div>
-      </ng-container>
-      <ng-template #pepe>
-        <a class="nav-link" [routerLink]="navLinkItem.route" routerLinkActive="active">
-          <fa-icon *ngIf="navLinkItem.icon" [fixedWidth]="true" [icon]="navLinkItem.icon"></fa-icon>
-          <span>{{ navLinkItem.label }}</span>
-        </a>
-      </ng-template>
-    </li>
-  </ng-container>
+        } @else {
+          <a class="nav-link" [routerLink]="navLinkItem.route" routerLinkActive="active">
+            @if (navLinkItem.icon) {
+              <fa-icon [fixedWidth]="true" [icon]="navLinkItem.icon"></fa-icon>
+            }
+            <span>{{ navLinkItem.label }}</span>
+          </a>
+        }
+      </li>
+    }
+  }
 
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
