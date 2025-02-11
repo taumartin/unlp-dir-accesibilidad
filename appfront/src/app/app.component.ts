@@ -20,21 +20,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   title = 'appfront';
 
-  public test_result: string | null = null;
-
-  public async testApi() {
-    const url = "http://localhost:3000/api/v1/";
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-      return await response.json();
-    } catch (error: any) {
-      return error.message;
-    }
-  }
-
   private onDocumentScroll(scrollDistance: number): void {
     this.showScrollTop = (scrollDistance > 100);
   }
@@ -49,9 +34,6 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.onDocumentScroll(window.scrollY);
       });
-    this.testApi().then((result) => { // FIXME: quitar..
-      this.test_result = JSON.stringify(result);
-    });
   }
 
   public ngOnDestroy(): void {
