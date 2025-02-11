@@ -52,33 +52,33 @@ export class SidebarComponent implements OnInit, OnDestroy {
           id: 11,
           icon: faHome,
           label: 'Inicio',
-          route: ''
+          route: 'home'
         }
       ]
     },
     {
       id: 2,
-      heading: 'Interface',
+      heading: 'Administración',
       navLinks: [
         {
           id: 21,
           icon: faCog,
-          label: 'Components',
+          label: 'Datos',
           isCollapsed: true,
           children: [
             {
               id: 211,
-              heading: 'Custom Components:',
+              heading: 'ABM\'s:',
               navLinks: [
                 {
                   id: 2111,
-                  label: 'Buttons',
-                  route: '',
+                  label: 'Personas',
+                  route: 'abm/personas',
                 },
                 {
                   id: 2112,
                   label: 'Cards',
-                  route: '',
+                  route: 'cards',
                 }
               ]
             },
@@ -97,22 +97,22 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 {
                   id: 2211,
                   label: 'Colors',
-                  route: '',
+                  route: 'utils/colors',
                 },
                 {
                   id: 2212,
                   label: 'Borders',
-                  route: '',
+                  route: 'utils/borders',
                 },
                 {
                   id: 2213,
                   label: 'Animations',
-                  route: '',
+                  route: 'utils/animations',
                 },
                 {
                   id: 2214,
                   label: 'Other',
-                  route: '',
+                  route: 'utils/other',
                 }
               ]
             },
@@ -137,17 +137,17 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 {
                   id: 3111,
                   label: 'Login',
-                  route: '',
+                  route: 'auth/login',
                 },
                 {
                   id: 3112,
                   label: 'Register',
-                  route: '',
+                  route: 'auth/register',
                 },
                 {
                   id: 3113,
                   label: 'Forgot Password',
-                  route: '',
+                  route: 'auth/forgot-password',
                 }
               ]
             },
@@ -158,12 +158,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 {
                   id: 3121,
                   label: '404 Page',
-                  route: '',
+                  route: 'error',
                 },
                 {
                   id: 3122,
                   label: 'Blank Page',
-                  route: '',
+                  route: 'blank',
                 }
               ]
             }
@@ -173,13 +173,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
           id: 32,
           icon: faCog,
           label: 'Charts',
-          route: ''
+          route: 'chars'
         },
         {
           id: 33,
           icon: faCog,
           label: 'Tables',
-          route: ''
+          route: 'tables'
         }
       ]
     }
