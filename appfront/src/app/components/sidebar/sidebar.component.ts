@@ -10,7 +10,7 @@ import {
 import {CommonModule} from '@angular/common';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {NgbAccordionModule, NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
-import {SidebarService} from '../../services/sidebar/sidebar.service';
+import {SidebarService} from '../../services/ui/sidebar/sidebar.service';
 import {debounceTime, fromEvent, Subscription} from 'rxjs';
 
 interface NavLink {

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {faBars, faSearch, faBell, faEnvelope, faFileAlt} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
-import {SidebarService} from '../../services/sidebar/sidebar.service';
+import {SidebarService} from '../../services/ui/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-topbar',
