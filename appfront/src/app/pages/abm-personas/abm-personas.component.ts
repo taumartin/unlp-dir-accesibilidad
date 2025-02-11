@@ -3,6 +3,7 @@ import {DataTablesModule} from 'angular-datatables';
 import {Config} from 'datatables.net';
 import {PersonasService} from '../../services/data/personas/personas.service';
 import {PageHeadingComponent} from '../../components/page-heading/page-heading.component';
+import datatables_lang_ES from '../../config/datatables/lang_ES.json';
 
 @Component({
   selector: 'app-abm-personas',
@@ -31,6 +32,7 @@ export class AbmPersonasComponent implements OnInit {
           });
         });
       },
+      language: datatables_lang_ES,
       columns: [
         {
           title: 'ID',
