@@ -23,7 +23,7 @@ module.exports = {
           allowNull: false,
           field: 'materia_id',
           references: {
-              model: 'Materia',
+              model: 'materias',
               key: 'id',
           }
       },
