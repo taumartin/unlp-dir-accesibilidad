@@ -10,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'eventoId',
       });
 
-      Ayudantias.belongsTo(models.TiposDeEventos,{
+      EventosParaAlumnos.belongsTo(models.TiposDeEventos,{
           as: 'tipos_de_eventos',
           foreignKey: 'tipoDeEventoId',
       });
 
-      Ayudantias.belongsTo(models.Materia,{
+      EventosParaAlumnos.belongsTo(models.Materia,{
           as: 'materia',
           foreignKey: 'materiaId'
       })
