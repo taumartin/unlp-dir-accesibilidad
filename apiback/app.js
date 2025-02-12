@@ -5,6 +5,7 @@ const dbConnection = require('./models').sequelize;
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const createError = require('http-errors');
+const corsConfig = require('./config/cors');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
@@ -14,7 +15,7 @@ const app = express();
 // App config.
 app.use(logging);
 app.use(reqLogger);
-//app.use(cors); // FIXME: habilitar...
+app.use(corsConfig);
 
 // DB.
 app.testDB = async () => {
