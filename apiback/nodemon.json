@@ -3,6 +3,7 @@
     "config",
     "controllers",
     "models",
+    "repositories",
     "routes",
     "app.js"
   ],
