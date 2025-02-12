@@ -1,3 +1,5 @@
+const {Op} = require("sequelize");
+
 class BaseRepository {
     _model = null;
 
@@ -7,15 +9,61 @@ class BaseRepository {
 
     create(props) {
         return this._model.create(props);
-    };
+    }
 
     listAll() {
         return this._model.findAll({});
-    };
+    }
+
+    async listAllPaginated({
+                               page = 1,
+                               pageSize = 10,
+                               search = "",
+                               searchFields = [],
+                               orderBy = "id",
+                               orderDirection = "asc"
+                           } = {}) {
+        // Filtering.
+        let whereClause = {};
+        if (search && (searchFields.length > 0)) {
+            whereClause = {
+                [Op.or]: searchFields.map(field => ({
+                    [field]: {
+                        [Op.iLike]: `%${search}%`
+                    },
+                })),
+            };
+        }
+
+        // Orders.
+        orderDirection = orderDirection.toLowerCase();
+        const validOrderDirection = ["asc", "desc"].includes(orderDirection) ? orderDirection : "asc";
+
+        // Pagination.
+        const offset = (page - 1) * pageSize;
+        const limit = pageSize;
+        const {count, rows} = await this._model.findAndCountAll({
+            where: whereClause,
+            order: [[orderBy, validOrderDirection]],
+            limit,
+            offset,
+        });
+        const totalCount = await this._model.count();
+
+        return {
+            totalRecords: totalCount,
+            filteredRecords: count,
+            totalPages: Math.ceil(count / pageSize),
+            page: page,
+            pageSize,
+            data: rows,
+        };
+    }
+
 
     findById(id) {
         return this._model.findByPk(id, null);
-    };
+    }
 
     findByIdOrThrow(id) {
         return this.findById(id).then(result => {
@@ -24,7 +72,7 @@ class BaseRepository {
             }
             throw new Error(`Model ${this._model.name} with id ${id} not found.`);
         });
-    };
+    }
 
     update(id, props) {
         return this.findById(id).then(result => (result !== null) ? result.update(props) : null);

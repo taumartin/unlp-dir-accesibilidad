@@ -1,8 +1,8 @@
-const {Persona} = require('../models');
 const personaRepository = require("../repositories/persona").getInstance();
 
 module.exports.create = function (req, res) {
-    return personaRepository.create(
+    // TODO: validar inputs...
+    return personaRepository.createPersona(
         req.body.nombre,
         req.body.apellido,
         req.body.dni,
@@ -14,7 +14,9 @@ module.exports.create = function (req, res) {
 };
 
 module.exports.listAll = function (req, res) {
-    return personaRepository.listAll()
+    const {page, pageSize, search, orderBy, orderDirection} = req.query;
+    return personaRepository.listPersonas(parseInt(page) || 1, parseInt(pageSize) || 10,
+        search || "", orderBy || "id", orderDirection || "asc",)
         .then(personaList => res.status(200).send(personaList))
         .catch(error => res.status(400).send(error));
 };

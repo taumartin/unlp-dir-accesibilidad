@@ -14,8 +14,10 @@ export class ApiService {
   ) {
   }
 
-  public getEndpoint<T>(endpoint: string): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}${endpoint}`);
+  public getEndpoint<T>(endpoint: string, params?: any): Observable<T> {
+    return this.http.get<T>(`${this.baseUrl}${endpoint}`, {
+      params
+    });
   }
 
   // TODO: agregar post, delete...

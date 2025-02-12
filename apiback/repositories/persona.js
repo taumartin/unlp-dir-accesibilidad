@@ -15,15 +15,17 @@ class PersonaRepository extends BaseRepository {
         super(Persona);
     }
 
-    create(nombre, apellido, dni, telefono, email) {
-        return super.create({
-            nombre,
-            apellido,
-            dni,
-            telefono,
-            email,
-        });
+    createPersona(nombre, apellido, dni, telefono, email) {
+        return super.create({nombre, apellido, dni, telefono, email,});
     };
+
+    listPersonas(page, pageSize, search, orderBy, orderDirection) {
+        return super.listAllPaginated({
+            page, pageSize, search,
+            searchFields: ['nombre', 'apellido', 'telefono', 'email'],
+            orderBy, orderDirection,
+        })
+    }
 }
 
 module.exports = PersonaRepository;
