@@ -1,0 +1,77 @@
+<ul ngbAccordion class="navbar-nav bg-gradient-primary sidebar sidebar-dark" id="accordionSidebar"
+    [closeOthers]="true" [class.toggled]="toggled">
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+    <div class="sidebar-brand-icon">
+      <img src="/assets/img/unlp_logo_40x40.png" alt="UNLP Logo">
+    </div>
+    <div class="sidebar-brand-text mx-3">UNLP - Dir. Accesibilidad</div>
+  </a>
+
+  <!-- Sidebar - Navigation -->
+  @for (navGroup of navLinkGroups; track navGroup.id; let isFirst = $first) {
+    <!-- Divider -->
+    <hr class="sidebar-divider" [class.my-0]="isFirst">
+
+    <!-- Heading -->
+    @if (navGroup.heading) {
+      <div class="sidebar-heading">
+        {{ navGroup.heading }}
+      </div>
+    }
+
+    <!-- Nav Item -->
+    @for (navLinkItem of navGroup.navLinks; track navLinkItem.id) {
+      <li class="nav-item" routerLinkActive="active">
+        @if (navLinkItem.children?.length) {
+          <button type="button" class="btn btn-link nav-link" data-toggle="collapse"
+                  [class.collapsed]="navLinkItem.isCollapsed"
+                  (click)="toggleNavLinkItem(navLinkItem)"
+                  [attr.aria-expanded]="!navLinkItem.isCollapsed"
+                  [attr.aria-controls]="collapse">
+            @if (navLinkItem.icon) {
+              <fa-icon [fixedWidth]="true" [icon]="navLinkItem.icon"></fa-icon>
+            }
+            <span #label>{{ navLinkItem.label }}</span>
+            <fa-icon class="icon-after d-none" [icon]="navLinkItem.isCollapsed ? iconRight : iconDown"
+                     [class.d-md-inline]="!toggled"></fa-icon>
+          </button>
+          <div class="collapse" [attr.aria-labelledby]="label" data-parent="#accordionSidebar"
+               #collapse="ngbCollapse" [(ngbCollapse)]="navLinkItem.isCollapsed!">
+            <div class="bg-white py-2 collapse-inner rounded">
+              @for (child of navLinkItem.children; track child.id; let isChildFirst = $first) {
+                @if (!isChildFirst) {
+                  <div class="collapse-divider"></div>
+                }
+                @if (child.heading) {
+                  <h6 class="collapse-header">{{ child.heading }}</h6>
+                }
+                @for (childLink of child.navLinks; track childLink.id) {
+                  <a class="collapse-item" routerLinkActive="active"
+                     [routerLink]="childLink.route">{{ childLink.label }}</a>
+                }
+              }
+            </div>
+          </div>
+        } @else {
+          <a class="nav-link" [routerLink]="navLinkItem.route" routerLinkActive="active">
+            @if (navLinkItem.icon) {
+              <fa-icon [fixedWidth]="true" [icon]="navLinkItem.icon"></fa-icon>
+            }
+            <span>{{ navLinkItem.label }}</span>
+          </a>
+        }
+      </li>
+    }
+  }
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle" (click)="toggleSideNavigation()">
+      <fa-icon [icon]="toggled ? iconRight : iconLeft"></fa-icon>
+    </button>
+  </div>
+</ul>
