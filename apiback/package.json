@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "debug": ".\\bin\\debug",
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:seed": "sequelize-cli db:seed:all"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

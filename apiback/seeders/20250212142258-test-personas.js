@@ -29,7 +29,9 @@ module.exports = {
                     updated_at: now,
                 });
             }
-            return queryInterface.bulkInsert('personas', personasSeed, {});
+            if (personasSeed.length) {
+                return queryInterface.bulkInsert('personas', personasSeed, {});
+            }
         });
     },
 
