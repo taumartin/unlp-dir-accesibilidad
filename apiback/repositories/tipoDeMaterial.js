@@ -1,4 +1,4 @@
-const {tiposdematerial} = require('../models');
+const {TiposDeMateriales} = require('../models');
 const BaseRepository = require("./base");
 
 class TiposDeMaterialRepository extends BaseRepository {
@@ -12,14 +12,14 @@ class TiposDeMaterialRepository extends BaseRepository {
     }
 
     constructor() {
-        super(tiposdematerial);
+        super(TiposDeMateriales);
     }
 
-    createMedio(nombre) {
+    createTipoDeMaterial(nombre) {
         return super.create({nombre});
     };
 
-    listMedios(page, pageSize, search, orderBy, orderDirection) {
+    listTiposDeMateriales(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
             page, pageSize, search,
             searchFields: ['nombre'],

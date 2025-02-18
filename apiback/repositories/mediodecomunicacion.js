@@ -1,4 +1,4 @@
-const {mediosdecomunicacion} = require('../models');
+const {MediosDeComunicacion} = require('../models');
 const BaseRepository = require("./base");
 
 class MediosDeComunicacionRepository extends BaseRepository {
@@ -12,14 +12,14 @@ class MediosDeComunicacionRepository extends BaseRepository {
     }
 
     constructor() {
-        super(mediosdecomunicacion);
+        super(MediosDeComunicacion);
     }
 
     createMedio(nombre) {
         return super.create({nombre});
     };
 
-    listMedios(page, pageSize, search, orderBy, orderDirection) {
+    listMediosDeComunicacion(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
             page, pageSize, search,
             searchFields: ['nombre'],

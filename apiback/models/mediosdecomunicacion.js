@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'MediosDeComunicacion',
-    tableName: 'medios_de_comunicacion',
+    tableName: 'medios_comunicacion',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });

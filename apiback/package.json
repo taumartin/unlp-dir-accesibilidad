@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "debug": ".\\bin\\debug",
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "db:migrate": "sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all"
   },

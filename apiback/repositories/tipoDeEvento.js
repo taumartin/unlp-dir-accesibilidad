@@ -1,4 +1,4 @@
-const {tiposdeeventos} = require('../models');
+const {TiposDeEventos} = require('../models');
 const BaseRepository = require("./base");
 
 class TiposDeEventosRepository extends BaseRepository {
@@ -12,7 +12,7 @@ class TiposDeEventosRepository extends BaseRepository {
     }
 
     constructor() {
-        super(tiposdeeventos);
+        super(TiposDeEventos);
     }
 
     createTipoDeEvento(nombre) {

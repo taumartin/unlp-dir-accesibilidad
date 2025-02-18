@@ -11,7 +11,7 @@ module.exports.create = function (req, res) {
 
 module.exports.listAll = function (req, res) {
     const {page, pageSize, search, orderBy, orderDirection} = req.query;
-    return tipoDeMaterialesRepository.listTiposDeMaterial(parseInt(page) || 1, parseInt(pageSize) || 10,
+    return tipoDeMaterialesRepository.listTiposDeMateriales(parseInt(page) || 1, parseInt(pageSize) || 10,
         search || "", orderBy || "id", orderDirection || "asc",)
         .then(tipoDeMaterialList => res.status(200).send(tipoDeMaterialList))
         .catch(error => res.status(400).send(error));
@@ -27,7 +27,7 @@ module.exports.update = function (req, res) {
     return tipoDeMaterialesRepository.update(req.params.id, {
         nombre: req.body.nombre
     })
-        .then(medio => res.status((medio === null) ? 404 : 200).send(medio))
+        .then(tipo => res.status((tipo === null) ? 404 : 200).send(tipo))
         .catch(error => res.status(400).send(error));
 }
 

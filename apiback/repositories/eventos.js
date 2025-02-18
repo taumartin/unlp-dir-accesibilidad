@@ -1,4 +1,4 @@
-const {Evento} = require('../models');
+const {Eventos} = require('../models');
 const BaseRepository = require("./base");
 
 class EventoRepository extends BaseRepository {
@@ -12,7 +12,7 @@ class EventoRepository extends BaseRepository {
     }
 
     constructor() {
-        super(Evento);
+        super(Eventos);
     }
 
     createEvento(fechaYHora,descripcion) {

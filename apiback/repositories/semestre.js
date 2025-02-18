@@ -1,4 +1,4 @@
-const {semestres} = require('../models');
+const {Semestres} = require('../models');
 const BaseRepository = require("./base");
 
 class SemestresRepository extends BaseRepository {
@@ -12,7 +12,7 @@ class SemestresRepository extends BaseRepository {
     }
 
     constructor() {
-        super(semestres);
+        super(Semestres);
     }
 
     createSemestre(anio,esPrimerSemestre) {

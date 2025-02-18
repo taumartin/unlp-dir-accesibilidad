@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'TiposDeMateriales',
-    tableName: 'tipos_de_materiales',
+    tableName: 'tipos_materiales',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });

@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'TiposDeEventos',
-    tableName: 'tipos_de_eventos',
+    tableName: 'tipos_eventos',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   });
