@@ -71,15 +71,55 @@ export class SidebarComponent implements OnInit, OnDestroy {
               heading: 'ABM\'s:',
               navLinks: [
                 {
-                  id: 2111,
+                  id: 21101,
                   label: 'Personas',
                   route: 'abm/personas',
                 },
                 {
-                  id: 2112,
-                  label: 'Cards',
-                  route: 'cards',
-                }
+                  id: 21102,
+                  label: 'Alumnos',
+                  route: 'abm/alumnos',
+                },
+                {
+                  id: 21103,
+                  label: 'Tutores',
+                  route: 'abm/tutores',
+                },
+                {
+                  id: 21104,
+                  label: 'Usuarios',
+                  route: 'abm/usuarios',
+                },
+                {
+                  id: 21105,
+                  label: 'Eventos',
+                  route: 'abm/eventos',
+                },
+                {
+                  id: 21106,
+                  label: 'Tipos de Eventos',
+                  route: 'abm/tipos-eventos',
+                },
+                {
+                  id: 21107,
+                  label: 'Tipos de Materiales',
+                  route: 'abm/tipos-materiales',
+                },
+                {
+                  id: 21108,
+                  label: 'Medios de Comunicación',
+                  route: 'abm/medios-comunicacion',
+                },
+                {
+                  id: 21109,
+                  label: 'Materias',
+                  route: 'abm/materias',
+                },
+                {
+                  id: 21110,
+                  label: 'Semestres',
+                  route: 'abm/semestres',
+                },
               ]
             },
           ]
