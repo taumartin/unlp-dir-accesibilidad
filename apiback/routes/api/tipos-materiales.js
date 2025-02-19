@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const tiposDeMaterialesController = require('../../controllers/tiposDeMateriales');
+const tiposDeMaterialesController = require('../../controllers/tipo-material');
 
 /** Create TiposDeMateriales. */
 router.post('/', tiposDeMaterialesController.create);

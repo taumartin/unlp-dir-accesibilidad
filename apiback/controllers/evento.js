@@ -1,4 +1,4 @@
-const eventoRepository = require("../repositories/eventos").getInstance();
+const eventoRepository = require("../repositories/evento").getInstance();
 
 module.exports.create = function (req, res) {
     // TODO: validar inputs...

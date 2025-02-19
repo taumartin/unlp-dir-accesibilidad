@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const tiposDeEventosController = require('../../controllers/tiposdeeventos');
+const tiposDeEventosController = require('../../controllers/tipo-evento');
 
 /** Create TiposDeEventos. */
 router.post('/', tiposDeEventosController.create);

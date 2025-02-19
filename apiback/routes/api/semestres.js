@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const semestreController = require('../../controllers/semestres');
+const semestreController = require('../../controllers/semestre');
 
 /** Create Semestre. */
 router.post('/', semestreController.create);

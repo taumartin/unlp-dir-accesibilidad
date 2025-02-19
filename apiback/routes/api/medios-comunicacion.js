@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mediosDeComunicacionController = require('../../controllers/mediosdecomunicacion');
+const mediosDeComunicacionController = require('../../controllers/medio-comunicacion');
 
 /** Create MediosDeComunicacion. */
 router.post('/', mediosDeComunicacionController.create);

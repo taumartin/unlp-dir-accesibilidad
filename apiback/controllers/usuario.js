@@ -1,4 +1,4 @@
-const usuarioRepository = require("../repositories/usuarios").getInstance();
+const usuarioRepository = require("../repositories/usuario").getInstance();
 
 module.exports.create = function (req, res) {
     // TODO: validar inputs...
@@ -15,6 +15,7 @@ module.exports.create = function (req, res) {
 };
 
 module.exports.listAll = function (req, res) {
+    // TODO: no se debe publicar la contraseña de los usuarios...
     const {page, pageSize, search, orderBy, orderDirection} = req.query;
     return usuarioRepository.listUsuarios(parseInt(page) || 1, parseInt(pageSize) || 10,
         search || "", orderBy || "id", orderDirection || "asc",)

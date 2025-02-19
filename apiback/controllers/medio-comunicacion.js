@@ -1,4 +1,4 @@
-const medioDeComunicacionRepository = require("../repositories/medioDeComunicacion").getInstance();
+const medioDeComunicacionRepository = require("../repositories/medio-comunicacion").getInstance();
 
 module.exports.create = function (req, res) {
     // TODO: validar inputs...
