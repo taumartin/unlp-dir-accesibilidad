@@ -3,6 +3,7 @@ const {fakerES_MX} = require('@faker-js/faker');
 const {runSeedOnlyInEnv} = require("../utils/seed_runners");
 const faker = fakerES_MX;
 const {Usuario} = require('../models');
+const {hashPassword} = require("../utils/hash");
 
 const SEED_LENGTH = 1_000;
 
@@ -13,18 +14,18 @@ module.exports = {
             const {count} = await Usuario.findAndCountAll();
             const seedCount = Math.max(0, SEED_LENGTH - count);
             const emails = faker.helpers.uniqueArray(faker.internet.email, seedCount);
-            const nombres = faker.helpers.uniqueArray(() => faker.person.lastName(), seedCount);
+            const usernames = faker.helpers.uniqueArray(() => faker.internet.username(), seedCount);
             const now = new Date();
             const usuariosSeed = [];
+            const testPasswordForAll = await hashPassword("Password1234");
             for (let i = 0; i < seedCount; i++) {
-              const foto=(Math.random()>0.5)?faker.image.avatar():""
-              usuariosSeed.push({
-                    contrasenia: faker.internet.password(),
-                    nombre: nombres[i],
-                    correo: emails[i],
+                usuariosSeed.push({
+                    contrasenia: testPasswordForAll,
+                    nombre: usernames[i].slice(0, 31).toLowerCase(),
+                    correo: emails[i].toLowerCase(),
                     esta_activo: faker.datatype.boolean(),
                     es_admin: faker.datatype.boolean(0.1),
-                    foto_de_perfil: foto,
+                    foto_de_perfil: (Math.random() > 0.5) ? faker.image.avatar() : null,
                     created_at: now,
                     updated_at: now,
                 });
