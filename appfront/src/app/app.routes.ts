@@ -11,6 +11,7 @@ import {AbmTiposEventosComponent} from './pages/abms/abm-tipos-eventos/abm-tipos
 import {AbmTiposMaterialesComponent} from './pages/abms/abm-tipos-materiales/abm-tipos-materiales.component';
 import {AbmUsuariosComponent} from './pages/abms/abm-usuarios/abm-usuarios.component';
 import {LoginComponent} from './pages/auth/login/login.component';
+import {authGuard} from './guards/auth/auth.guard';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -19,6 +20,7 @@ export const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent},
   {
     path: 'abm',
+    canActivate: [authGuard],
     children: [
       {path: 'eventos', component: AbmEventosComponent},
       {path: 'materias', component: AbmMateriasComponent},
