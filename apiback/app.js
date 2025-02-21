@@ -4,8 +4,9 @@ const {logging, reqLogger, logger} = require('./config/logging');
 const dbConnection = require('./models').sequelize;
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const createError = require('http-errors');
 const corsConfig = require('./config/cors');
+const errorHandler = require("./middlewares/error-handler");
+const catchAllNotFound = require("./middlewares/catch-all-not-found");
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
@@ -51,23 +52,10 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public_portal/index.html'));
 });
 
+// Error handling.
+app.use(errorHandler);
 
-// FIXME: revisar...
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    next(createError(404));
-});
-
-// error handler
-app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
+// Catch-all other routes.
+app.use(catchAllNotFound);
 
 module.exports = app;

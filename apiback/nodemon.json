@@ -2,9 +2,12 @@
   "watch": [
     "config",
     "controllers",
+    "exceptions",
+    "middlewares",
     "models",
     "repositories",
     "routes",
+    "utils",
     "app.js"
   ],
   "ext": "js,json",
