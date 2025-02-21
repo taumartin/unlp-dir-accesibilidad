@@ -1,7 +1,7 @@
 const HttpException = require("../exceptions/http-exception");
 
-const errorHandler = (err, req, res, next) => {
-    res.locals.message = err.message;
+const errorHandler = (err, req, res/*, next*/) => {
+    res.locals.message = err.message || 'Error';
     res.locals.error = {};
 
     if (req.app.get('env') === 'development') {
@@ -18,8 +18,9 @@ const errorHandler = (err, req, res, next) => {
     }
 
     res.status(500).json({
-        message: 'Error inesperado.',
         status: 500,
+        message: 'Error inesperado.',
+        error: res.locals.error,
     });
 };
 
