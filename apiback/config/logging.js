@@ -6,10 +6,11 @@ module.exports.logging = morganLogger;
 const logger = {
     log: (message, req) => {
         const currentTime = new Date().toISOString();
-        console.log(`${req ? req.id : 0} ${currentTime} ${message}`);
-    }, error: (message, error, req) => {
+        console.log(`${currentTime} ${req ? req.id : 0} ${message}`);
+    },
+    error: (message, error, req) => {
         const currentTime = new Date().toISOString();
-        console.error(`${req ? req.id : 0} ${currentTime} ${message}`, error);
+        console.error(`${currentTime} ${req ? req.id : 0} ${message}`, error);
     }
 };
 module.exports.logger = logger;

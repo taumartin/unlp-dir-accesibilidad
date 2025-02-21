@@ -1,11 +1,12 @@
 const HttpException = require("../exceptions/http-exception");
+const {logger} = require("../config/logging");
 
-const errorHandler = (err, req, res/*, next*/) => {
+const errorHandler = (err, req, res, next) => {
     res.locals.message = err.message || 'Error';
     res.locals.error = {};
 
     if (req.app.get('env') === 'development') {
-        console.error(err);
+        logger.error(`Handling error: ${err.message}`, err, req);
         res.locals.error = err.error || {};
     }
 

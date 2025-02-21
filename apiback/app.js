@@ -8,6 +8,7 @@ const corsConfig = require('./config/cors');
 const {jwtSessionStorageInit} = require("./config/jwt");
 const errorHandler = require("./middlewares/error-handler");
 const catchAllNotFound = require("./middlewares/catch-all-not-found");
+const {assignRequestId} = require("./middlewares/assign-request-id");
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
@@ -15,6 +16,7 @@ const apiRouter = require('./routes/api');
 const app = express();
 
 // App config.
+app.use(assignRequestId);
 app.use(logging);
 app.use(reqLogger);
 app.use(corsConfig);
