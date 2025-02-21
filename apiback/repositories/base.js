@@ -65,6 +65,10 @@ class BaseRepository {
         return this._model.findByPk(id, null);
     }
 
+    findOneWhere(where) {
+        return this._model.findOne({where});
+    }
+
     findByIdOrThrow(id) {
         return this.findById(id).then(result => {
             if (result !== null) {

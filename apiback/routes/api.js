@@ -1,4 +1,5 @@
 const express = require('express');
+const NotFoundException = require("../exceptions/not-found-exception");
 const router = express.Router();
 
 const personasRouter = require('./api/personas');
@@ -24,5 +25,13 @@ router.use('/eventos', eventosRouter);
 
 const usuariosRouter = require('./api/usuarios');
 router.use('/usuarios', usuariosRouter);
+
+const authRouter = require('./api/auth');
+router.use('/auth', authRouter);
+
+// Catch-all other API routes.
+router.use('*', (/*req, res*/) => {
+    throw new NotFoundException('API route no encontrada.');
+});
 
 module.exports = router;

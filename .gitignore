@@ -133,3 +133,4 @@ dist
 venv/
 apiback/.idea/
 apiback/public_portal/
+apiback/sessions/

@@ -5,6 +5,7 @@ const dbConnection = require('./models').sequelize;
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const corsConfig = require('./config/cors');
+const {jwtSessionStorageInit} = require("./config/jwt");
 const errorHandler = require("./middlewares/error-handler");
 const catchAllNotFound = require("./middlewares/catch-all-not-found");
 
@@ -17,6 +18,8 @@ const app = express();
 app.use(logging);
 app.use(reqLogger);
 app.use(corsConfig);
+app.use(cookieParser());
+jwtSessionStorageInit();
 
 // DB.
 app.testDB = async () => {
@@ -32,8 +35,6 @@ app.testDB = async () => {
 
 // Request parsers.
 app.use(express.json());
-app.use(express.urlencoded({extended: false})); // FIXME: quitar..
-app.use(cookieParser()); // FIXME: quitar..?
 
 // Routes.
 app.use('/', indexRouter);

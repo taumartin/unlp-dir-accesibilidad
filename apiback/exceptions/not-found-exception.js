@@ -1,8 +1,8 @@
 const HttpException = require("./http-exception");
 
 class NotFoundException extends HttpException {
-    constructor() {
-        super('El recurso solicitado no pudo ser encontrado.', 404);
+    constructor(message = 'El recurso solicitado no pudo ser encontrado.') {
+        super(message, 404);
     }
 }
 

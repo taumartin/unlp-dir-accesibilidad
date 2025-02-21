@@ -6,7 +6,7 @@ module.exports.create = function (req, res) {
         req.body.nombre,
         req.body.contrasenia,
         req.body.correo,
-        req.body.tipo,
+        req.body.esAdmin,
         req.body.estaActivo,
         req.body.fotoDePerfil
     )
