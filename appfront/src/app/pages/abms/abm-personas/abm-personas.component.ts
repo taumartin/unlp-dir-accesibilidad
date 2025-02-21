@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {DataTablesModule} from 'angular-datatables';
 import {Config} from 'datatables.net';
-import {PersonasService} from '../../services/data/personas/personas.service';
-import {PageHeadingComponent} from '../../components/page-heading/page-heading.component';
-import {DatatablesService} from '../../services/data/datatables/datatables.service';
+import {PersonasService} from '../../../services/data/personas/personas.service';
+import {PageHeadingComponent} from '../../../components/page-heading/page-heading.component';
+import {DatatablesService} from '../../../services/data/datatables/datatables.service';
 import {map} from 'rxjs';
-import {DatatablesServersideRequest} from '../../services/data/datatables/datatables-serverside-request';
+import {DatatablesServersideRequest} from '../../../services/data/datatables/datatables-serverside-request';
 
 @Component({
   selector: 'app-abm-personas',

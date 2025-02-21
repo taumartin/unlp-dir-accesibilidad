@@ -1,8 +1,9 @@
-const HttpException = require("../exceptions/http-exception");
 const {logger} = require("../config/logging");
+const ValidationException = require("../exceptions/validation-exception");
+const apiResponse = require("../utils/api-response");
 
 const errorHandler = (err, req, res, next) => {
-    res.locals.message = err.message || 'Error';
+    res.locals.message = err.message || 'Error inesperado.';
     res.locals.error = {};
 
     if (req.app.get('env') === 'development') {
@@ -10,19 +11,7 @@ const errorHandler = (err, req, res, next) => {
         res.locals.error = err.error || {};
     }
 
-    if (err instanceof HttpException) {
-        return res.status(err.status).json({
-            status: err.status,
-            message: res.locals.message,
-            error: res.locals.error,
-        });
-    }
-
-    res.status(500).json({
-        status: 500,
-        message: 'Error inesperado.',
-        error: res.locals.error,
-    });
+    apiResponse.error(res, res.locals.error, res.locals.message, err.status);
 };
 
 module.exports = errorHandler;

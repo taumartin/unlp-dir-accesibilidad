@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {DataTablesModule} from "angular-datatables";
-import {PageHeadingComponent} from "../../components/page-heading/page-heading.component";
+import {PageHeadingComponent} from "../../../components/page-heading/page-heading.component";
 import {Config} from 'datatables.net';
-import {MateriasService} from '../../services/data/materias/materias.service';
-import {DatatablesService} from '../../services/data/datatables/datatables.service';
-import {DatatablesServersideRequest} from '../../services/data/datatables/datatables-serverside-request';
+import {MateriasService} from '../../../services/data/materias/materias.service';
+import {DatatablesService} from '../../../services/data/datatables/datatables.service';
+import {DatatablesServersideRequest} from '../../../services/data/datatables/datatables-serverside-request';
 import {map} from 'rxjs';
-import {EventosService} from '../../services/data/eventos/eventos.service';
+import {EventosService} from '../../../services/data/eventos/eventos.service';
 
 @Component({
   selector: 'app-abm-eventos',

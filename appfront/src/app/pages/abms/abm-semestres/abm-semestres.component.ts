@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {DataTablesModule} from "angular-datatables";
-import {PageHeadingComponent} from "../../components/page-heading/page-heading.component";
+import {PageHeadingComponent} from "../../../components/page-heading/page-heading.component";
 import {Config} from 'datatables.net';
-import {DatatablesService} from '../../services/data/datatables/datatables.service';
-import {DatatablesServersideRequest} from '../../services/data/datatables/datatables-serverside-request';
+import {DatatablesService} from '../../../services/data/datatables/datatables.service';
+import {DatatablesServersideRequest} from '../../../services/data/datatables/datatables-serverside-request';
 import {map} from 'rxjs';
-import {SemestresService} from '../../services/data/semestres/semestres.service';
+import {SemestresService} from '../../../services/data/semestres/semestres.service';
 
 @Component({
   selector: 'app-abm-semestres',
