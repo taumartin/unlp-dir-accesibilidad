@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
-import {Observable, tap} from 'rxjs';
+import {BehaviorSubject, Observable, tap} from 'rxjs';
 import {AuthLoginSuccessResponse} from './auth-login-success-response';
 import {ApiSuccessResponse} from '../../network/api/api-success-response';
 import {ApiErrorResponse} from '../../network/api/api-error-response';
+import {ToastService} from '../../ui/toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,12 @@ export class AuthService {
   private readonly baseEndpoint: string = "/auth";
   private _accessToken: string | null = null;
 
+  private readonly userAuthChangeSubject = new BehaviorSubject<boolean>(false);
+  public userAuthChange$ = this.userAuthChangeSubject.asObservable();
+
   constructor(
     private readonly apiService: ApiService,
+    private readonly toastService: ToastService,
   ) {
   }
 
@@ -23,10 +28,12 @@ export class AuthService {
 
   private saveAccessToken(accessToken: string): void {
     this._accessToken = accessToken;
+    this.userAuthChangeSubject.next(true);
   }
 
   private clearAccessToken(): void {
     this._accessToken = null;
+    this.userAuthChangeSubject.next(false);
   }
 
   public getAccessToken(): string {
@@ -56,12 +63,24 @@ export class AuthService {
     );
   }
 
+  public silentLogin() {
+    this.refreshToken().subscribe({
+      next: (result) => {
+        if (result.success) {
+          this.toastService.showStandardToast('Recuperado sesión previa.');
+        }
+      }
+    });
+  }
+
   public refreshToken(): Observable<AuthLoginSuccessResponse | ApiErrorResponse> {
     return this.apiService.postEndpoint<AuthLoginSuccessResponse>(`${this.baseEndpoint}/refresh`)
       .pipe(
         tap((response) => {
           if (response.success) {
             this.saveAccessToken(response.data.accessToken);
+          } else {
+            this.logout().subscribe();
           }
         })
       );
@@ -70,7 +89,7 @@ export class AuthService {
   public logout(): Observable<ApiSuccessResponse<void> | ApiErrorResponse> {
     return this.apiService.postEndpoint<ApiSuccessResponse<void>>(`${this.baseEndpoint}/login`)
       .pipe(
-        tap((response) => {
+        tap((response) => { // FIXME: revisar respuesta
           this.clearAccessToken();
         })
       );

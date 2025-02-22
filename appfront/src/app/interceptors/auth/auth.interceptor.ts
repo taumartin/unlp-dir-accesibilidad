@@ -25,11 +25,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         if ((error.status === 403) && apiService.isApiUrl(error.url || req.url) && authService.isLoggedIn()) {
           return authService.refreshToken()
             .pipe(
-              switchMap(() => next(_reqWithAccessToken(nextReq, authService.getAccessToken()))),
-              catchError(() => {
-                authService.logout().subscribe();
-                return throwError(() => new Error('Sesión expirada.'));
-              })
+              switchMap((result) => result.success
+                ? next(_reqWithAccessToken(nextReq, authService.getAccessToken()))
+                : throwError(() => new Error('Sesión expirada. Ingresa nuevamente.'))),
+              catchError(() => throwError(() => new Error(
+                'No fue posible renovar la sesión. Ingresa nuevamente.')))
             );
         }
         return throwError(() => error);

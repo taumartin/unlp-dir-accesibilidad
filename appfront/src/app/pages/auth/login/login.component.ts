@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../services/core/auth/auth.service';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {faGoogle, faFacebookF} from '@fortawesome/free-brands-svg-icons';
@@ -6,8 +6,10 @@ import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FormService} from '../../../services/ui/form/form.service';
 import {ToastService} from '../../../services/ui/toast/toast.service';
+import {Subject, takeUntil} from 'rxjs';
 
 const REDIRECT_Q_PARAM = 'r';
+const DEFAULT_REDIRECT = '/';
 const REMEMBER_ME_STORAGE_KEY = 'rememberedEmail';
 
 @Component({
@@ -16,11 +18,11 @@ const REMEMBER_ME_STORAGE_KEY = 'rememberedEmail';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   protected googleIcon = faGoogle;
   protected facebookIcon = faFacebookF;
 
-  private returnUrl: string = '/';
+  private returnUrl: string = DEFAULT_REDIRECT;
   protected isDoingLogin: boolean = false;
 
   private readonly formBuilder = inject(FormBuilder);
@@ -29,6 +31,8 @@ export class LoginComponent implements OnInit {
     password: ['', Validators.required],
     rememberMe: [false],
   });
+
+  private destroy$?: Subject<void>;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -39,15 +43,54 @@ export class LoginComponent implements OnInit {
   ) {
   }
 
+  private onLoginSuccess(): void {
+    this.router.navigate([this.returnUrl], {relativeTo: this.route}).then((navResult) => {
+      if (!navResult) {
+        this.router.navigate([DEFAULT_REDIRECT]);
+      }
+    });
+  }
+
   public ngOnInit(): void {
     if (this.route.snapshot.queryParams[REDIRECT_Q_PARAM]) {
       this.returnUrl = atob(this.route.snapshot.queryParams[REDIRECT_Q_PARAM]);
+    }
+
+    if (this.authService.isLoggedIn()) {
+      this.onLoginSuccess();
+      this.toastService.showStandardToast('Login realizado automáticamente.');
+    } else {
+      this.subscribeToSilentLogin();
     }
 
     const rememberedUsername = localStorage.getItem(REMEMBER_ME_STORAGE_KEY);
     if (rememberedUsername) {
       this.loginForm.patchValue({email: rememberedUsername, rememberMe: true});
     }
+  }
+
+  public ngOnDestroy(): void {
+    if (this.destroy$) {
+      this.destroy$.next();
+      this.destroy$.complete();
+    }
+  }
+
+  private cancelSilentLoginSubscription(): void {
+    if (this.destroy$) {
+      this.destroy$.next();
+    }
+  }
+
+  private subscribeToSilentLogin(): void {
+    this.destroy$ = new Subject<void>();
+    this.authService.userAuthChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isLoggedIn => {
+        if (isLoggedIn) {
+          this.onLoginSuccess();
+        }
+      });
   }
 
   protected get email() {
@@ -72,6 +115,7 @@ export class LoginComponent implements OnInit {
 
   protected doLogin(username: string, password: string, remember: boolean): void {
     this.isDoingLogin = true;
+    this.cancelSilentLoginSubscription();
 
     if (remember) {
       localStorage.setItem(REMEMBER_ME_STORAGE_KEY, username);
@@ -82,13 +126,10 @@ export class LoginComponent implements OnInit {
     this.authService.login(username, password).subscribe({
       next: result => {
         if (result.success) {
-          this.router.navigate([this.returnUrl], {relativeTo: this.route}).then((navResult) => {
-            if (!navResult) {
-              this.router.navigate(['/']);
-            }
-            this.toastService.showSuccessToast(result.message);
-          });
+          this.onLoginSuccess();
+          this.toastService.showSuccessToast(result.message);
         } else {
+          this.subscribeToSilentLogin();
           this.toastService.showErrorToast(result.message, "No se pudo realizar el login");
         }
       },
