@@ -6,26 +6,23 @@ import {SidebarService} from '../../services/ui/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-topbar',
-  imports: [
-    FontAwesomeModule,
-    NgbDropdownModule
-  ],
+  imports: [FontAwesomeModule, NgbDropdownModule],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.scss'
 })
 export class TopbarComponent {
-  public iconBars = faBars;
-  public iconSearch = faSearch;
-  public iconAlerts = faBell;
-  public iconMessages = faEnvelope;
-  public iconFiles = faFileAlt;
+  protected iconBars = faBars;
+  protected iconSearch = faSearch;
+  protected iconAlerts = faBell;
+  protected iconMessages = faEnvelope;
+  protected iconFiles = faFileAlt;
 
   constructor(
     private readonly sidebarService: SidebarService
   ) {
   }
 
-  public toggleSideNavigation(): void {
+  protected toggleSideNavigation(): void {
     this.sidebarService.toggleEvent.emit();
   }
 }

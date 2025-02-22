@@ -17,7 +17,7 @@ import {MediosComunicacionService} from '../../../services/data/medios-comunicac
   styleUrl: './abm-medios-comunicacion.component.scss'
 })
 export class AbmMediosComunicacionComponent implements OnInit {
-  public dtOptions: Config = {};
+  protected dtOptions: Config = {};
 
   public constructor(
     private readonly mediosComunicacionService: MediosComunicacionService,

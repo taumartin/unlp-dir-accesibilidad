@@ -17,7 +17,7 @@ import {TiposEventosService} from '../../../services/data/tipos-eventos/tipos-ev
   styleUrl: './abm-tipos-eventos.component.scss'
 })
 export class AbmTiposEventosComponent implements OnInit {
-  public dtOptions: Config = {};
+  protected dtOptions: Config = {};
 
   public constructor(
     private readonly tiposEventosService: TiposEventosService,

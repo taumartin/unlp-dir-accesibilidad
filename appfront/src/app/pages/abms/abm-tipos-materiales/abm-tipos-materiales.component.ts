@@ -17,7 +17,7 @@ import {TiposMaterialesService} from '../../../services/data/tipos-materiales/ti
   styleUrl: './abm-tipos-materiales.component.scss'
 })
 export class AbmTiposMaterialesComponent implements OnInit {
-  public dtOptions: Config = {};
+  protected dtOptions: Config = {};
 
   public constructor(
     private readonly tiposMaterialesService: TiposMaterialesService,

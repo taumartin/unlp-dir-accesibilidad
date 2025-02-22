@@ -7,5 +7,6 @@ import {Component, Input} from '@angular/core';
   styleUrl: './page-heading.component.scss'
 })
 export class PageHeadingComponent {
-  @Input() heading: string = '';
+  @Input()
+  public heading: string = '';
 }

@@ -12,12 +12,22 @@ import {AbmTiposMaterialesComponent} from './pages/abms/abm-tipos-materiales/abm
 import {AbmUsuariosComponent} from './pages/abms/abm-usuarios/abm-usuarios.component';
 import {LoginComponent} from './pages/auth/login/login.component';
 import {authGuard} from './guards/auth/auth.guard';
+import {SignupComponent} from './pages/auth/signup/signup.component';
+import {ForgotPasswordComponent} from './pages/auth/forgot-password/forgot-password.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component: HomeComponent},
-  {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent},
+  {
+    path: 'auth',
+    children: [
+      {path: 'signup', component: SignupComponent},
+      {path: 'login', component: LoginComponent},
+      {path: 'recuperar-clave', component: ForgotPasswordComponent},
+    ],
+    data: {useBoxLayout: true},
+  },
   {
     path: 'abm',
     canActivate: [authGuard],
@@ -30,7 +40,7 @@ export const routes: Routes = [
       {path: 'tipos-eventos', component: AbmTiposEventosComponent},
       {path: 'tipos-materiales', component: AbmTiposMaterialesComponent},
       {path: 'usuarios', component: AbmUsuariosComponent},
-    ]
+    ],
   },
-  {path: '**', component: ErrorNotFoundComponent}
+  {path: '**', component: ErrorNotFoundComponent},
 ];

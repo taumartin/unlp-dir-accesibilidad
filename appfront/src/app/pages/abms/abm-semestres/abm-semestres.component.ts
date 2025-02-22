@@ -17,7 +17,7 @@ import {SemestresService} from '../../../services/data/semestres/semestres.servi
   styleUrl: './abm-semestres.component.scss'
 })
 export class AbmSemestresComponent implements OnInit {
-  public dtOptions: Config = {};
+  protected dtOptions: Config = {};
 
   public constructor(
     private readonly semestresService: SemestresService,

@@ -1,18 +1,24 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../../services/core/auth/auth.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {faGoogle, faFacebookF} from '@fortawesome/free-brands-svg-icons';
+import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [FaIconComponent, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
+  protected googleIcon = faGoogle;
+  protected facebookIcon = faFacebookF;
+
   private returnUrl: string = '/';
 
-  email = 'pepe@argento.ar';
-  password = 'pepe123';
+  private readonly email = 'pepe@argento.ar'; // FIXME:
+  private readonly password = 'pepe123'; // FIXME:
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -27,7 +33,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  public login(): void {
+  protected login(): void { // FIXME:
     this.authService.login(this.email, this.password).subscribe({
       next: result => {
         console.log('Login exitoso', result);
@@ -42,7 +48,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  me() {
+  private me(): void { // FIXME:
     this.authService.me().subscribe({
       next: result => {
         console.log('me exitoso', result);

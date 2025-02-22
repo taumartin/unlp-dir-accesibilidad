@@ -18,7 +18,7 @@ import {UsuariosService} from '../../../services/data/usuarios/usuarios.service'
   styleUrl: './abm-usuarios.component.scss'
 })
 export class AbmUsuariosComponent implements OnInit {
-  public dtOptions: Config = {};
+  protected dtOptions: Config = {};
 
   public constructor(
     private readonly usuariosService: UsuariosService,

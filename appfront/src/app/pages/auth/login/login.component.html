@@ -1,3 +1,74 @@
-<p>login works!</p>
-<button (click)="login()">Login</button>
-<button (click)="me()">Me</button>
+<div class="row justify-content-center">
+  <div class="col-xl-10 col-lg-12 col-md-9">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <div class="row">
+          <div class="col-lg-6 d-none d-lg-block bg-login-image position-relative">
+            <div class="bg-overlay"></div>
+          </div>
+          <div class="col-lg-6">
+            <div class="p-5">
+              <div class="text-center">
+                <h2 class="h5 text-gray-900 mb-1">UNLP - Gestión Dirección de Accesibilidad</h2>
+                <h1 class="h4 text-gray-900 mb-4">Bienvenid&#64;</h1>
+              </div>
+              <form class="user row g-3">
+                <div class="col-12 p-0">
+                  <div class="input-group">
+                    <div class="form-floating">
+                      <input type="email" class="form-control form-control-user rounded-pill"
+                             id="inputEmail" placeholder="E-mail">
+                      <label for="inputEmail">E-mail:</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 p-0">
+                  <div class="input-group">
+                    <div class="form-floating">
+                      <input type="password" class="form-control form-control-user rounded-pill"
+                             id="inputPassword" placeholder="Contraseña">
+                      <label for="inputPassword">Contraseña:</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 p-0">
+                  <div class="form-check small">
+                    <input class="form-check-input" type="checkbox" id="inputRememberMe">
+                    <label class="form-check-label" for="inputRememberMe">
+                      Recordarme
+                    </label>
+                  </div>
+                </div>
+                <div class="col-12 p-0">
+                  <div class="d-grid">
+                    <button type="button" class="btn btn-primary btn-user rounded-pill"
+                            (click)="login()">Ingresar
+                    </button>
+                  </div>
+                  <hr>
+                  <div class="d-grid gap-3">
+                    <button class="btn btn-google btn-user rounded-pill disabled">
+                      <fa-icon [icon]="googleIcon" [fixedWidth]="true"></fa-icon>
+                      Ingresar con Google
+                    </button>
+                    <button class="btn btn-facebook btn-user rounded-pill disabled">
+                      <fa-icon [icon]="facebookIcon" [fixedWidth]="true"></fa-icon>
+                      Ingresar con Facebook
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <hr>
+              <div class="text-center">
+                <a class="small" routerLink="/auth/recuperar-clave">Olvidé mi contraseña</a>
+              </div>
+              <div class="text-center">
+                <a class="small" routerLink="/auth/signup">Crear una cuenta</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

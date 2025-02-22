@@ -8,6 +8,6 @@ export const authGuard: CanActivateFn = (route, state) => {
     return true;
   }
   const router = inject(Router);
-  router.navigate(['/login'], {queryParams: {r: btoa(state.url)}});
+  router.navigate(['/auth/login'], {queryParams: {r: btoa(state.url)}});
   return false;
 };

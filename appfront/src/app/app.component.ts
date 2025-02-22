@@ -1,45 +1,24 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {SidebarComponent} from './components/sidebar/sidebar.component';
-import {TopbarComponent} from './components/topbar/topbar.component';
-import {FooterComponent} from './components/footer/footer.component';
-import {faAngleUp,} from '@fortawesome/free-solid-svg-icons';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
-import {debounceTime, fromEvent, Subscription} from 'rxjs';
+import {Component} from '@angular/core';
+import {NavigationEnd, Router} from '@angular/router';
+import {filter} from 'rxjs';
+import {MainLayoutComponent} from './components/main-layout/main-layout.component';
+import {BoxLayoutComponent} from './components/box-layout/box-layout.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SidebarComponent, TopbarComponent, FooterComponent, FaIconComponent],
+  imports: [MainLayoutComponent, BoxLayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit, OnDestroy {
-  public iconUp = faAngleUp;
-  private scrollSubscription: Subscription | null = null;
-  public showScrollTop: boolean = false;
+export class AppComponent {
+  public useBoxLayout = false;
 
-  title = 'appfront';
-
-  private onDocumentScroll(scrollDistance: number): void {
-    this.showScrollTop = (scrollDistance > 100);
-  }
-
-  public scrollToTop(): void {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }
-
-  public ngOnInit(): void {
-    this.scrollSubscription = fromEvent(document, 'scroll')
-      .pipe(debounceTime(100))
-      .subscribe(() => {
-        this.onDocumentScroll(window.scrollY);
-      });
-  }
-
-  public ngOnDestroy(): void {
-    if (this.scrollSubscription) {
-      this.scrollSubscription.unsubscribe();
-      this.scrollSubscription = null;
-    }
+  constructor(
+    private readonly router: Router,
+  ) {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      const currentRoute = this.router.routerState.snapshot.root.firstChild;
+      this.useBoxLayout = !!currentRoute?.data?.['useBoxLayout'];
+    });
   }
 }

@@ -14,7 +14,7 @@ import {DatatablesServersideRequest} from '../../../services/data/datatables/dat
   styleUrl: './abm-personas.component.scss'
 })
 export class AbmPersonasComponent implements OnInit {
-  public dtOptions: Config = {};
+  protected dtOptions: Config = {};
 
   public constructor(
     private readonly personasService: PersonasService,

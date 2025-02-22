@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {DataTablesModule} from "angular-datatables";
 import {PageHeadingComponent} from "../../../components/page-heading/page-heading.component";
 import {Config} from 'datatables.net';
-import {MateriasService} from '../../../services/data/materias/materias.service';
 import {DatatablesService} from '../../../services/data/datatables/datatables.service';
 import {DatatablesServersideRequest} from '../../../services/data/datatables/datatables-serverside-request';
 import {map} from 'rxjs';
@@ -18,7 +17,7 @@ import {EventosService} from '../../../services/data/eventos/eventos.service';
   styleUrl: './abm-eventos.component.scss'
 })
 export class AbmEventosComponent implements OnInit {
-  public dtOptions: Config = {};
+  protected dtOptions: Config = {};
 
   public constructor(
     private readonly eventosService: EventosService,

@@ -17,7 +17,7 @@ import {MateriasService} from '../../../services/data/materias/materias.service'
   styleUrl: './abm-materias.component.scss'
 })
 export class AbmMateriasComponent implements OnInit {
-  public dtOptions: Config = {};
+  protected dtOptions: Config = {};
 
   public constructor(
     private readonly materiasService: MateriasService,

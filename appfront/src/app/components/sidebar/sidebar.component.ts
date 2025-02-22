@@ -36,15 +36,15 @@ interface NavLinkGroup {
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   private toggleEventSubscription: Subscription | null = null;
-  public toggled: boolean = false;
+  protected toggled: boolean = false;
 
   private windowResizeSubscription: Subscription | null = null;
 
-  public iconLeft: IconDefinition = faAngleLeft;
-  public iconRight: IconDefinition = faAngleRight;
-  public iconDown: IconDefinition = faAngleDown;
+  protected iconLeft: IconDefinition = faAngleLeft;
+  protected iconRight: IconDefinition = faAngleRight;
+  protected iconDown: IconDefinition = faAngleDown;
 
-  public navLinkGroups: NavLinkGroup[] = [
+  protected navLinkGroups: NavLinkGroup[] = [
     {
       id: 1,
       navLinks: [
@@ -239,7 +239,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       });
   }
 
-  public toggleSideNavigation(): void {
+  protected toggleSideNavigation(): void {
     this.toggled = !this.toggled;
     if (this.toggled) {
       document.body.classList.add('sidebar-toggled');
@@ -282,7 +282,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     }
   }
 
-  public toggleNavLinkItem(navLinkItem: NavLink): void {
+  protected toggleNavLinkItem(navLinkItem: NavLink): void {
     if (navLinkItem.isCollapsed === true) {
       const openLink = this.navLinkGroups
         .flatMap(navGroup => navGroup.navLinks)
