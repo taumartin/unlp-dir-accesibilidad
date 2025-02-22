@@ -79,7 +79,7 @@ export class AuthService {
         tap((response) => {
           if (response.success) {
             this.saveAccessToken(response.data.accessToken);
-          } else {
+          } else if (this.isLoggedIn()) {
             this.logout().subscribe();
           }
         })
@@ -87,10 +87,13 @@ export class AuthService {
   }
 
   public logout(): Observable<ApiSuccessResponse<void> | ApiErrorResponse> {
-    return this.apiService.postEndpoint<ApiSuccessResponse<void>>(`${this.baseEndpoint}/login`)
+    return this.apiService.postEndpoint<ApiSuccessResponse<void>>(`${this.baseEndpoint}/logout`)
       .pipe(
-        tap((response) => { // FIXME: revisar respuesta
+        tap((response) => {
           this.clearAccessToken();
+          if (!response.success) {
+            this.toastService.showStandardToast('No se pudo eliminar la sesión remota. Se cerró la sesión local.');
+          }
         })
       );
   }

@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     return this.formService.isInputValid(control);
   }
 
-  protected doLogin(username: string, password: string, remember: boolean): void {
+  private doLogin(username: string, password: string, remember: boolean): void {
     this.isDoingLogin = true;
     this.cancelSilentLoginSubscription();
 
