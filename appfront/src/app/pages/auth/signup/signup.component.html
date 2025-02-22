@@ -1,1 +1,109 @@
-<p>signup works!</p>
+<div class="card o-hidden border-0 shadow-lg my-5">
+  <div class="card-body p-0">
+    <div class="row">
+      <div class="col-lg-5 d-none d-lg-block bg-register-image position-relative">
+        <div class="bg-overlay"></div>
+      </div>
+      <div class="col-lg-7">
+        <div class="p-5">
+          <div class="text-center">
+            <h2 class="h5 text-gray-900 mb-1">UNLP - Gestión Dirección de Accesibilidad</h2>
+            <h1 class="h4 text-gray-900 mb-4">Crear una cuenta</h1>
+          </div>
+          <form class="user row g-3">
+            <div class="col-12">
+              <h3 class="h6 text-gray-600 mb-0 fw-bold">Datos personales y de contacto:</h3>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-floating">
+                <input type="text" class="form-control form-control-user rounded-pill" id="inputFirstName"
+                       placeholder="Nombre">
+                <label for="inputFirstName">Nombre:</label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-floating">
+                <input type="text" class="form-control form-control-user rounded-pill" id="inputLastName"
+                       placeholder="Apellido">
+                <label for="inputLastName">Apellido:</label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-floating">
+                <input type="text" class="form-control form-control-user rounded-pill" id="inputDni"
+                       placeholder="DNI">
+                <label for="inputDni">DNI:</label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-floating">
+                <input type="tel" class="form-control form-control-user rounded-pill" id="inputPhone"
+                       placeholder="Teléfono">
+                <label for="inputPhone">Teléfono:</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <h3 class="h6 text-gray-600 mb-0 mt-2 fw-bold">Datos de inicio de sesión:</h3>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-floating">
+                <input type="email" class="form-control form-control-user rounded-pill" id="inputEmail"
+                       placeholder="E-mail">
+                <label for="inputEmail">E-mail:</label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-floating">
+                <input type="email" class="form-control form-control-user rounded-pill" id="inputEmailRepeat"
+                       placeholder="Repetir e-mail">
+                <label for="inputEmailRepeat">Repetir e-mail:</label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-floating">
+                <input type="password" class="form-control form-control-user rounded-pill"
+                       id="inputPassword" placeholder="Contraseña">
+                <label for="inputPassword">Contraseña:</label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-floating">
+                <input type="password" class="form-control form-control-user rounded-pill"
+                       id="inputPasswordRepeat" placeholder="Repetir contraseña">
+                <label for="inputPasswordRepeat">Repetir contraseña:</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-grid mt-2">
+                <button type="button" class="btn btn-primary btn-user rounded-pill">
+                  Registrarse
+                </button>
+              </div>
+              <hr>
+              <div class="d-grid gap-3">
+                <button type="button" class="btn btn-google btn-user rounded-pill disabled">
+                  <fa-icon [icon]="googleIcon" [fixedWidth]="true"></fa-icon>
+                  Registrarse con Google
+                </button>
+                <button type="button" class="btn btn-facebook btn-user rounded-pill disabled">
+                  <fa-icon [icon]="facebookIcon" [fixedWidth]="true"></fa-icon>
+                  Registrarse con Facebook
+                </button>
+              </div>
+            </div>
+          </form>
+          <div class="row g-3 text-center">
+            <div class="col-12">
+              <hr>
+              <a class="small link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+                 routerLink="/auth/recuperar-clave">Olvidé mi contraseña</a>
+              <br>
+              <a class="small link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+                 routerLink="/auth/login">Ya tengo una cuenta</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

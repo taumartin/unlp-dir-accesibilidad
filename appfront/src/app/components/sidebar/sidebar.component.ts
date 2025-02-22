@@ -171,27 +171,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
           isCollapsed: true,
           children: [
             {
-              id: 311,
-              heading: 'Login Screens:',
-              navLinks: [
-                {
-                  id: 3111,
-                  label: 'Login',
-                  route: 'auth/login',
-                },
-                {
-                  id: 3112,
-                  label: 'Register',
-                  route: 'auth/register',
-                },
-                {
-                  id: 3113,
-                  label: 'Forgot Password',
-                  route: 'auth/forgot-password',
-                }
-              ]
-            },
-            {
               id: 312,
               heading: 'Other Pages:',
               navLinks: [

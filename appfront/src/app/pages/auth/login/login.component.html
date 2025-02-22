@@ -8,30 +8,28 @@
           </div>
           <div class="col-lg-6">
             <div class="p-5">
-              <div class="text-center">
-                <h2 class="h5 text-gray-900 mb-1">UNLP - Gestión Dirección de Accesibilidad</h2>
-                <h1 class="h4 text-gray-900 mb-4">Bienvenid&#64;</h1>
+              <div class="row g-3 text-center">
+                <div class="col">
+                  <h2 class="h5 text-gray-900 mb-1">UNLP - Gestión Dirección de Accesibilidad</h2>
+                  <h1 class="h4 text-gray-900 mb-4">Bienvenid&#64;</h1>
+                </div>
               </div>
               <form class="user row g-3">
-                <div class="col-12 p-0">
-                  <div class="input-group">
-                    <div class="form-floating">
-                      <input type="email" class="form-control form-control-user rounded-pill"
-                             id="inputEmail" placeholder="E-mail">
-                      <label for="inputEmail">E-mail:</label>
-                    </div>
+                <div class="col-12">
+                  <div class="form-floating">
+                    <input type="email" class="form-control form-control-user rounded-pill"
+                           id="inputEmail" placeholder="E-mail">
+                    <label for="inputEmail">E-mail:</label>
                   </div>
                 </div>
-                <div class="col-12 p-0">
-                  <div class="input-group">
-                    <div class="form-floating">
-                      <input type="password" class="form-control form-control-user rounded-pill"
-                             id="inputPassword" placeholder="Contraseña">
-                      <label for="inputPassword">Contraseña:</label>
-                    </div>
+                <div class="col-12">
+                  <div class="form-floating">
+                    <input type="password" class="form-control form-control-user rounded-pill"
+                           id="inputPassword" placeholder="Contraseña">
+                    <label for="inputPassword">Contraseña:</label>
                   </div>
                 </div>
-                <div class="col-12 p-0">
+                <div class="col-12">
                   <div class="form-check small">
                     <input class="form-check-input" type="checkbox" id="inputRememberMe">
                     <label class="form-check-label" for="inputRememberMe">
@@ -39,7 +37,7 @@
                     </label>
                   </div>
                 </div>
-                <div class="col-12 p-0">
+                <div class="col-12">
                   <div class="d-grid">
                     <button type="button" class="btn btn-primary btn-user rounded-pill"
                             (click)="login()">Ingresar
@@ -47,23 +45,26 @@
                   </div>
                   <hr>
                   <div class="d-grid gap-3">
-                    <button class="btn btn-google btn-user rounded-pill disabled">
+                    <button type="button" class="btn btn-google btn-user rounded-pill disabled">
                       <fa-icon [icon]="googleIcon" [fixedWidth]="true"></fa-icon>
                       Ingresar con Google
                     </button>
-                    <button class="btn btn-facebook btn-user rounded-pill disabled">
+                    <button type="button" class="btn btn-facebook btn-user rounded-pill disabled">
                       <fa-icon [icon]="facebookIcon" [fixedWidth]="true"></fa-icon>
                       Ingresar con Facebook
                     </button>
                   </div>
                 </div>
               </form>
-              <hr>
-              <div class="text-center">
-                <a class="small" routerLink="/auth/recuperar-clave">Olvidé mi contraseña</a>
-              </div>
-              <div class="text-center">
-                <a class="small" routerLink="/auth/signup">Crear una cuenta</a>
+              <div class="row g-3 text-center">
+                <div class="col-12">
+                  <hr>
+                  <a class="small link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+                     routerLink="/auth/recuperar-clave">Olvidé mi contraseña</a>
+                  <br>
+                  <a class="small link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+                     routerLink="/auth/signup">Crear una cuenta</a>
+                </div>
               </div>
             </div>
           </div>
