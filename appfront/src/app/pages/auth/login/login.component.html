@@ -14,24 +14,37 @@
                   <h1 class="h4 text-gray-900 mb-4">Bienvenid&#64;</h1>
                 </div>
               </div>
-              <form class="user row g-3">
+              <form class="user row g-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="col-12">
                   <div class="form-floating">
-                    <input type="email" class="form-control form-control-user rounded-pill"
-                           id="inputEmail" placeholder="E-mail">
+                    <input type="email" id="inputEmail" class="form-control form-control-user rounded-pill"
+                           [class.is-invalid]="isInvalid(email)" [class.is-valid]="isValid(email)"
+                           placeholder="E-mail" name="email" formControlName="email" required
+                           aria-describedby="emailFeedback" autocomplete="username">
                     <label for="inputEmail">E-mail:</label>
+                    <div id="emailFeedback" class="invalid-feedback">
+                      {{ email?.errors?.['required'] ? 'El e-mail es obligatorio.' : '' }}
+                      {{ email?.errors?.['email'] ? 'Ingresa un e-mail válido.' : '' }}
+                    </div>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-floating">
-                    <input type="password" class="form-control form-control-user rounded-pill"
-                           id="inputPassword" placeholder="Contraseña">
+                    <input type="password" id="inputPassword" class="form-control form-control-user rounded-pill"
+                           [class.is-invalid]="isInvalid(password)" [class.is-valid]="isValid(password)"
+                           placeholder="Contraseña" name="password" formControlName="password" required
+                           aria-describedby="passwordFeedback" autocomplete="current-password">
                     <label for="inputPassword">Contraseña:</label>
+                    <div id="passwordFeedback" class="invalid-feedback">
+                      {{ password?.errors?.['required'] ? 'La contraseña es obligatoria.' : '' }}
+                    </div>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-check small">
-                    <input class="form-check-input" type="checkbox" id="inputRememberMe">
+                    <input type="checkbox" id="inputRememberMe" class="form-check-input"
+                           [class.is-invalid]="isInvalid(rememberMe)" [class.is-valid]="isValid(rememberMe)"
+                           name="rememberMe" formControlName="rememberMe">
                     <label class="form-check-label" for="inputRememberMe">
                       Recordarme
                     </label>
@@ -39,8 +52,15 @@
                 </div>
                 <div class="col-12">
                   <div class="d-grid">
-                    <button type="button" class="btn btn-primary btn-user rounded-pill"
-                            (click)="login()">Ingresar
+                    <button type="submit" class="btn btn-primary btn-user rounded-pill"
+                            [disabled]="!loginForm.valid || isDoingLogin">
+                      @if (!isDoingLogin) {
+                        Ingresar
+                      } @else {
+                        <output aria-live="polite">
+                          <span class="spinner-border spinner-border-sm"></span> Ingresando...
+                        </output>
+                      }
                     </button>
                   </div>
                   <hr>

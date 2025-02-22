@@ -68,7 +68,7 @@ module.exports.login = asyncHandler(async function (req, res) {
         secure: process.env.JWT_COOKIE_USE_HTTPS,
         sameSite: 'strict'
     });
-    apiResponse.success(res, {accessToken: accessToken});
+    apiResponse.success(res, {accessToken: accessToken}, 'Login exitoso.');
 });
 
 module.exports.refresh = function (req, res) {

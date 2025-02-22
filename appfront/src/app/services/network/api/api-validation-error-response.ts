@@ -1,4 +1,6 @@
-export interface ApiValidationErrorResponse {
+import {ApiErrorResponse} from './api-error-response';
+
+interface ApiValidationErrorResponseFields {
   fields: {
     [key: string]: {
       type: "field" | "alternative" | "alternative_grouped" | "unknown_fields";
@@ -6,6 +8,9 @@ export interface ApiValidationErrorResponse {
       msg: string;
       path: string;
       location: 'body' | 'cookies' | 'headers' | 'params' | 'query';
-    },
-  };
+    };
+  }
+}
+
+export interface ApiValidationErrorResponse extends ApiErrorResponse<ApiValidationErrorResponseFields> {
 }
