@@ -59,7 +59,7 @@ export class DatatablesService {
             callback(data);
           },
           error: err => {
-            this.toastService.showErrorToast(err.message);
+            this.toastService.showErrorToast({body: err.message});
             callback({
               draw: params.draw,
               recordsTotal: 0,

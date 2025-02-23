@@ -1,19 +1,19 @@
 @for (t of toasts; track t) {
   <ngb-toast class="mb-3"
-    [header]="t.header || ''"
-    [class]="t.classname"
-    [autohide]="t.autohide"
-    (mouseenter)="t.autohide = false;"
-    (mouseleave)="t.autohide = true;"
-    [delay]="t.delay"
-    (hidden)="remove(t)">
+             [header]="t.header || ''"
+             [class]="t.classname"
+             [autohide]="t.autohide"
+             (mouseenter)="t.autohide = false;"
+             (mouseleave)="t.autohide = true;"
+             [delay]="t.delay"
+             (hidden)="remove(t)">
     @if (t.template) {
       <ng-template [ngTemplateOutlet]="t.template"></ng-template>
     } @else if (t.body) {
       {{ t.body }}
       @if (!t.header) {
         <button type="button" class="btn-close float-end" data-bs-dismiss="toast" aria-label="Close"
-                (click)="remove(t)"></button>
+                [class]="t.closeBtnClassname" (click)="remove(t)"></button>
       }
     }
   </ngb-toast>

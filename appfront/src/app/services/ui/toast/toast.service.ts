@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ToastInfo} from './toast-info';
+import {ToastOptions} from './toast-options';
 
 @Injectable({
   providedIn: 'root'
@@ -33,36 +34,59 @@ export class ToastService {
     this.toasts.splice(0, count || this.toasts.length);
   }
 
-  private _createToast(body?: string, header?: string, classname: string = '', delay: number = 5_000, autohide: boolean = true): ToastInfo {
-    return {header, body, classname, delay, autohide};
+  private _createToast(options: ToastOptions): ToastInfo {
+    const {body, header, classname = '', closeBtnClassname = '', delay = 5_000, autohide = true} = options;
+    return {header, body, classname, delay, autohide, closeBtnClassname};
   }
 
-  public showSuccessToast(message?: string, header?: string, delay: number = 3_000): ToastInfo {
-    const toast = this._createToast(message, header, 'bg-success text-light', delay);
+  public showSuccessToast(options: Omit<ToastOptions, 'classname' | 'closeBtnClassname'>): ToastInfo {
+    const toast = this._createToast({
+      ...options,
+      classname: 'bg-success text-light',
+      closeBtnClassname: 'btn-close-white',
+      delay: options.delay ?? 3_000
+    });
     this.show(toast);
     return toast;
   }
 
-  public showErrorToast(message?: string, header?: string, delay: number = 10_000): ToastInfo {
-    const toast = this._createToast(message, header, 'bg-danger text-light', delay);
+  public showErrorToast(options: Omit<ToastOptions, 'classname' | 'closeBtnClassname'>): ToastInfo {
+    const toast = this._createToast({
+      ...options,
+      classname: 'bg-danger text-light',
+      closeBtnClassname: 'btn-close-white',
+      delay: options.delay ?? 10_000
+    });
     this.show(toast);
     return toast;
   }
 
-  public showInfoToast(message?: string, header?: string, delay: number = 5_000): ToastInfo {
-    const toast = this._createToast(message, header, 'bg-primary text-light', delay);
+  public showInfoToast(options: Omit<ToastOptions, 'classname' | 'closeBtnClassname'>): ToastInfo {
+    const toast = this._createToast({
+      ...options,
+      classname: 'bg-primary text-light',
+      closeBtnClassname: 'btn-close-white',
+      delay: options.delay ?? 5_000
+    });
     this.show(toast);
     return toast;
   }
 
-  public showWarningToast(message?: string, header?: string, delay: number = 5_000): ToastInfo {
-    const toast = this._createToast(message, header, 'bg-warning text-light', delay);
+  public showWarningToast(options: Omit<ToastOptions, 'classname' | 'closeBtnClassname'>): ToastInfo {
+    const toast = this._createToast({
+      ...options,
+      classname: 'text-bg-warning',
+      delay: options.delay ?? 5_000
+    });
     this.show(toast);
     return toast;
   }
 
-  public showStandardToast(message?: string, header?: string, delay: number = 5_000): ToastInfo {
-    const toast = this._createToast(message, header, '', delay);
+  public showStandardToast(options: Omit<ToastOptions, 'classname' | 'closeBtnClassname'>): ToastInfo {
+    const toast = this._createToast({
+      ...options,
+      delay: options.delay ?? 5_000
+    });
     this.show(toast);
     return toast;
   }

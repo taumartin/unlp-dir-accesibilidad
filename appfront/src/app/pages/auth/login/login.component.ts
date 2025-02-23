@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     if (this.authService.isLoggedIn()) {
       this.onLoginSuccess();
-      this.toastService.showStandardToast('Login realizado automáticamente.');
+      this.toastService.showStandardToast({body: 'Login realizado automáticamente.'});
     } else {
       this.subscribeToSilentLogin();
     }
@@ -127,10 +127,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: result => {
         if (result.success) {
           this.onLoginSuccess();
-          this.toastService.showSuccessToast(result.message);
+          this.toastService.showSuccessToast({body: result.message});
         } else {
           this.subscribeToSilentLogin();
-          this.toastService.showErrorToast(result.message, "No se pudo realizar el login");
+          this.toastService.showErrorToast({body: result.message, header: "No se pudo realizar el login"});
         }
       },
       complete: () => {

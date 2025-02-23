@@ -10,8 +10,10 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
   const router = inject(Router);
   const toastService = inject(ToastService);
-  toastService.showInfoToast("Ingresa con tu usuario para poder acceder a la página.",
-    "La página solicitada requiere login");
+  toastService.showWarningToast({
+    body: "Ingresa con tu usuario para poder acceder a la página.",
+    header: "La página solicitada requiere login",
+  });
   router.navigate(['/auth/login'], {queryParams: {r: btoa(state.url)}});
   return false;
 };

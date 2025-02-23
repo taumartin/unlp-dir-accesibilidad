@@ -94,9 +94,9 @@ export class TopbarComponent implements OnInit, OnDestroy {
       next: result => {
         if (result.success) {
           this.router.navigate([REDIRECT_PATH_AFTER_LOGOUT]);
-          this.toastService.showSuccessToast(result.message);
+          this.toastService.showSuccessToast({body: result.message});
         } else {
-          this.toastService.showErrorToast(result.message);
+          this.toastService.showErrorToast({body: result.message});
         }
       },
       complete: () => {

@@ -68,7 +68,9 @@ export class AuthService {
     this.refreshToken().subscribe({
       next: (result) => {
         if (result.success) {
-          this.toastService.showStandardToast('Recuperado sesión previa.');
+          this.toastService.showStandardToast({
+            body: 'Se recuperó la sesión previamente guardada. No es necesario ingresar credenciales de login.'
+          });
         }
       }
     });
@@ -93,7 +95,7 @@ export class AuthService {
         tap((response) => {
           this.clearAccessToken();
           if (!response.success) {
-            this.toastService.showStandardToast('No se pudo eliminar la sesión remota. Se cerró la sesión local.');
+            this.toastService.showStandardToast({body: 'No se pudo eliminar la sesión remota. Se cerró la sesión local.'});
           }
         })
       );
