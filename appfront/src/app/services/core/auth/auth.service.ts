@@ -44,10 +44,10 @@ export class AuthService {
     throw new Error('Usuario no logeado.');
   }
 
-  public signup(email: string, password: string): Observable<ApiSuccessResponse<void> | ApiErrorResponse> {
+  public signup(name: string, lastname: string, documentNumber: number, email: string, password: string,
+                phone?: string): Observable<ApiSuccessResponse<void> | ApiErrorResponse> {
     return this.apiService.postEndpoint<ApiSuccessResponse<void>>(`${this.baseEndpoint}/signup`, {
-      email,
-      password,
+      name, lastname, documentNumber, phone, email, password,
     });
   }
 

@@ -10,36 +10,56 @@
             <h2 class="h5 text-gray-900 mb-1">UNLP - Gestión Dirección de Accesibilidad</h2>
             <h1 class="h4 text-gray-900 mb-4">Crear una cuenta</h1>
           </div>
-          <form class="user row g-3">
+          <form class="user row g-3" [formGroup]="signupForm" (ngSubmit)="onSubmit()" autocomplete="on">
             <div class="col-12">
               <h3 class="h6 text-gray-600 mb-0 fw-bold">Datos personales y de contacto:</h3>
             </div>
             <div class="col-sm-6">
               <div class="form-floating">
-                <input type="text" class="form-control form-control-user rounded-pill" id="inputFirstName"
-                       placeholder="Nombre">
+                <input type="text" id="inputFirstName" class="form-control form-control-user rounded-pill"
+                       [class.is-invalid]="isInvalid(name)" [class.is-valid]="isValid(name)"
+                       placeholder="Nombre" name="name" formControlName="name" required
+                       aria-describedby="nameFeedback" autocomplete="name">
                 <label for="inputFirstName">Nombre:</label>
+                <div id="nameFeedback" class="invalid-feedback">
+                  {{ name?.errors?.['required'] ? 'El nombre es obligatorio.' : '' }}
+                </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-floating">
-                <input type="text" class="form-control form-control-user rounded-pill" id="inputLastName"
-                       placeholder="Apellido">
+                <input type="text" id="inputLastName" class="form-control form-control-user rounded-pill"
+                       [class.is-invalid]="isInvalid(lastname)" [class.is-valid]="isValid(lastname)"
+                       placeholder="Apellido" name="lastname" formControlName="lastname"
+                       aria-describedby="lastnameFeedback" autocomplete="family-name">
                 <label for="inputLastName">Apellido:</label>
+                <div id="lastnameFeedback" class="invalid-feedback">
+                  {{ lastname?.errors?.['required'] ? 'El apellido es obligatorio.' : '' }}
+                </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-floating">
-                <input type="text" class="form-control form-control-user rounded-pill" id="inputDni"
-                       placeholder="DNI">
+                <input type="number" id="inputDni" class="form-control form-control-user rounded-pill"
+                       [class.is-invalid]="isInvalid(documentNumber)" [class.is-valid]="isValid(documentNumber)"
+                       placeholder="DNI" name="documentNumber" formControlName="documentNumber"
+                       aria-describedby="documentNumberFeedback">
                 <label for="inputDni">DNI:</label>
+                <div id="documentNumberFeedback" class="invalid-feedback">
+                  {{ documentNumber?.errors?.['required'] ? 'El DNI es obligatorio.' : '' }}
+                  {{ documentNumber?.errors?.['pattern'] ? 'Ingresa un DNI válido (sólo números).' : '' }}
+                </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-floating">
-                <input type="tel" class="form-control form-control-user rounded-pill" id="inputPhone"
-                       placeholder="Teléfono">
+                <input type="tel" id="inputPhone" class="form-control form-control-user rounded-pill"
+                       [class.is-invalid]="isInvalid(phone)" [class.is-valid]="isValid(phone)"
+                       placeholder="Teléfono" name="phone" formControlName="phone"
+                       aria-describedby="phoneFeedback" autocomplete="tel">
                 <label for="inputPhone">Teléfono:</label>
+                <div id="phoneFeedback" class="invalid-feedback">
+                </div>
               </div>
             </div>
             <div class="col-12">
@@ -47,36 +67,65 @@
             </div>
             <div class="col-sm-6">
               <div class="form-floating">
-                <input type="email" class="form-control form-control-user rounded-pill" id="inputEmail"
-                       placeholder="E-mail">
+                <input type="email" id="inputEmail" class="form-control form-control-user rounded-pill"
+                       [class.is-invalid]="isInvalid(username)" [class.is-valid]="isValid(username)"
+                       placeholder="E-mail" name="username" formControlName="username"
+                       aria-describedby="usernameFeedback" autocomplete="email">
                 <label for="inputEmail">E-mail:</label>
+                <div id="usernameFeedback" class="invalid-feedback">
+                  {{ username?.errors?.['required'] ? 'El e-mail es obligatorio.' : '' }}
+                  {{ username?.errors?.['email'] ? 'Ingresa un e-mail válido.' : '' }}
+                </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-floating">
-                <input type="email" class="form-control form-control-user rounded-pill" id="inputEmailRepeat"
-                       placeholder="Repetir e-mail">
-                <label for="inputEmailRepeat">Repetir e-mail:</label>
+                <input type="email" id="inputEmailRetype" class="form-control form-control-user rounded-pill"
+                       [class.is-invalid]="isInvalid(usernameRetype)" [class.is-valid]="isValid(usernameRetype)"
+                       placeholder="Repetir e-mail" name="usernameRetype" formControlName="usernameRetype"
+                       aria-describedby="usernameRetypeFeedback">
+                <label for="inputEmailRetype">Repetir e-mail:</label>
+                <div id="usernameRetypeFeedback" class="invalid-feedback">
+                  {{ usernameRetype?.errors?.['usernameMismatch'] ? 'Los e-mails deben coincidir.' : '' }}
+                </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-floating">
-                <input type="password" class="form-control form-control-user rounded-pill"
-                       id="inputPassword" placeholder="Contraseña">
+                <input type="password" id="inputPassword" class="form-control form-control-user rounded-pill"
+                       [class.is-invalid]="isInvalid(password)" [class.is-valid]="isValid(password)"
+                       placeholder="Contraseña" name="password" formControlName="password"
+                       aria-describedby="passwordFeedback" autocomplete="new-password">
                 <label for="inputPassword">Contraseña:</label>
+                <div id="passwordFeedback" class="invalid-feedback">
+                  {{ password?.errors?.['required'] ? 'La contraseña es obligatoria.' : '' }}
+                  {{ password?.errors?.['usernamePasswordMatch'] ? 'El email y la contraseña no pueden ser iguales.' : '' }}
+                </div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-floating">
-                <input type="password" class="form-control form-control-user rounded-pill"
-                       id="inputPasswordRepeat" placeholder="Repetir contraseña">
-                <label for="inputPasswordRepeat">Repetir contraseña:</label>
+                <input type="password" id="inputPasswordRetype" class="form-control form-control-user rounded-pill"
+                       [class.is-invalid]="isInvalid(passwordRetype)" [class.is-valid]="isValid(passwordRetype)"
+                       placeholder="Repetir contraseña" name="passwordRetype" formControlName="passwordRetype"
+                       aria-describedby="passwordRetypeFeedback" autocomplete="new-password">
+                <label for="inputPasswordRetype">Repetir contraseña:</label>
+                <div id="passwordRetypeFeedback" class="invalid-feedback">
+                  {{ passwordRetype?.errors?.['passwordMismatch'] ? 'Las contraseñas deben coincidir.' : '' }}
+                </div>
               </div>
             </div>
             <div class="col-12">
               <div class="d-grid mt-2">
-                <button type="button" class="btn btn-primary btn-user rounded-pill">
-                  Registrarse
+                <button type="submit" class="btn btn-primary btn-user rounded-pill"
+                        [disabled]="!signupForm.valid || isDoingSignup">
+                  @if (!isDoingSignup) {
+                    Registrarse
+                  } @else {
+                    <output aria-live="polite">
+                      <span class="spinner-border spinner-border-sm"></span> Registrando...
+                    </output>
+                  }
                 </button>
               </div>
               <hr>
