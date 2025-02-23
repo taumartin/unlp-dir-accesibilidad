@@ -62,10 +62,11 @@ module.exports.signup = asyncHandler(async function (req, res) {
 
 module.exports.loginValidation = buildValidation([
     body('email')
+        .trim()
         .isEmail()
-        .escape()
         .withMessage('Ingresa un email válido.')
-        .toLowerCase(),
+        .bail()
+        .normalizeEmail(),
     body('password')
         .notEmpty()
         .withMessage('Ingresa una contraseña.'),
@@ -73,16 +74,18 @@ module.exports.loginValidation = buildValidation([
 module.exports.login = asyncHandler(async function (req, res) {
     const validated = matchedData(req);
     const user = await usuarioRepository.findUsuarioByEmail(validated.email);
-    // TODO: verificar que el usuario no este inactivo.
-    if ((user === null) || !(await verifyPassword(validated.password, user.contrasenia))) {
+    if (!user || !(await verifyPassword(validated.password, user.contrasenia))) {
         throw new UnauthorizedException('Credenciales inválidas.');
+    }
+    if (!user.isActive) {
+        throw new UnauthorizedException('Cuenta inactiva. Contacta con el administrador para activarla.');
     }
 
     const accessToken = jwtCreateAccessToken(user);
     const refreshToken = jwtCreateRefreshToken(user);
     res.cookie(JWT_REFRESH_COOKIE, refreshToken, {
         httpOnly: true,
-        secure: process.env.JWT_COOKIE_USE_HTTPS,
+        secure: process.env.JWT_COOKIE_USE_HTTPS === 'true',
         sameSite: 'strict'
     });
     apiResponse.success(res, {accessToken: accessToken}, 'Login exitoso.');
