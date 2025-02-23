@@ -203,6 +203,25 @@
           </button>
         </div>
       </li>
+    } @else {
+      <!-- Nav Item - Guest -->
+      <li ngbDropdown class="nav-item no-arrow">
+        <button ngbDropdownToggle type="button" class="btn btn-link nav-link" id="guestDropdown"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="me-2 d-none d-lg-inline text-gray-600 small">Invitado</span>
+          <img class="img-profile rounded-circle" width="16" height="16" alt="Profile"
+               ngSrc="/assets/img/undraw_profile.svg">
+        </button>
+
+        <!-- Dropdown - Guest -->
+        <div ngbDropdownMenu class="dropdown-menu-end shadow animated--grow-in"
+             aria-labelledby="guestDropdown">
+          <button ngbDropdownItem routerLink="/auth/login">
+            <fa-icon class="me-2 text-gray-400" [icon]="iconLogin" [fixedWidth]="true" size="sm"></fa-icon>
+            Ingresar
+          </button>
+        </div>
+      </li>
     }
   </ul>
 </nav>

@@ -9,13 +9,14 @@ import {
   faCogs,
   faList,
   faSignOutAlt,
+  faSignInAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {NgbDropdownModule} from '@ng-bootstrap/ng-bootstrap';
 import {SidebarService} from '../../services/ui/sidebar/sidebar.service';
 import {Subject, takeUntil} from 'rxjs';
 import {AuthService} from '../../services/core/auth/auth.service';
-import {Router} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {ToastService} from '../../services/ui/toast/toast.service';
 import {NgOptimizedImage} from '@angular/common';
 
@@ -25,7 +26,7 @@ const DEFAULT_USER_PROFILE = '/assets/img/undraw_profile.svg';
 
 @Component({
   selector: 'app-topbar',
-  imports: [FontAwesomeModule, NgbDropdownModule, NgOptimizedImage],
+  imports: [FontAwesomeModule, NgbDropdownModule, NgOptimizedImage, RouterLink],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.scss'
 })
@@ -39,6 +40,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   protected iconSettings = faCogs;
   protected iconActivity = faList;
   protected iconLogout = faSignOutAlt;
+  protected iconLogin = faSignInAlt;
 
   // FIXME: habilitar estas funciones en v2.
   protected showSearchBar = false;
