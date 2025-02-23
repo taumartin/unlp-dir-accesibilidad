@@ -17,11 +17,14 @@ const JWT_REFRESH_COOKIE = 'refreshToken';
 
 module.exports.signupValidation = buildValidation([
     body('email')
+        .trim()
         .isEmail()
-        .escape()
         .withMessage('Ingresa un email válido.')
         .bail()
-        .toLowerCase()
+        .normalizeEmail()
+        .isLength({max: 100})
+        .withMessage('El email no puede tener más de 100 caracteres.')
+        .bail()
         .custom(async value => {
             const user = await usuarioRepository.findUsuarioByEmail(value);
             if (user !== null) {
@@ -34,12 +37,24 @@ module.exports.signupValidation = buildValidation([
 ]);
 module.exports.signup = asyncHandler(async function (req, res) {
     const validated = matchedData(req);
-    const username = validated.email;
+    let baseUsername = validated.email.split('@')[0].slice(0, 32);
+    let username = baseUsername;
+    let counter = 1;
+
+    // Verificar si el username ya existe y agregar un número hasta encontrar uno único.
+    while (await usuarioRepository.findUsuarioByUsername(username)) {
+        const suffix = counter.toString();
+        const maxBaseLength = 32 - suffix.length;
+        username = baseUsername.slice(0, maxBaseLength) + suffix;
+        counter++;
+    }
+
     const password = await hashPassword(validated.password);
     const email = validated.email;
     const isAdmin = false;
     const isActive = false;
     const profilePhoto = null;
+
     await usuarioRepository.createUsuario(username, password, email, isAdmin, isActive, profilePhoto);
     apiResponse.success(res, null,
         'Usuario registrado en estado inactivo. Contacta con el administrador para habilitar el login.');
@@ -58,6 +73,7 @@ module.exports.loginValidation = buildValidation([
 module.exports.login = asyncHandler(async function (req, res) {
     const validated = matchedData(req);
     const user = await usuarioRepository.findUsuarioByEmail(validated.email);
+    // TODO: verificar que el usuario no este inactivo.
     if ((user === null) || !(await verifyPassword(validated.password, user.contrasenia))) {
         throw new UnauthorizedException('Credenciales inválidas.');
     }

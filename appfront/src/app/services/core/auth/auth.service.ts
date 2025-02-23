@@ -44,24 +44,19 @@ export class AuthService {
     throw new Error('Usuario no logeado.');
   }
 
-  public signup(name: string, lastname: string, documentNumber: number, email: string, password: string,
-                phone?: string): Observable<ApiSuccessResponse<void> | ApiErrorResponse> {
-    return this.apiService.postEndpoint<ApiSuccessResponse<void>>(`${this.baseEndpoint}/signup`, {
-      name, lastname, documentNumber, phone, email, password,
-    });
+  public signup(email: string, password: string): Observable<ApiSuccessResponse<void> | ApiErrorResponse> {
+    return this.apiService.postEndpoint<ApiSuccessResponse<void>>(`${this.baseEndpoint}/signup`, {email, password});
   }
 
   public login(email: string, password: string): Observable<AuthLoginSuccessResponse | ApiErrorResponse> {
-    return this.apiService.postEndpoint<AuthLoginSuccessResponse>(`${this.baseEndpoint}/login`, {
-      email,
-      password,
-    }).pipe(
-      tap((response) => {
-        if (response.success) {
-          this.saveAccessToken(response.data.accessToken);
-        }
-      })
-    );
+    return this.apiService.postEndpoint<AuthLoginSuccessResponse>(`${this.baseEndpoint}/login`, {email, password})
+      .pipe(
+        tap((response) => {
+          if (response.success) {
+            this.saveAccessToken(response.data.accessToken);
+          }
+        })
+      );
   }
 
   public silentLogin() {

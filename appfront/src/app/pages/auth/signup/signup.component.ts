@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {faFacebookF, faGoogle} from '@fortawesome/free-brands-svg-icons';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {
   AbstractControl,
   FormBuilder,
@@ -14,15 +14,22 @@ import {FormService} from '../../../services/ui/form/form.service';
 import {AuthService} from '../../../services/core/auth/auth.service';
 import {ToastService} from '../../../services/ui/toast/toast.service';
 
-const usernamePasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  const username = control.get('username');
+const emailPasswordValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const email = control.get('email');
   const password = control.get('password');
-  if (username && password && (username.value === password.value)) {
-    password.setErrors({usernamePasswordMatch: true});
-    return {usernamePasswordMatch: true};
+  if (!email || !password) {
+    return null;
   }
-  if (password) {
-    password.setErrors(null);
+
+  const errors = password.errors ?? {};
+  if (email.value === password.value) {
+    password.setErrors({...errors, emailPasswordMatch: true});
+    return {emailPasswordMatch: true};
+  }
+
+  if (errors['emailPasswordMatch']) {
+    delete errors['emailPasswordMatch'];
+    password.setErrors(Object.keys(errors).length > 0 ? errors : null);
   }
   return null;
 };
@@ -30,28 +37,44 @@ const usernamePasswordValidator: ValidatorFn = (control: AbstractControl): Valid
 const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const password = control.get('password');
   const passwordRetype = control.get('passwordRetype');
-  if (password && passwordRetype && (password.value !== passwordRetype.value)) {
-    passwordRetype.setErrors({passwordMismatch: true});
+  if (!password || !passwordRetype) {
+    return null;
+  }
+
+  const errors = passwordRetype.errors ?? {};
+  if (password.value !== passwordRetype.value) {
+    passwordRetype.setErrors({...errors, passwordMismatch: true});
     return {passwordMismatch: true};
   }
-  if (passwordRetype) {
-    passwordRetype.setErrors(null);
+
+  if (errors['passwordMismatch']) {
+    delete errors['passwordMismatch'];
+    passwordRetype.setErrors(Object.keys(errors).length > 0 ? errors : null);
   }
   return null;
 };
 
-const usernameMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-  const username = control.get('username');
-  const usernameRetype = control.get('usernameRetype');
-  if (username && usernameRetype && (username.value !== usernameRetype.value)) {
-    usernameRetype.setErrors({usernameMismatch: true});
-    return {usernameMismatch: true};
+const emailMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  const email = control.get('email');
+  const emailRetype = control.get('emailRetype');
+  if (!email || !emailRetype) {
+    return null;
   }
-  if (usernameRetype) {
-    usernameRetype.setErrors(null);
+
+  const errors = emailRetype.errors ?? {};
+  if (email.value !== emailRetype.value) {
+    emailRetype.setErrors({...errors, emailMismatch: true});
+    return {emailMismatch: true};
+  }
+
+  if (errors['emailMismatch']) {
+    delete errors['emailMismatch'];
+    emailRetype.setErrors(Object.keys(errors).length > 0 ? errors : null);
   }
   return null;
 };
+
+const REDIRECT_PATH_AFTER_SIGNUP = '/';
 
 @Component({
   selector: 'app-signup',
@@ -71,46 +94,27 @@ export class SignupComponent {
 
   private readonly formBuilder = inject(FormBuilder);
   protected signupForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      lastname: ['', Validators.required],
-      documentNumber: [null, [Validators.required, Validators.pattern(/^\d+$/)]],
-      phone: [''],
-      username: ['', [Validators.required, Validators.email]],
-      usernameRetype: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      emailRetype: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       passwordRetype: ['', Validators.required],
     },
-    {validators: [usernamePasswordValidator, passwordMatchValidator, usernameMatchValidator]});
+    {validators: [emailPasswordValidator, passwordMatchValidator, emailMatchValidator]});
 
   constructor(
     private readonly formService: FormService,
     private readonly authService: AuthService,
     private readonly toastService: ToastService,
+    private readonly router: Router,
   ) {
   }
 
-  protected get name() {
-    return this.signupForm.get('name');
+  protected get email() {
+    return this.signupForm.get('email');
   }
 
-  protected get lastname() {
-    return this.signupForm.get('lastname');
-  }
-
-  protected get documentNumber() {
-    return this.signupForm.get('documentNumber');
-  }
-
-  protected get phone() {
-    return this.signupForm.get('phone');
-  }
-
-  protected get username() {
-    return this.signupForm.get('username');
-  }
-
-  protected get usernameRetype() {
-    return this.signupForm.get('usernameRetype');
+  protected get emailRetype() {
+    return this.signupForm.get('emailRetype');
   }
 
   protected get password() {
@@ -130,14 +134,16 @@ export class SignupComponent {
     return this.formService.isInputValid(control);
   }
 
-  private doSignup(name: string, lastname: string, documentNumber: number, email: string, password: string, phone?: string): void {
+  private doSignup(email: string, password: string): void {
     this.isDoingSignup = true;
-    this.authService.signup(name, lastname, documentNumber, email, password, phone).subscribe({
+    this.authService.signup(email, password).subscribe({
       next: result => {
         if (result.success) {
           this.signupForm.reset();
           this.toastService.showSuccessToast({body: result.message});
+          this.router.navigate([REDIRECT_PATH_AFTER_SIGNUP]);
         } else {
+          this.formService.parseBackendValidation(this.signupForm, result);
           this.toastService.showErrorToast({body: result.message, header: "No se pudo realizar el registro"});
         }
       },
@@ -150,8 +156,8 @@ export class SignupComponent {
   public onSubmit(): void {
     if (this.signupForm.valid && !this.isDoingSignup) {
       this.formService.resetFormValidations(this.signupForm);
-      const {name, lastname, documentNumber, phone, username, password} = this.signupForm.value;
-      this.doSignup(name!, lastname!, Number(documentNumber!), username!, password!, phone ?? '');
+      const {email, password} = this.signupForm.value;
+      this.doSignup(email!, password!);
     }
   }
 }

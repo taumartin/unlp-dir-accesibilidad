@@ -31,6 +31,10 @@ class UsuarioRepository extends BaseRepository {
     findUsuarioByEmail(email) {
         return super.findOneWhere(where(fn("LOWER", col("correo")), Op.eq, email));
     }
+
+    findUsuarioByUsername(username) {
+        return super.findOneWhere(where(fn("LOWER", col("nombre")), Op.eq, username));
+    }
 }
 
 module.exports = UsuarioRepository;

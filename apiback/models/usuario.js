@@ -6,7 +6,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Usuario extends Model {
         static associate(models) {
-            //Nada.
+            // Nada.
         }
     }
 
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        nombre: {
+        nombre: { // Username.
             type: DataTypes.STRING(32),
             allowNull: false,
             unique: true,
