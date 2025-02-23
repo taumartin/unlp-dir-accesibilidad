@@ -240,7 +240,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   protected onClickChildLinkOfAncestor(ancestor: NavLink): void {
-    if (this.toggled) {
+    if (this.toggled && !ancestor.isCollapsed) {
       ancestor.isCollapsed = true;
     }
   }
