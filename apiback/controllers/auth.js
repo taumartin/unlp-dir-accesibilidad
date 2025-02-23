@@ -77,7 +77,7 @@ module.exports.login = asyncHandler(async function (req, res) {
     if (!user || !(await verifyPassword(validated.password, user.contrasenia))) {
         throw new UnauthorizedException('Credenciales inválidas.');
     }
-    if (!user.isActive) {
+    if (!user.isActive()) {
         throw new UnauthorizedException('Cuenta inactiva. Contacta con el administrador para activarla.');
     }
 

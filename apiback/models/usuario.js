@@ -8,6 +8,10 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // Nada.
         }
+
+        isActive() {
+            return this.estaActivo;
+        }
     }
 
     Usuario.init({
@@ -36,13 +40,13 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true,
         },
-        esAdmin:{
+        esAdmin: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             field: 'es_admin',
             defaultValue: false,
         },
-        fotoDePerfil:{
+        fotoDePerfil: {
             type: DataTypes.STRING(255),
             field: 'foto_de_perfil',
         }
