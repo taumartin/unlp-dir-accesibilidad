@@ -48,6 +48,7 @@
                 }
                 @for (childLink of child.navLinks; track childLink.id) {
                   <a class="collapse-item" routerLinkActive="active"
+                     (click)="onClickChildLinkOfAncestor(navLinkItem)"
                      [routerLink]="childLink.route">{{ childLink.label }}</a>
                 }
               }

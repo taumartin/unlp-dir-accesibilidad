@@ -1,17 +1,18 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {FontAwesomeModule, IconDefinition} from '@fortawesome/angular-fontawesome';
 import {
   faAngleLeft,
   faAngleRight,
   faAngleDown,
   faHome,
-  faCog
+  faDatabase
 } from '@fortawesome/free-solid-svg-icons';
 import {CommonModule} from '@angular/common';
 import {RouterLink, RouterLinkActive} from '@angular/router';
 import {NgbAccordionModule, NgbCollapse} from '@ng-bootstrap/ng-bootstrap';
 import {SidebarService} from '../../services/ui/sidebar/sidebar.service';
-import {debounceTime, fromEvent, Subscription} from 'rxjs';
+import {debounceTime, fromEvent, Subject, takeUntil} from 'rxjs';
+import {AuthService} from '../../services/core/auth/auth.service';
 
 interface NavLink {
   id: number;
@@ -35,178 +36,119 @@ interface NavLinkGroup {
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  private toggleEventSubscription: Subscription | null = null;
   protected toggled: boolean = false;
-
-  private windowResizeSubscription: Subscription | null = null;
 
   protected iconLeft: IconDefinition = faAngleLeft;
   protected iconRight: IconDefinition = faAngleRight;
   protected iconDown: IconDefinition = faAngleDown;
 
-  protected navLinkGroups: NavLinkGroup[] = [
-    {
-      id: 1,
-      navLinks: [
-        {
-          id: 11,
-          icon: faHome,
-          label: 'Inicio',
-          route: 'home'
-        }
-      ]
-    },
-    {
-      id: 2,
-      heading: 'Administración',
-      navLinks: [
-        {
-          id: 21,
-          icon: faCog,
-          label: 'Datos',
-          isCollapsed: true,
-          children: [
-            {
-              id: 211,
-              heading: 'ABM\'s:',
-              navLinks: [
-                {
-                  id: 21101,
-                  label: 'Personas',
-                  route: 'abm/personas',
-                },
-                {
-                  id: 21102,
-                  label: 'Alumnos',
-                  route: 'abm/alumnos',
-                },
-                {
-                  id: 21103,
-                  label: 'Tutores',
-                  route: 'abm/tutores',
-                },
-                {
-                  id: 21104,
-                  label: 'Usuarios',
-                  route: 'abm/usuarios',
-                },
-                {
-                  id: 21105,
-                  label: 'Eventos',
-                  route: 'abm/eventos',
-                },
-                {
-                  id: 21106,
-                  label: 'Tipos de Eventos',
-                  route: 'abm/tipos-eventos',
-                },
-                {
-                  id: 21107,
-                  label: 'Tipos de Materiales',
-                  route: 'abm/tipos-materiales',
-                },
-                {
-                  id: 21108,
-                  label: 'Medios de Comunicación',
-                  route: 'abm/medios-comunicacion',
-                },
-                {
-                  id: 21109,
-                  label: 'Materias',
-                  route: 'abm/materias',
-                },
-                {
-                  id: 21110,
-                  label: 'Semestres',
-                  route: 'abm/semestres',
-                },
-              ]
-            },
-          ]
-        },
-        {
-          id: 22,
-          icon: faCog,
-          label: 'Utilities',
-          isCollapsed: true,
-          children: [
-            {
-              id: 221,
-              heading: 'Custom Utilities:',
-              navLinks: [
-                {
-                  id: 2211,
-                  label: 'Colors',
-                  route: 'utils/colors',
-                },
-                {
-                  id: 2212,
-                  label: 'Borders',
-                  route: 'utils/borders',
-                },
-                {
-                  id: 2213,
-                  label: 'Animations',
-                  route: 'utils/animations',
-                },
-                {
-                  id: 2214,
-                  label: 'Other',
-                  route: 'utils/other',
-                }
-              ]
-            },
-          ]
-        }
-      ]
-    },
-    {
-      id: 3,
-      heading: 'Addons',
-      navLinks: [
-        {
-          id: 31,
-          icon: faCog,
-          label: 'Pages',
-          isCollapsed: true,
-          children: [
-            {
-              id: 312,
-              heading: 'Other Pages:',
-              navLinks: [
-                {
-                  id: 3121,
-                  label: '404 Page',
-                  route: 'error',
-                },
-                {
-                  id: 3122,
-                  label: 'Blank Page',
-                  route: 'blank',
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 32,
-          icon: faCog,
-          label: 'Charts',
-          route: 'chars'
-        },
-        {
-          id: 33,
-          icon: faCog,
-          label: 'Tables',
-          route: 'tables'
-        }
-      ]
-    }
-  ];
+  protected isUserLoggedIn: boolean = false;
+
+  private readonly destroy$: Subject<void> = new Subject<void>();
+
+  protected navLinkGroups: NavLinkGroup[] = [];
 
   constructor(
-    private readonly sidebarService: SidebarService
+    private readonly sidebarService: SidebarService,
+    private readonly authService: AuthService,
+    private readonly eRef: ElementRef,
   ) {
+  }
+
+  private updateNavLinkGroups(): void {
+    this.navLinkGroups = [
+      {
+        id: 1,
+        navLinks: [
+          {
+            id: 11,
+            icon: faHome,
+            label: 'Inicio',
+            route: 'home',
+          }
+        ],
+      },
+    ];
+
+    if (this.isUserLoggedIn) {
+      this.navLinkGroups.push(...[
+        {
+          id: 2,
+          heading: 'Administración',
+          navLinks: [
+            {
+              id: 21,
+              icon: faDatabase,
+              label: 'Datos',
+              isCollapsed: true,
+              children: [
+                {
+                  id: 211,
+                  heading: 'ABM\'s:',
+                  navLinks: [
+                    {
+                      id: 21101,
+                      label: 'Personas',
+                      route: 'abm/personas',
+                    },
+                    {
+                      id: 21102,
+                      label: 'Alumnos',
+                      route: 'abm/alumnos',
+                    },
+                    {
+                      id: 21103,
+                      label: 'Tutores',
+                      route: 'abm/tutores',
+                    },
+                    {
+                      id: 21104,
+                      label: 'Usuarios',
+                      route: 'abm/usuarios',
+                    },
+                    {
+                      id: 21105,
+                      label: 'Eventos',
+                      route: 'abm/eventos',
+                    },
+                    {
+                      id: 21106,
+                      label: 'Tipos de Eventos',
+                      route: 'abm/tipos-eventos',
+                    },
+                    {
+                      id: 21107,
+                      label: 'Tipos de Materiales',
+                      route: 'abm/tipos-materiales',
+                    },
+                    {
+                      id: 21108,
+                      label: 'Medios de Comunicación',
+                      route: 'abm/medios-comunicacion',
+                    },
+                    {
+                      id: 21109,
+                      label: 'Materias',
+                      route: 'abm/materias',
+                    },
+                    {
+                      id: 21110,
+                      label: 'Semestres',
+                      route: 'abm/semestres',
+                    },
+                  ]
+                },
+              ],
+            },
+          ],
+        },
+      ]);
+    }
+  }
+
+  private onUserAuthChange(isUserLoggedIn: boolean): void {
+    this.isUserLoggedIn = isUserLoggedIn;
+    this.updateNavLinkGroups();
   }
 
   private closeNavLinks(): void {
@@ -240,36 +182,66 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.toggleEventSubscription = this.sidebarService.toggleEvent.subscribe(() => {
-      this.toggleSideNavigation();
-    });
-    this.windowResizeSubscription = fromEvent(window, 'resize')
-      .pipe(debounceTime(10))
+    this.sidebarService.toggleEvent
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.toggleSideNavigation();
+      });
+
+    fromEvent(window, 'resize')
+      .pipe(
+        takeUntil(this.destroy$),
+        debounceTime(10))
       .subscribe(() => {
         this.onWindowResize(window.innerWidth);
+      });
+
+    this.onUserAuthChange(this.authService.isLoggedIn());
+    this.authService.userAuthChange$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(isLoggedIn => {
+        this.onUserAuthChange(isLoggedIn);
       });
   }
 
   public ngOnDestroy(): void {
-    if (this.toggleEventSubscription) {
-      this.toggleEventSubscription.unsubscribe();
-      this.toggleEventSubscription = null;
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private closeOpenLink(): void {
+    const openLink = this.navLinkGroups
+      .flatMap(navGroup => navGroup.navLinks)
+      .find(navLink => (navLink.isCollapsed === false));
+    if (openLink) {
+      openLink.isCollapsed = true;
     }
-    if (this.windowResizeSubscription) {
-      this.windowResizeSubscription.unsubscribe();
-      this.windowResizeSubscription = null;
+  }
+
+  @HostListener('document:click', ['$event'])
+  public onClickOutside(event: Event): void {
+    if (!this.eRef.nativeElement.contains(event.target) && this.toggled) {
+      this.closeOpenLink();
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  public onKeyDown(event: KeyboardEvent) {
+    if ((event.key === 'Escape') && this.toggled) {
+      this.closeOpenLink();
     }
   }
 
   protected toggleNavLinkItem(navLinkItem: NavLink): void {
     if (navLinkItem.isCollapsed === true) {
-      const openLink = this.navLinkGroups
-        .flatMap(navGroup => navGroup.navLinks)
-        .find(navLink => (navLink.isCollapsed === false));
-      if (openLink) {
-        openLink.isCollapsed = true;
-      }
+      this.closeOpenLink();
     }
     navLinkItem.isCollapsed = !navLinkItem.isCollapsed;
+  }
+
+  protected onClickChildLinkOfAncestor(ancestor: NavLink): void {
+    if (this.toggled) {
+      ancestor.isCollapsed = true;
+    }
   }
 }

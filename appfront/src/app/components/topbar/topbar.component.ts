@@ -76,7 +76,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
 
   private onUserAuthChange(isUserLoggedIn: boolean): void {
     this.isUserLoggedIn = isUserLoggedIn;
-    if (this.isUserLoggedIn) {
+    if (this.isUserLoggedIn && !this.isGettingUserProfile) {
       this.getUserProfile();
     }
   }
