@@ -24,7 +24,7 @@ class TiposDeMaterialRepository extends BaseRepository {
             page, pageSize, search,
             searchFields: ['nombre'],
             orderBy, orderDirection,
-        })
+        });
     }
 }
 

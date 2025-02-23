@@ -17,12 +17,15 @@ import {Subject, takeUntil} from 'rxjs';
 import {AuthService} from '../../services/core/auth/auth.service';
 import {Router} from '@angular/router';
 import {ToastService} from '../../services/ui/toast/toast.service';
+import {NgOptimizedImage} from '@angular/common';
 
 const REDIRECT_PATH_AFTER_LOGOUT = '/';
+const DEFAULT_DISPLAY_NAME = 'Invitado';
+const DEFAULT_USER_PROFILE = '/assets/img/undraw_profile.svg';
 
 @Component({
   selector: 'app-topbar',
-  imports: [FontAwesomeModule, NgbDropdownModule],
+  imports: [FontAwesomeModule, NgbDropdownModule, NgOptimizedImage],
   templateUrl: './topbar.component.html',
   styleUrl: './topbar.component.scss'
 })
@@ -44,10 +47,13 @@ export class TopbarComponent implements OnInit, OnDestroy {
   protected showUserPages = false;
 
   protected isUserLoggedIn: boolean = false;
+  protected userDisplayName: string = DEFAULT_DISPLAY_NAME;
+  protected userProfilePhoto: string = DEFAULT_USER_PROFILE;
 
   private readonly destroy$: Subject<void> = new Subject<void>();
 
   private isDoingLogout: boolean = false;
+  private isGettingUserProfile: boolean = false;
 
   constructor(
     private readonly sidebarService: SidebarService,
@@ -66,12 +72,19 @@ export class TopbarComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private onUserAuthChange(isUserLoggedIn: boolean): void {
+    this.isUserLoggedIn = isUserLoggedIn;
+    if (this.isUserLoggedIn) {
+      this.getUserProfile();
+    }
+  }
+
   public ngOnInit(): void {
-    this.isUserLoggedIn = this.authService.isLoggedIn();
+    this.onUserAuthChange(this.authService.isLoggedIn());
     this.authService.userAuthChange$
       .pipe(takeUntil(this.destroy$))
       .subscribe(isLoggedIn => {
-        this.isUserLoggedIn = isLoggedIn;
+        this.onUserAuthChange(isLoggedIn);
       });
   }
 
@@ -96,5 +109,18 @@ export class TopbarComponent implements OnInit, OnDestroy {
     if (this.isUserLoggedIn && !this.isDoingLogout) {
       this.doLogout();
     }
+  }
+
+  private getUserProfile(): void {
+    this.isGettingUserProfile = true;
+    this.authService.me().subscribe({
+      next: result => {
+        this.userDisplayName = result.success ? result.data.displayName : DEFAULT_DISPLAY_NAME;
+        this.userProfilePhoto = (result.success && result.data.profilePhoto) ? result.data.profilePhoto : DEFAULT_USER_PROFILE;
+      },
+      complete: () => {
+        this.isGettingUserProfile = false;
+      }
+    });
   }
 }

@@ -25,7 +25,7 @@ class UsuarioRepository extends BaseRepository {
             page, pageSize, search,
             searchFields: ['nombre', 'correo'],
             orderBy, orderDirection,
-        })
+        });
     }
 
     findUsuarioByEmail(email) {

@@ -175,8 +175,8 @@
       <li ngbDropdown class="nav-item no-arrow">
         <button ngbDropdownToggle type="button" class="btn btn-link nav-link" id="userDropdown"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="me-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-          <img class="img-profile rounded-circle" src="/assets/img/undraw_profile.svg" alt="Profile">
+          <span class="me-2 d-none d-lg-inline text-gray-600 small">{{ userDisplayName }}</span>
+          <img class="img-profile rounded-circle" width="16" height="16" alt="Profile" ngSrc="{{userProfilePhoto}}">
         </button>
 
         <!-- Dropdown - User Information -->

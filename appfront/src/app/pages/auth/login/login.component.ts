@@ -139,21 +139,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-  private me(): void { // FIXME:
-    this.authService.me().subscribe({
-      next: result => {
-        console.log('me exitoso', result);
-        alert(result.data.email);
-      },
-      error: error => {
-        console.log('error me', error);
-      },
-      complete: () => {
-        console.log('me complete');
-      }
-    })
-  }
-
   public onSubmit(): void {
     if (this.loginForm.valid && !this.isDoingLogin) {
       this.formService.resetFormValidations(this.loginForm);

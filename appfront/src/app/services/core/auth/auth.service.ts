@@ -5,6 +5,7 @@ import {AuthLoginSuccessResponse} from './auth-login-success-response';
 import {ApiSuccessResponse} from '../../network/api/api-success-response';
 import {ApiErrorResponse} from '../../network/api/api-error-response';
 import {ToastService} from '../../ui/toast/toast.service';
+import {AuthMeSuccessResponse} from './auth-me-success-response';
 
 @Injectable({
   providedIn: 'root'
@@ -98,7 +99,7 @@ export class AuthService {
       );
   }
 
-  public me(): Observable<ApiSuccessResponse<{ email: string; }>> {
-    return this.apiService.getEndpoint<ApiSuccessResponse<{ email: string; }>>(`${this.baseEndpoint}/me`);
+  public me(): Observable<AuthMeSuccessResponse | ApiErrorResponse> {
+    return this.apiService.getEndpoint<AuthMeSuccessResponse>(`${this.baseEndpoint}/me`);
   }
 }

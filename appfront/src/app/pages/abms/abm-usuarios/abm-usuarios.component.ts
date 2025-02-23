@@ -2,10 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DataTablesModule} from "angular-datatables";
 import {PageHeadingComponent} from "../../../components/page-heading/page-heading.component";
 import {Config} from 'datatables.net';
-import {MateriasService} from '../../../services/data/materias/materias.service';
 import {DatatablesService} from '../../../services/data/datatables/datatables.service';
-import {DatatablesServersideRequest} from '../../../services/data/datatables/datatables-serverside-request';
-import {map} from 'rxjs';
 import {UsuariosService} from '../../../services/data/usuarios/usuarios.service';
 
 @Component({
@@ -27,8 +24,7 @@ export class AbmUsuariosComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const __this = this;
-    this.dtOptions = this.datatablesService.getOptions([
+    this.dtOptions = this.datatablesService.getOptionsServerSide([
       {title: 'ID', data: 'id', name: 'id',},
       {title: 'Nombre', data: 'nombre', name: 'nombre',},
       {title: 'Correo', data: 'correo', name: 'correo',},
@@ -37,15 +33,6 @@ export class AbmUsuariosComponent implements OnInit {
         render: data => data ? 'Sí' : 'No',
       },
       // TODO: agregar fotoDePerfil...
-    ], (params: DatatablesServersideRequest, callback: (data: any) => void) => {
-      __this.usuariosService
-        .getUsuarios(this.datatablesService.getPageFromDatatablesParams(params))
-        .pipe(
-          map(apiResponse => this.datatablesService.getPageFromApiResponse(params, apiResponse))
-        )
-        .subscribe(data => {
-          callback(data);
-        });
-    });
+    ], (pagReq) => this.usuariosService.getUsuarios(pagReq));
   }
 }

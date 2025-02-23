@@ -24,7 +24,7 @@ class MateriaRepository extends BaseRepository {
             page, pageSize, search,
             searchFields: ['nombre', 'docentes', 'contacto'],
             orderBy, orderDirection,
-        })
+        });
     }
 }
 

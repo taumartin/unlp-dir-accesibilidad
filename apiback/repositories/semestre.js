@@ -24,7 +24,7 @@ class SemestresRepository extends BaseRepository {
             page, pageSize, search,
             searchFields: ['anio', 'esPrimerSemestre'],
             orderBy, orderDirection,
-        })
+        });
     }
 }
 

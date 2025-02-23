@@ -1,3 +1,5 @@
+const apiResponse = require("../utils/api-response");
+const {asyncHandler} = require("../utils/async-handler");
 const tipoDeMaterialesRepository = require("../repositories/tipo-material").getInstance();
 
 module.exports.create = function (req, res) {
@@ -9,13 +11,12 @@ module.exports.create = function (req, res) {
         .catch(error => res.status(400).send(error));
 };
 
-module.exports.listAll = function (req, res) {
+module.exports.listAll = asyncHandler(async function (req, res) {
     const {page, pageSize, search, orderBy, orderDirection} = req.query;
-    return tipoDeMaterialesRepository.listTiposDeMateriales(parseInt(page) || 1, parseInt(pageSize) || 10,
-        search || "", orderBy || "id", orderDirection || "asc",)
-        .then(tipoDeMaterialList => res.status(200).send(tipoDeMaterialList))
-        .catch(error => res.status(400).send(error));
-};
+    const response = await tipoDeMaterialesRepository.listTiposDeMateriales(parseInt(page) || 1, parseInt(pageSize) || 10,
+        search || "", orderBy || "id", orderDirection || "asc",);
+    apiResponse.success(res, response);
+});
 
 module.exports.findById = function (req, res) {
     return tipoDeMaterialesRepository.findById(req.params.id)

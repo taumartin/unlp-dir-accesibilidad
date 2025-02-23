@@ -1,3 +1,5 @@
+const apiResponse = require("../utils/api-response");
+const {asyncHandler} = require("../utils/async-handler");
 const personaRepository = require("../repositories/persona").getInstance();
 
 module.exports.create = function (req, res) {
@@ -13,13 +15,12 @@ module.exports.create = function (req, res) {
         .catch(error => res.status(400).send(error));
 };
 
-module.exports.listAll = function (req, res) {
+module.exports.listAll = asyncHandler(async function (req, res) {
     const {page, pageSize, search, orderBy, orderDirection} = req.query;
-    return personaRepository.listPersonas(parseInt(page) || 1, parseInt(pageSize) || 10,
-        search || "", orderBy || "id", orderDirection || "asc",)
-        .then(personaList => res.status(200).send(personaList))
-        .catch(error => res.status(400).send(error));
-};
+    const response = await personaRepository.listPersonas(parseInt(page) || 1, parseInt(pageSize) || 10,
+        search || "", orderBy || "id", orderDirection || "asc",);
+    apiResponse.success(res, response);
+});
 
 module.exports.findById = function (req, res) {
     return personaRepository.findById(req.params.id)

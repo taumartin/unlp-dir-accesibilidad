@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
 import {ApiPageRequest} from '../../network/api/api-page-request';
 import {Observable} from 'rxjs';
-import {ApiResponsePage} from '../../network/api/api-response-page';
 import {TipoMaterial} from '../../../models/tipo-material';
+import {ApiResponsePage} from '../../network/api/api-response-page';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class TiposMaterialesService {
   }
 
   public getTiposMateriales(pageRequested: ApiPageRequest): Observable<ApiResponsePage<TipoMaterial>> {
-    return this.apiService.getEndpoint<ApiResponsePage<TipoMaterial>>(`${this.baseEndpoint}/`, pageRequested);
+    return this.apiService.getPaginatedEndpoint<TipoMaterial>(`${this.baseEndpoint}/`, pageRequested);
   }
 
   // TODO: agregar resto de operaciones..

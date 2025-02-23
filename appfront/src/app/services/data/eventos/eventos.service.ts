@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
 import {ApiPageRequest} from '../../network/api/api-page-request';
 import {Observable, tap} from 'rxjs';
-import {ApiResponsePage} from '../../network/api/api-response-page';
 import {Evento} from '../../../models/evento';
+import {ApiResponsePage} from '../../network/api/api-response-page';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,10 @@ export class EventosService {
   }
 
   public getEventos(pageRequested: ApiPageRequest): Observable<ApiResponsePage<Evento>> {
-    return this.apiService.getEndpoint<ApiResponsePage<Evento>>(`${this.baseEndpoint}/`, pageRequested)
+    return this.apiService.getPaginatedEndpoint<Evento>(`${this.baseEndpoint}/`, pageRequested)
       .pipe(
         tap(response => {
-          response.data.forEach(item => item._timestamp = new Date(item.fechaYHora))
+          response.data.forEach(item => item._timestamp = new Date(item.fechaYHora));
         })
       );
   }

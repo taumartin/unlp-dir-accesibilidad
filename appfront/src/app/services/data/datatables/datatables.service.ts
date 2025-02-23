@@ -5,16 +5,19 @@ import datatables_lang_ES from '../../../config/datatables/lang_ES.json';
 import {ApiResponsePage} from '../../network/api/api-response-page';
 import {DatatablesServersideResponse} from './datatables-serverside-response';
 import {DatatablesServersideRequest} from './datatables-serverside-request';
+import {map, Observable} from 'rxjs';
+import {ToastService} from '../../ui/toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatatablesService {
-  constructor() {
+  constructor(
+    private readonly toastService: ToastService,
+  ) {
   }
 
-  public getOptions(columns: ConfigColumns[],
-                    ajax: (params: any, callback: (data: any) => void) => void): Config {
+  public getOptions(columns: ConfigColumns[], ajax: (params: any, callback: (data: any) => void) => void): Config {
     return {
       serverSide: true,
       ajax,
@@ -36,13 +39,35 @@ export class DatatablesService {
     };
   }
 
-  public getPageFromApiResponse<T>(params: DatatablesServersideRequest,
-                                   page: ApiResponsePage<T>): DatatablesServersideResponse<T> {
+  public getPageFromApiResponse<T>(params: DatatablesServersideRequest, page: ApiResponsePage<T>): DatatablesServersideResponse<T> {
     return {
       draw: params.draw,
       recordsTotal: page.totalRecords,
       recordsFiltered: page.filteredRecords,
       data: page.data
     };
+  }
+
+  public getOptionsServerSide<T>(columns: ConfigColumns[], getSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<T>>) {
+    return this.getOptions(columns, (params: DatatablesServersideRequest, callback: (data: any) => void) => {
+      getSource(this.getPageFromDatatablesParams(params))
+        .pipe(
+          map(apiResponse => this.getPageFromApiResponse(params, apiResponse))
+        )
+        .subscribe({
+          next: data => {
+            callback(data);
+          },
+          error: err => {
+            this.toastService.showErrorToast(err.message);
+            callback({
+              draw: params.draw,
+              recordsTotal: 0,
+              recordsFiltered: 0,
+              data: [],
+            });
+          }
+        });
+    })
   }
 }

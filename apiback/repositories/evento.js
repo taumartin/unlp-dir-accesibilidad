@@ -24,7 +24,7 @@ class EventoRepository extends BaseRepository {
             page, pageSize, search,
             searchFields: ['fechaYHora', 'descripcion'],
             orderBy, orderDirection,
-        })
+        });
     }
 }
 

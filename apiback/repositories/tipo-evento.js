@@ -24,7 +24,7 @@ class TiposDeEventosRepository extends BaseRepository {
             page, pageSize, search,
             searchFields: ['nombre'],
             orderBy, orderDirection,
-        })
+        });
     }
 }
 

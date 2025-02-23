@@ -17,7 +17,7 @@ export class PersonasService {
   }
 
   public getPersonas(pageRequested: ApiPageRequest): Observable<ApiResponsePage<Persona>> {
-    return this.apiService.getEndpoint<ApiResponsePage<Persona>>(`${this.baseEndpoint}/`, pageRequested);
+    return this.apiService.getPaginatedEndpoint<Persona>(`${this.baseEndpoint}/`, pageRequested);
   }
 
   // TODO: agregar resto de operaciones..

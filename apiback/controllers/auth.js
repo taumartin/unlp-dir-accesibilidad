@@ -10,6 +10,7 @@ const {buildValidation} = require("../utils/validation");
 const UnauthorizedException = require("../exceptions/unauthorized-exception");
 const {asyncHandler} = require("../utils/async-handler");
 const apiResponse = require("../utils/api-response");
+const NotFoundException = require("../exceptions/not-found-exception");
 const usuarioRepository = require("../repositories/usuario").getInstance();
 
 const JWT_REFRESH_COOKIE = 'refreshToken';
@@ -83,7 +84,14 @@ module.exports.logout = function (req, res) {
     apiResponse.success(res, null, 'Logout exitoso.');
 };
 
-module.exports.me = (req, res) => {
-    apiResponse.success(res, req.user);
-    // TODO: agregar datos del usuario de BD (find by req.user.email), roles, permisos...
-};
+module.exports.me = asyncHandler(async (req, res) => {
+    const user = await usuarioRepository.findUsuarioByEmail(req.user.email);
+    if (!user) {
+        throw new NotFoundException('Usuario no encontrado.');
+    }
+    apiResponse.success(res, {
+        displayName: user.nombre || user.correo,
+        profilePhoto: user.fotoDePerfil,
+    });
+    // TODO: agregar roles, permisos...
+});

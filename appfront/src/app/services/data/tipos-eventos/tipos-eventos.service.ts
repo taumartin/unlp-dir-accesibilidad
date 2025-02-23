@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
 import {ApiPageRequest} from '../../network/api/api-page-request';
 import {Observable} from 'rxjs';
-import {ApiResponsePage} from '../../network/api/api-response-page';
 import {TipoEvento} from '../../../models/tipo-evento';
+import {ApiResponsePage} from '../../network/api/api-response-page';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class TiposEventosService {
   }
 
   public getTiposEventos(pageRequested: ApiPageRequest): Observable<ApiResponsePage<TipoEvento>> {
-    return this.apiService.getEndpoint<ApiResponsePage<TipoEvento>>(`${this.baseEndpoint}/`, pageRequested);
+    return this.apiService.getPaginatedEndpoint<TipoEvento>(`${this.baseEndpoint}/`, pageRequested);
   }
 
   // TODO: agregar resto de operaciones..

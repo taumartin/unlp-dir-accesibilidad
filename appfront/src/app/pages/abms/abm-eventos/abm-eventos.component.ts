@@ -3,8 +3,6 @@ import {DataTablesModule} from "angular-datatables";
 import {PageHeadingComponent} from "../../../components/page-heading/page-heading.component";
 import {Config} from 'datatables.net';
 import {DatatablesService} from '../../../services/data/datatables/datatables.service';
-import {DatatablesServersideRequest} from '../../../services/data/datatables/datatables-serverside-request';
-import {map} from 'rxjs';
 import {EventosService} from '../../../services/data/eventos/eventos.service';
 
 @Component({
@@ -26,8 +24,7 @@ export class AbmEventosComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const __this = this;
-    this.dtOptions = this.datatablesService.getOptions([
+    this.dtOptions = this.datatablesService.getOptionsServerSide([
       {title: 'ID', data: 'id', name: 'id',},
       {
         title: 'Fecha', data: '_timestamp', name: 'fechaYHora',
@@ -41,15 +38,6 @@ export class AbmEventosComponent implements OnInit {
         })
       }, // FIXME: ordena mal al ir contra el API...
       {title: 'Descripción', data: 'descripcion', name: 'descripcion',},
-    ], (params: DatatablesServersideRequest, callback: (data: any) => void) => {
-      __this.eventosService
-        .getEventos(this.datatablesService.getPageFromDatatablesParams(params))
-        .pipe(
-          map(apiResponse => this.datatablesService.getPageFromApiResponse(params, apiResponse))
-        )
-        .subscribe(data => {
-          callback(data);
-        });
-    });
+    ], (pagReq) => this.eventosService.getEventos(pagReq));
   }
 }
