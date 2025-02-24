@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiPageRequest} from '../../network/api/api-page-request';
-import {Config, ConfigColumns} from 'datatables.net';
+import {Config, ConfigColumns, InternalSettings} from 'datatables.net';
 import datatables_lang_ES from '../../../config/datatables/lang_ES.json';
 import {ApiResponsePage} from '../../network/api/api-response-page';
 import {DatatablesServersideResponse} from './datatables-serverside-response';
@@ -17,22 +17,33 @@ export class DatatablesService {
   ) {
   }
 
-  public getOptions(columns: ConfigColumns[], ajax: (params: any, callback: (data: any) => void) => void): Config {
-    return {
+  private getOptions(columns: ConfigColumns[], ajax: (params: any, callback: (data: any) => void) => void,
+                     rowCallback?: (data: any, index: number) => void): Config {
+    const config: Config = {
       serverSide: true,
       ajax,
       language: datatables_lang_ES,
-      headerCallback: tr => {
+      headerCallback: (tr: HTMLTableRowElement) => {
         tr.classList.add('table-primary');
       },
       columns,
-      initComplete: (settings) => {
+      initComplete: (settings: InternalSettings): void => {
         settings['nTable'].parentElement.classList.add('table-responsive');
-      }
+      },
     };
+    if (rowCallback) {
+      config.rowCallback = (row: Node, data: any, index: number): Node => {
+        $('td', row).off('click');
+        $('td', row).on('click', (): void => {
+          rowCallback(data, index);
+        });
+        return row;
+      };
+    }
+    return config;
   }
 
-  public getPageFromDatatablesParams(params: DatatablesServersideRequest): ApiPageRequest {
+  private getPageFromDatatablesParams(params: DatatablesServersideRequest): ApiPageRequest {
     return {
       page: Math.floor(params.start / params.length) + 1,
       pageSize: params.length,
@@ -42,7 +53,8 @@ export class DatatablesService {
     };
   }
 
-  public getPageFromApiResponse<T>(params: DatatablesServersideRequest, page: ApiResponsePage<T>): DatatablesServersideResponse<T> {
+  private getPageFromApiResponse<T>(params: DatatablesServersideRequest,
+                                    page: ApiResponsePage<T>): DatatablesServersideResponse<T> {
     return {
       draw: params.draw,
       recordsTotal: page.totalRecords,
@@ -51,14 +63,16 @@ export class DatatablesService {
     };
   }
 
-  public getOptionsServerSide<T>(columns: ConfigColumns[], getSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<T>>) {
-    return this.getOptions(columns, (params: DatatablesServersideRequest, callback: (data: any) => void) => {
+  public getOptionsServerSide<T>(columns: ConfigColumns[],
+                                 getSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<T>>,
+                                 rowCallback?: (data: any, index: number) => void): Config {
+    return this.getOptions(columns, (params: DatatablesServersideRequest, callback: (data: any) => void): void => {
       getSource(this.getPageFromDatatablesParams(params))
         .pipe(
-          map(apiResponse => this.getPageFromApiResponse(params, apiResponse))
+          map((apiResponse: ApiResponsePage<T>): DatatablesServersideResponse<T> => this.getPageFromApiResponse(params, apiResponse))
         )
         .subscribe({
-          next: data => {
+          next: (data: DatatablesServersideResponse<T>): void => {
             callback(data);
           },
           error: err => {
@@ -71,6 +85,6 @@ export class DatatablesService {
             });
           }
         });
-    })
+    }, rowCallback);
   }
 }

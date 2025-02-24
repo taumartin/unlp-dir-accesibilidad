@@ -37,6 +37,12 @@ table.dataTable {
     vertical-align: middle;
   }
 
+  &.clickable {
+    tbody tr {
+      cursor: pointer;
+    }
+  }
+
   .img-data-avatar {
     width: 24px;
     height: 24px;

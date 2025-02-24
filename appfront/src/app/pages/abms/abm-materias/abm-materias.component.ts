@@ -1,9 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {DataTablesModule} from 'angular-datatables';
-import {Config} from 'datatables.net';
-import {DatatablesService} from '../../../services/data/datatables/datatables.service';
+import {ConfigColumns} from 'datatables.net';
 import {MateriasService} from '../../../services/data/materias/materias.service';
 import {CrudLayoutComponent} from '../../../components/crud-layout/crud-layout.component';
+import {ApiPageRequest} from '../../../services/network/api/api-page-request';
+import {Observable} from 'rxjs';
+import {ApiResponsePage} from '../../../services/network/api/api-response-page';
+import {Materia} from '../../../models/materia';
 
 @Component({
   selector: 'app-abm-materias',
@@ -11,24 +14,20 @@ import {CrudLayoutComponent} from '../../../components/crud-layout/crud-layout.c
   templateUrl: './abm-materias.component.html',
   styleUrl: './abm-materias.component.scss'
 })
-export class AbmMateriasComponent implements OnInit {
-  protected dtOptions: Config = {};
+export class AbmMateriasComponent {
   protected labels = {
     title: 'ABM Materias',
   }
+  protected readonly dtColumns: ConfigColumns[] = [
+    {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
+    {title: 'Nombre', data: 'nombre', name: 'nombre'},
+    {title: 'Docentes', data: 'docentes', name: 'docentes'},
+    {title: 'Contacto', data: 'contacto', name: 'contacto'},
+  ];
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Materia>> = (pagReq) => this.materiasService.getMaterias(pagReq);
 
   public constructor(
     private readonly materiasService: MateriasService,
-    private readonly datatablesService: DatatablesService,
   ) {
-  }
-
-  public ngOnInit(): void {
-    this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
-      {title: 'Nombre', data: 'nombre', name: 'nombre'},
-      {title: 'Docentes', data: 'docentes', name: 'docentes'},
-      {title: 'Contacto', data: 'contacto', name: 'contacto'},
-    ], (pagReq) => this.materiasService.getMaterias(pagReq));
   }
 }

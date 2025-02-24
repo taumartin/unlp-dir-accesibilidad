@@ -1,9 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {DataTablesModule} from "angular-datatables";
-import {Config} from 'datatables.net';
-import {DatatablesService} from '../../../services/data/datatables/datatables.service';
+import {ConfigColumns} from 'datatables.net';
 import {MediosComunicacionService} from '../../../services/data/medios-comunicacion/medios-comunicacion.service';
 import {CrudLayoutComponent} from '../../../components/crud-layout/crud-layout.component';
+import {ApiPageRequest} from '../../../services/network/api/api-page-request';
+import {Observable} from 'rxjs';
+import {ApiResponsePage} from '../../../services/network/api/api-response-page';
+import {MedioComunicacion} from '../../../models/medio-comunicacion';
 
 @Component({
   selector: 'app-abm-medios-comunicacion',
@@ -11,22 +14,18 @@ import {CrudLayoutComponent} from '../../../components/crud-layout/crud-layout.c
   templateUrl: './abm-medios-comunicacion.component.html',
   styleUrl: './abm-medios-comunicacion.component.scss'
 })
-export class AbmMediosComunicacionComponent implements OnInit {
-  protected dtOptions: Config = {};
+export class AbmMediosComunicacionComponent {
   protected labels = {
     title: 'ABM Medios de Comunicación',
   }
+  protected readonly dtColumns: ConfigColumns[] = [
+    {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
+    {title: 'Nombre', data: 'nombre', name: 'nombre'},
+  ];
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<MedioComunicacion>> = (pagReq) => this.mediosComunicacionService.getMediosComunicacion(pagReq);
 
   public constructor(
     private readonly mediosComunicacionService: MediosComunicacionService,
-    private readonly datatablesService: DatatablesService,
   ) {
-  }
-
-  public ngOnInit(): void {
-    this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
-      {title: 'Nombre', data: 'nombre', name: 'nombre'},
-    ], (pagReq) => this.mediosComunicacionService.getMediosComunicacion(pagReq));
   }
 }

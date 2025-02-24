@@ -1,11 +1,15 @@
-import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, TemplateRef} from '@angular/core';
 import {DataTablesModule} from 'angular-datatables';
 import {PageHeadingComponent} from '../page-heading/page-heading.component';
-import {Config} from 'datatables.net';
+import {Config, ConfigColumns} from 'datatables.net';
 import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {NgTemplateOutlet} from '@angular/common';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {ApiPageRequest} from '../../services/network/api/api-page-request';
+import {Observable} from 'rxjs';
+import {ApiResponsePage} from '../../services/network/api/api-response-page';
+import {DatatablesService} from '../../services/data/datatables/datatables.service';
 
 @Component({
   selector: 'app-crud-layout',
@@ -18,13 +22,16 @@ import {faPlus} from '@fortawesome/free-solid-svg-icons';
   templateUrl: './crud-layout.component.html',
   styleUrl: './crud-layout.component.scss'
 })
-export class CrudLayoutComponent {
+export class CrudLayoutComponent<T> implements OnInit {
   protected iconCreate = faPlus;
+  protected dtOptions: Config = {};
 
   @Input()
   public labels: { [key: string]: string; } = {};
   @Input()
-  public dtOptions: Config = {};
+  public dtColumns!: ConfigColumns[];
+  @Input()
+  public dtSource!: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<T>>;
   @Input()
   public createModalTemplate?: TemplateRef<any>;
   @Input()
@@ -39,7 +46,18 @@ export class CrudLayoutComponent {
 
   constructor(
     private readonly modalService: NgbModal,
+    private readonly datatablesService: DatatablesService,
   ) {
+  }
+
+  private onRowClick(dataRow: T, rowIndex: number): void {
+    // TODO: lanzar evento al host para popular el form, abrir modal...
+    console.log("rowcallback", dataRow, rowIndex);
+  }
+
+  public ngOnInit(): void {
+    this.dtOptions = this.datatablesService.getOptionsServerSide(this.dtColumns, this.dtSource,
+      (data: T, index: number): void => this.onRowClick(data, index));
   }
 
   private openModal(modalTemplate: TemplateRef<any>, openedByButton: HTMLButtonElement): NgbModalRef {

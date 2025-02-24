@@ -3,11 +3,6 @@
 
 <!-- Create new Entity. -->
 @if (createModalTemplate) {
-  <button class="btn btn-success text-light mb-2" #openCreationModalButton
-          (click)="openCreationModal(creationModalTemplate, openCreationModalButton)">
-    <fa-icon [icon]="iconCreate" [fixedWidth]="true" size="sm"></fa-icon>
-    {{ labels['creation'] || 'Crear Nueva Entidad' }}
-  </button>
   <ng-template #creationModalTemplate let-modal>
     <div class="modal-header bg-success text-light">
       <h5 class="modal-title">{{ labels['creation'] || 'Crear Nueva Entidad' }}</h5>
@@ -35,7 +30,41 @@
       </button>
     </div>
   </ng-template>
+
+  <div class="row">
+    <div class="col-12 col-md-auto">
+      <button class="btn btn-success text-light mb-2" #openCreationModalButton
+              (click)="openCreationModal(creationModalTemplate, openCreationModalButton)">
+        <fa-icon [icon]="iconCreate" [fixedWidth]="true" size="sm"></fa-icon>
+        {{ labels['creation'] || 'Crear Nueva Entidad' }}
+      </button>
+    </div>
+    <div class="col">
+      <p class="m-0 small">
+        En la siguiente tabla se visualizan los registros existentes para el tipo de entidad seleccionado.
+        <br>
+        Agrega nuevos registros mediante el botón (+) de la izquierda. O bien, manipula los datos existentes
+        seleccionando las filas correspondientes de la tabla.
+      </p>
+    </div>
+  </div>
 }
 
 <!-- Entities List. -->
-<table datatable [dtOptions]="dtOptions" class="table table-light table-hover"></table>
+<table datatable [dtOptions]="dtOptions" class="table table-light"
+       [class.clickable]="!!createModalTemplate" [class.table-hover]="!!createModalTemplate">
+  <caption class="d-none">
+    Lista de registros existentes para la búsqueda actual.
+  </caption>
+  <thead>
+  <tr class="border-top border-primary-subtle">
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td></td>
+  </tr>
+  </tbody>
+  <tfoot></tfoot>
+</table>

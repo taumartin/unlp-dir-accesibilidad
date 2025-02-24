@@ -1,14 +1,16 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {DataTablesModule} from 'angular-datatables';
-import {Config} from 'datatables.net';
+import {ConfigColumns} from 'datatables.net';
 import {PersonasService} from '../../../services/data/personas/personas.service';
-import {DatatablesService} from '../../../services/data/datatables/datatables.service';
 import {CrudLayoutComponent} from '../../../components/crud-layout/crud-layout.component';
 import {AbstractControl, FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {FormService} from '../../../services/ui/form/form.service';
 import {ToastService} from '../../../services/ui/toast/toast.service';
 import {Persona} from '../../../models/persona';
+import {ApiPageRequest} from '../../../services/network/api/api-page-request';
+import {Observable} from 'rxjs';
+import {ApiResponsePage} from '../../../services/network/api/api-response-page';
 
 @Component({
   selector: 'app-abm-personas',
@@ -16,13 +18,20 @@ import {Persona} from '../../../models/persona';
   templateUrl: './abm-personas.component.html',
   styleUrl: './abm-personas.component.scss'
 })
-export class AbmPersonasComponent implements OnInit {
-  protected dtOptions: Config = {};
+export class AbmPersonasComponent {
   protected labels = {
     title: 'ABM Personas',
     creation: 'Nueva Persona',
   }
-
+  protected readonly dtColumns: ConfigColumns[] = [
+    {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
+    {title: 'Nombre', data: 'nombre', name: 'nombre'},
+    {title: 'Apellido', data: 'apellido', name: 'apellido'},
+    {title: 'DNI', data: 'dni', name: 'dni', className: 'text-center'},
+    {title: 'Teléfono', data: 'telefono', name: 'telefono'},
+    {title: 'E-mail', data: 'email', name: 'email'},
+  ];
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Persona>> = (pagReq) => this.personasService.getPersonas(pagReq);
   protected isCreatingPersona = false;
 
   private readonly formBuilder = inject(FormBuilder);
@@ -37,7 +46,6 @@ export class AbmPersonasComponent implements OnInit {
 
   public constructor(
     private readonly personasService: PersonasService,
-    private readonly datatablesService: DatatablesService,
     private readonly formService: FormService,
     private readonly toastService: ToastService,
   ) {
@@ -69,17 +77,6 @@ export class AbmPersonasComponent implements OnInit {
 
   protected isValid(control: AbstractControl | null): boolean {
     return this.formService.isInputValid(control);
-  }
-
-  public ngOnInit(): void {
-    this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
-      {title: 'Nombre', data: 'nombre', name: 'nombre'},
-      {title: 'Apellido', data: 'apellido', name: 'apellido'},
-      {title: 'DNI', data: 'dni', name: 'dni', className: 'text-center'},
-      {title: 'Teléfono', data: 'telefono', name: 'telefono'},
-      {title: 'E-mail', data: 'email', name: 'email'},
-    ], (pagReq) => this.personasService.getPersonas(pagReq));
   }
 
   private createPersona(persona: Omit<Persona, 'id'>, modal: NgbModalRef): void {
