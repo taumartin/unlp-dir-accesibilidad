@@ -1,21 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {DataTablesModule} from "angular-datatables";
-import {PageHeadingComponent} from "../../../components/page-heading/page-heading.component";
 import {Config} from 'datatables.net';
 import {DatatablesService} from '../../../services/data/datatables/datatables.service';
 import {UsuariosService} from '../../../services/data/usuarios/usuarios.service';
+import {CrudLayoutComponent} from "../../../components/crud-layout/crud-layout.component";
 
 @Component({
   selector: 'app-abm-usuarios',
-  imports: [
-    DataTablesModule,
-    PageHeadingComponent
-  ],
+  imports: [DataTablesModule, CrudLayoutComponent],
   templateUrl: './abm-usuarios.component.html',
   styleUrl: './abm-usuarios.component.scss'
 })
 export class AbmUsuariosComponent implements OnInit {
   protected dtOptions: Config = {};
+  protected labels = {
+    title: 'ABM Usuarios',
+  }
 
   public constructor(
     private readonly usuariosService: UsuariosService,
