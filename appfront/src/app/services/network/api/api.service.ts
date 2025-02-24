@@ -73,5 +73,11 @@ export class ApiService {
       );
   }
 
-  // TODO: agregar, delete...
+  public deleteEndpoint<T extends ApiSuccessResponse = ApiSuccessResponse,
+    U extends ApiErrorResponse = ApiErrorResponse>(endpoint: string, params?: any): Observable<T | U> {
+    return this.http.delete<T>(`${this.baseUrl}/${endpoint}`, {params, withCredentials: true})
+      .pipe(
+        catchError((error: HttpErrorResponse) => of(this.parseApiError<U>(error)))
+      );
+  }
 }

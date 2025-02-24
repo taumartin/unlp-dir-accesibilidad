@@ -42,7 +42,7 @@ export class TopbarComponent implements OnInit, OnDestroy {
   protected iconLogout = faSignOutAlt;
   protected iconLogin = faSignInAlt;
 
-  // FIXME: habilitar estas funciones en v2.
+  // VERSION 2.0: habilitar estas funciones
   protected showSearchBar = false;
   protected showNotifications = false;
   protected showMessages = false;
