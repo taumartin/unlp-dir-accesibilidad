@@ -1,5 +1,78 @@
-<!-- Page Heading -->
-<app-page-heading heading="ABM Personas"></app-page-heading>
+<app-crud-layout [labels]="labels"
+                 [dtOptions]="dtOptions"
+                 [createModalTemplate]="createModal"
+                 [formInvalid]="!personaForm.valid"
+                 [isProcessing]="isCreatingPersona"
+                 (createEntity)="onCreateEntity($event)"
+                 (entitySaved)="onEntitySaved($event)"></app-crud-layout>
 
-<!-- Page Content -->
-<table datatable [dtOptions]="dtOptions" class="table table-light table-hover"></table>
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="personaForm" (ngSubmit)="onSavePersona(modal)" autocomplete="off">
+    <div class="col-12 col-sm-6">
+      <label for="inputName" class="form-label required">Nombre:</label>
+      <input type="text" id="inputName" class="form-control"
+             [class.is-invalid]="isInvalid(name)" [class.is-valid]="isValid(name)"
+             placeholder="Juan" name="name" formControlName="name" required maxlength="100"
+             aria-describedby="nameFeedback">
+      <div id="nameFeedback" class="invalid-feedback">
+        {{ name?.errors?.['required'] ? 'El nombre es obligatorio.' : '' }}
+        {{ name?.errors?.['maxlength'] ? 'El nombre es muy largo.' : '' }}
+        {{ name?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <label for="inputLastname" class="form-label required">Apellido:</label>
+      <input type="text" id="inputLastname" class="form-control"
+             [class.is-invalid]="isInvalid(lastname)" [class.is-valid]="isValid(lastname)"
+             placeholder="Pérez" name="lastname" formControlName="lastname" required maxlength="100"
+             aria-describedby="lastnameFeedback">
+      <div id="lastnameFeedback" class="invalid-feedback">
+        {{ lastname?.errors?.['required'] ? 'El apellido es obligatorio.' : '' }}
+        {{ lastname?.errors?.['maxlength'] ? 'El apellido es muy largo.' : '' }}
+        {{ lastname?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <label for="inputDocumentNumber" class="form-label required">DNI:</label>
+      <input type="number" id="inputDocumentNumber" class="form-control"
+             [class.is-invalid]="isInvalid(documentNumber)" [class.is-valid]="isValid(documentNumber)"
+             placeholder="33444555" name="documentNumber" formControlName="documentNumber" required
+             minlength="8" maxlength="8" min="10000000" max="99999999"
+             aria-describedby="documentNumberHelp documentNumberFeedback">
+      <div id="documentNumberHelp" class="form-text">
+        Sin puntos.
+      </div>
+      <div id="documentNumberFeedback" class="invalid-feedback">
+        {{ documentNumber?.errors?.['required'] ? 'El DNI es obligatorio.' : '' }}
+        {{ (documentNumber?.errors?.['min'] || documentNumber?.errors?.['max'] || documentNumber?.errors?.['pattern']) ? 'Ingresa un DNI válido.' : '' }}
+        {{ documentNumber?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <label for="inputEmail" class="form-label required">E-mail:</label>
+      <input type="email" id="inputEmail" class="form-control"
+             [class.is-invalid]="isInvalid(email)" [class.is-valid]="isValid(email)"
+             placeholder="usuario@ejemplo.com" name="email" formControlName="email" required maxlength="100"
+             aria-describedby="emailFeedback">
+      <div id="emailFeedback" class="invalid-feedback">
+        {{ email?.errors?.['required'] ? 'El e-mail es obligatorio.' : '' }}
+        {{ email?.errors?.['maxlength'] ? 'El e-mail es muy largo.' : '' }}
+        {{ email?.errors?.['email'] ? 'Ingresa un e-mail válido.' : '' }}
+        {{ email?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <label for="inputPhone" class="form-label">Teléfono:</label>
+      <input type="tel" id="inputPhone" class="form-control"
+             [class.is-invalid]="isInvalid(phone)" [class.is-valid]="isValid(phone)"
+             placeholder="221 3333-4444" name="phone" formControlName="phone" maxlength="25"
+             aria-describedby="phoneFeedback">
+      <div id="phoneFeedback" class="invalid-feedback">
+        {{ phone?.errors?.['maxlength'] ? 'El teléfono es muy largo.' : '' }}
+        {{ phone?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!personaForm.valid || isCreatingPersona"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>

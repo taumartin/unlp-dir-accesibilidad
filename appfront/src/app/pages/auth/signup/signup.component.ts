@@ -125,7 +125,6 @@ export class SignupComponent {
     return this.signupForm.get('passwordRetype');
   }
 
-
   protected isInvalid(control: AbstractControl | null): boolean {
     return this.formService.isInputInvalid(control);
   }

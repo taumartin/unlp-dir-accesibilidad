@@ -1,0 +1,41 @@
+<!-- ABM Heading. -->
+<app-page-heading [heading]="labels['title'] || 'ABM'"></app-page-heading>
+
+<!-- Create new Entity. -->
+@if (createModalTemplate) {
+  <button class="btn btn-success text-light mb-2" #openCreationModalButton
+          (click)="openCreationModal(creationModalTemplate, openCreationModalButton)">
+    <fa-icon [icon]="iconCreate" [fixedWidth]="true" size="sm"></fa-icon>
+    {{ labels['creation'] || 'Crear Nueva Entidad' }}
+  </button>
+  <ng-template #creationModalTemplate let-modal>
+    <div class="modal-header bg-success text-light">
+      <h5 class="modal-title">{{ labels['creation'] || 'Crear Nueva Entidad' }}</h5>
+      <button type="button" class="btn-close btn-close-white" aria-label="Cerrar"
+              (click)="dismissModal(modal, 'CLOSED')"></button>
+    </div>
+    <div class="modal-body">
+      <ng-container [ngTemplateOutlet]="createModalTemplate"
+                    [ngTemplateOutletContext]="{$implicit: modal}"></ng-container>
+    </div>
+    <div class="modal-footer bg-success-subtle">
+      <button type="button" class="btn btn-secondary text-light"
+              (click)="dismissModal(modal, 'CANCELLED')">Cancelar
+      </button>
+      <button type="button" class="btn btn-success text-light"
+              [disabled]="formInvalid || isProcessing"
+              (click)="onSaveEntity(modal)">
+        @if (!isProcessing) {
+          Guardar
+        } @else {
+          <output aria-live="polite">
+            <span class="spinner-border spinner-border-sm"></span> Guardando...
+          </output>
+        }
+      </button>
+    </div>
+  </ng-template>
+}
+
+<!-- Entities List. -->
+<table datatable [dtOptions]="dtOptions" class="table table-light table-hover"></table>

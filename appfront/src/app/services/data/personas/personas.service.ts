@@ -4,6 +4,8 @@ import {Persona} from '../../../models/persona';
 import {Observable} from 'rxjs';
 import {ApiResponsePage} from '../../network/api/api-response-page';
 import {ApiPageRequest} from '../../network/api/api-page-request';
+import {ApiSuccessResponse} from '../../network/api/api-success-response';
+import {ApiErrorResponse} from '../../network/api/api-error-response';
 
 @Injectable({
   providedIn: 'root'
@@ -20,5 +22,19 @@ export class PersonasService {
     return this.apiService.getPaginatedEndpoint<Persona>(`${this.baseEndpoint}/`, pageRequested);
   }
 
-  // TODO: agregar resto de operaciones..
+  public getPersonaById(id: number): Observable<ApiSuccessResponse<Persona> | ApiErrorResponse> {
+    return this.apiService.getEndpoint<ApiSuccessResponse<Persona>>(`${this.baseEndpoint}/${id}`);
+  }
+
+  public createPersona(persona: Omit<Persona, 'id'>): Observable<ApiSuccessResponse | ApiErrorResponse> {
+    return this.apiService.postEndpoint<ApiSuccessResponse>(`${this.baseEndpoint}/`, persona);
+  }
+
+  public updatePersona(id: number, persona: Partial<Persona>): Observable<ApiSuccessResponse | ApiErrorResponse> {
+    return this.apiService.postEndpoint<ApiSuccessResponse>(`${this.baseEndpoint}/${id}`, persona);
+  }
+
+  public deletePersona(id: number): Observable<ApiSuccessResponse | ApiErrorResponse> {
+    return this.apiService.deleteEndpoint<ApiSuccessResponse>(`${this.baseEndpoint}/${id}`);
+  }
 }

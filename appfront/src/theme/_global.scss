@@ -49,6 +49,13 @@ table.dataTable {
   }
 }
 
+label.form-label.required::after {
+  content: " (*)";
+  color: red;
+  font-style: italic;
+  font-size: 80%;
+}
+
 // Main page wrapper
 #wrapper {
   display: flex;

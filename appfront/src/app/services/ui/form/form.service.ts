@@ -35,8 +35,6 @@ export class FormService {
           control.markAsTouched();
         }
       });
-    } else {
-      console.log("p");
     }
   }
 }
