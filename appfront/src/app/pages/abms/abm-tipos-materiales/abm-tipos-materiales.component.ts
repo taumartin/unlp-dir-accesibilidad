@@ -25,8 +25,8 @@ export class AbmTiposMaterialesComponent implements OnInit {
 
   public ngOnInit(): void {
     this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id',},
-      {title: 'Nombre', data: 'nombre', name: 'nombre',},
+      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
+      {title: 'Nombre', data: 'nombre', name: 'nombre'},
     ], (pagReq) => this.tiposMaterialesService.getTiposMateriales(pagReq));
   }
 }

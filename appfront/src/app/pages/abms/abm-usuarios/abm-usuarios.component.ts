@@ -25,14 +25,17 @@ export class AbmUsuariosComponent implements OnInit {
 
   public ngOnInit(): void {
     this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id',},
-      {title: 'Nombre', data: 'nombre', name: 'nombre',},
-      {title: 'Correo', data: 'correo', name: 'correo',},
+      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
+      {title: 'Usuario', data: 'nombre', name: 'nombre'},
+      {title: 'E-mail', data: 'correo', name: 'correo'},
       {
-        title: 'Admin', data: 'esAdmin', name: 'esAdmin',
+        title: 'Admin', data: 'esAdmin', name: 'esAdmin', className: 'text-center',
         render: data => data ? 'Sí' : 'No',
       },
-      // TODO: agregar fotoDePerfil...
+      {
+        title: 'Avatar', data: 'fotoDePerfil', name: 'fotoDePerfil', className: 'text-center',
+        render: data => data ? `<img src="${data}" alt="Avatar " class="img-data-avatar">` : null,
+      },
     ], (pagReq) => this.usuariosService.getUsuarios(pagReq));
   }
 }

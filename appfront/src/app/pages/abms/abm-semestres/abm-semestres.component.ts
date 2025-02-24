@@ -25,8 +25,8 @@ export class AbmSemestresComponent implements OnInit {
 
   public ngOnInit(): void {
     this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id',},
-      {title: 'Año', data: 'anio', name: 'anio',},
+      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
+      {title: 'Año', data: 'anio', name: 'anio', className: 'text-center'},
       {
         title: '1° Semestre', data: 'esPrimerSemestre', name: 'esPrimerSemestre',
         render: data => data ? 'Sí' : 'No',

@@ -25,9 +25,9 @@ export class AbmEventosComponent implements OnInit {
 
   public ngOnInit(): void {
     this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id',},
+      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
       {
-        title: 'Fecha', data: '_timestamp', name: 'fechaYHora',
+        title: 'Fecha', data: '_timestamp', name: 'fechaYHora', className: 'text-center',
         render: data => data.toLocaleTimeString('es-ES', {
           day: '2-digit',
           month: '2-digit',
@@ -35,9 +35,9 @@ export class AbmEventosComponent implements OnInit {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
-        })
-      }, // FIXME: ordena mal al ir contra el API...
-      {title: 'Descripción', data: 'descripcion', name: 'descripcion',},
+        }),
+      },
+      {title: 'Descripción', data: 'descripcion', name: 'descripcion'},
     ], (pagReq) => this.eventosService.getEventos(pagReq));
   }
 }

@@ -22,7 +22,7 @@ class EventoRepository extends BaseRepository {
     listEventos(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
             page, pageSize, search,
-            searchFields: ['fechaYHora', 'descripcion'],
+            searchFields: ['descripcion'],
             orderBy, orderDirection,
         });
     }

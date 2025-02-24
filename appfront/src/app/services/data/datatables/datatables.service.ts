@@ -26,6 +26,9 @@ export class DatatablesService {
         tr.classList.add('table-primary');
       },
       columns,
+      initComplete: (settings) => {
+        settings['nTable'].parentElement.classList.add('table-responsive');
+      }
     };
   }
 

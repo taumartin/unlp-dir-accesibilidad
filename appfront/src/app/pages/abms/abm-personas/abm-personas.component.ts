@@ -22,12 +22,12 @@ export class AbmPersonasComponent implements OnInit {
 
   public ngOnInit(): void {
     this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id',},
-      {title: 'Nombre', data: 'nombre', name: 'nombre',},
-      {title: 'Apellido', data: 'apellido', name: 'apellido',},
-      {title: 'DNI', data: 'dni', name: 'dni',},
-      {title: 'Teléfono', data: 'telefono', name: 'telefono',},
-      {title: 'E-mail', data: 'email', name: 'email',},
+      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
+      {title: 'Nombre', data: 'nombre', name: 'nombre'},
+      {title: 'Apellido', data: 'apellido', name: 'apellido'},
+      {title: 'DNI', data: 'dni', name: 'dni', className: 'text-center'},
+      {title: 'Teléfono', data: 'telefono', name: 'telefono'},
+      {title: 'E-mail', data: 'email', name: 'email'},
     ], (pagReq) => this.personasService.getPersonas(pagReq));
   }
 }

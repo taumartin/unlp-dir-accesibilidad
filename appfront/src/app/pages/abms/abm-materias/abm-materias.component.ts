@@ -25,10 +25,10 @@ export class AbmMateriasComponent implements OnInit {
 
   public ngOnInit(): void {
     this.dtOptions = this.datatablesService.getOptionsServerSide([
-      {title: 'ID', data: 'id', name: 'id',},
-      {title: 'Nombre', data: 'nombre', name: 'nombre',},
-      {title: 'Docentes', data: 'docentes', name: 'docentes',},
-      {title: 'Contacto', data: 'contacto', name: 'contacto',},
+      {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
+      {title: 'Nombre', data: 'nombre', name: 'nombre'},
+      {title: 'Docentes', data: 'docentes', name: 'docentes'},
+      {title: 'Contacto', data: 'contacto', name: 'contacto'},
     ], (pagReq) => this.materiasService.getMaterias(pagReq));
   }
 }
