@@ -1,24 +1,29 @@
 <!-- ABM Heading. -->
 <app-page-heading [heading]="labels['title'] || 'ABM'"></app-page-heading>
 
-<!-- Create new Entity. -->
-@if (createModalTemplate) {
-  <ng-template #creationModalTemplate let-modal>
+@if (entityModalBodyTemplate) {
+  <!-- Entity Manipulation Modal. -->
+  <ng-template #entityModalTemplate let-modal>
     <div class="modal-header bg-success text-light">
-      <h5 class="modal-title">{{ labels['creation'] || 'Crear Nueva Entidad' }}</h5>
+      <h5 class="modal-title">
+        @if (isEditing) {
+          {{ labels['edition'] || 'Ver/Editar Entidad' }}
+        } @else {
+          {{ labels['creation'] || 'Crear Nueva Entidad' }}
+        }
+      </h5>
       <button type="button" class="btn-close btn-close-white" aria-label="Cerrar"
               (click)="dismissModal(modal, 'CLOSED')"></button>
     </div>
     <div class="modal-body">
-      <ng-container [ngTemplateOutlet]="createModalTemplate"
+      <ng-container [ngTemplateOutlet]="entityModalBodyTemplate"
                     [ngTemplateOutletContext]="{$implicit: modal}"></ng-container>
     </div>
     <div class="modal-footer bg-success-subtle">
       <button type="button" class="btn btn-secondary text-light"
               (click)="dismissModal(modal, 'CANCELLED')">Cancelar
       </button>
-      <button type="button" class="btn btn-success text-light"
-              [disabled]="formInvalid || isProcessing"
+      <button type="button" class="btn btn-success text-light" [disabled]="formInvalid || isProcessing"
               (click)="onSaveEntity(modal)">
         @if (!isProcessing) {
           Guardar
@@ -34,7 +39,7 @@
   <div class="row">
     <div class="col-12 col-md-auto">
       <button class="btn btn-success text-light mb-2" #openCreationModalButton
-              (click)="openCreationModal(creationModalTemplate, openCreationModalButton)">
+              (click)="openEntityModalForCreation(openCreationModalButton)">
         <fa-icon [icon]="iconCreate" [fixedWidth]="true" size="sm"></fa-icon>
         {{ labels['creation'] || 'Crear Nueva Entidad' }}
       </button>
@@ -52,7 +57,7 @@
 
 <!-- Entities List. -->
 <table datatable [dtOptions]="dtOptions" class="table table-light"
-       [class.clickable]="!!createModalTemplate" [class.table-hover]="!!createModalTemplate">
+       [class.clickable]="!!entityModalBodyTemplate" [class.table-hover]="!!entityModalBodyTemplate">
   <caption class="d-none">
     Lista de registros existentes para la búsqueda actual.
   </caption>

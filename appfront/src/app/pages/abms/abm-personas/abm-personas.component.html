@@ -1,11 +1,11 @@
 <app-crud-layout [labels]="labels"
                  [dtColumns]="dtColumns"
                  [dtSource]="dtSource"
-                 [createModalTemplate]="createModal"
+                 [entityModalBodyTemplate]="createModal"
                  [formInvalid]="!personaForm.valid"
-                 [isProcessing]="isCreatingPersona"
-                 (createEntity)="onCreateEntity($event)"
-                 (entitySaved)="onEntitySaved($event)"></app-crud-layout>
+                 [isProcessing]="isCreatingPersona || isEditingPersona"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSavePersona($event)"></app-crud-layout>
 
 <ng-template #createModal let-modal>
   <form class="row g-3" [formGroup]="personaForm" (ngSubmit)="onSavePersona(modal)" autocomplete="off">
