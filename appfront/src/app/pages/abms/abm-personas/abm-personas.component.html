@@ -13,7 +13,7 @@
 
 <ng-template #createModal let-modal>
   <form class="row g-3" [formGroup]="personaForm" (ngSubmit)="onSavePersona(modal)" autocomplete="off">
-    <div class="col-12 col-sm-6">
+    <div class="col-12 col-md-6 order-1">
       <label for="inputName" class="form-label required">Nombre:</label>
       <input type="text" id="inputName" class="form-control"
              [class.is-invalid]="!readonlyInputs && isInvalid(name)" [class.is-valid]="!readonlyInputs && isValid(name)"
@@ -25,7 +25,7 @@
         {{ name?.errors?.['backend'] ?? '' }}
       </div>
     </div>
-    <div class="col-12 col-sm-6">
+    <div class="col-12 col-md-6 order-2">
       <label for="inputLastname" class="form-label required">Apellido:</label>
       <input type="text" id="inputLastname" class="form-control"
              [class.is-invalid]="!readonlyInputs && isInvalid(lastname)"
@@ -38,7 +38,7 @@
         {{ lastname?.errors?.['backend'] ?? '' }}
       </div>
     </div>
-    <div class="col-12 col-sm-6">
+    <div class="col-12 col-md-6 order-3 order-md-4 order-lg-3">
       <label for="inputDocumentNumber" class="form-label required">DNI:</label>
       <input type="number" id="inputDocumentNumber" class="form-control"
              [class.is-invalid]="!readonlyInputs && isInvalid(documentNumber)"
@@ -55,7 +55,7 @@
         {{ documentNumber?.errors?.['backend'] ?? '' }}
       </div>
     </div>
-    <div class="col-12 col-sm-6">
+    <div class="col-12 col-lg-6 order-4 order-md-3 order-lg-4">
       <label for="inputEmail" class="form-label required">E-mail:</label>
       <input type="email" id="inputEmail" class="form-control"
              [class.is-invalid]="!readonlyInputs && isInvalid(email)"
@@ -69,7 +69,7 @@
         {{ email?.errors?.['backend'] ?? '' }}
       </div>
     </div>
-    <div class="col-12 col-sm-6">
+    <div class="col-12 col-md-6 order-5">
       <label for="inputPhone" class="form-label">Teléfono:</label>
       <input type="tel" id="inputPhone" class="form-control"
              [class.is-invalid]="!readonlyInputs && isInvalid(phone)"
