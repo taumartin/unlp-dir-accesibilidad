@@ -11,6 +11,7 @@ import {Observable} from 'rxjs';
 import {ApiResponsePage} from '../../services/network/api/api-response-page';
 import {DatatablesService} from '../../services/data/datatables/datatables.service';
 import {ToastService} from '../../services/ui/toast/toast.service';
+import {ConfirmDialogModalComponent} from '../confirm-dialog-modal/confirm-dialog-modal.component';
 
 export interface CrudLayoutEntityModalOpenEvent<T> {
   entity?: T;
@@ -32,7 +33,7 @@ export interface CrudLayoutEntityModalOpenEvent<T> {
 export class CrudLayoutComponent<T> implements OnInit {
   protected iconCreate = faPlus;
   protected dtOptions: Config = {};
-  protected isEditing = false;
+  protected isEntitySelected = false;
 
   @ViewChild('entityModalTemplate')
   protected entityModalTemplate!: TemplateRef<any>;
@@ -50,7 +51,18 @@ export class CrudLayoutComponent<T> implements OnInit {
   @Input()
   public formInvalid: boolean = true;
   @Input()
-  public isProcessing: boolean = false;
+  public isSaving: boolean = false;
+  @Input()
+  public isDeleting: boolean = false;
+  @Input()
+  public isEditionEnabled: boolean = false;
+  @Output()
+  public isEditionEnabledChange = new EventEmitter<boolean>();
+
+
+  protected get canDismissModal(): boolean {
+    return !this.isSaving && !this.isDeleting;
+  }
 
   @Output()
   public entityModalOpen = new EventEmitter<CrudLayoutEntityModalOpenEvent<T>>();
@@ -58,6 +70,8 @@ export class CrudLayoutComponent<T> implements OnInit {
   public entityModalDismiss = new EventEmitter<void>();
   @Output()
   public entityModalSave = new EventEmitter<NgbModalRef>();
+  @Output()
+  public entityModalDelete = new EventEmitter<void>();
 
   constructor(
     private readonly modalService: NgbModal,
@@ -66,8 +80,14 @@ export class CrudLayoutComponent<T> implements OnInit {
   ) {
   }
 
+  private setIsEditionEnabled(value: boolean): void {
+    this.isEditionEnabled = value;
+    this.isEditionEnabledChange.emit(this.isEditionEnabled);
+  }
+
   private onRowClick(dataRow: T, rowIndex: number): void {
-    this.isEditing = true;
+    this.isEntitySelected = true;
+    this.setIsEditionEnabled(false);
     this.openEntityModal(dataRow, rowIndex);
   }
 
@@ -84,12 +104,26 @@ export class CrudLayoutComponent<T> implements OnInit {
       this.entityModalBodyTemplate ? (data: T, index: number): void => this.onRowClick(data, index) : undefined);
   }
 
+  private triggerModalShake(): void {
+    const modalWindow = document.querySelector('ngb-modal-window');
+    if (modalWindow) {
+      modalWindow.classList.add('modal-static');
+      setTimeout(() => modalWindow.classList.remove('modal-static'), 200);
+    }
+  }
+
   private openEntityModal(entity?: T, rowIndex?: number): NgbModalRef {
     const modal = this.modalService.open(this.entityModalTemplate, {
       backdrop: 'static',
       keyboard: true,
       centered: true,
       size: "xl",
+      beforeDismiss: () => {
+        if (!this.canDismissModal) {
+          this.triggerModalShake();
+        }
+        return this.canDismissModal;
+      },
       modalDialogClass: 'modal-dialog-centered modal-dialog-scrollable',
     });
     this.entityModalOpen.emit({entity, modal, rowIndex});
@@ -111,7 +145,8 @@ export class CrudLayoutComponent<T> implements OnInit {
   }
 
   protected openEntityModalForCreation(btn: HTMLButtonElement): void {
-    this.isEditing = false;
+    this.isEntitySelected = false;
+    this.setIsEditionEnabled(false);
     const modal = this.openEntityModal();
     modal.result.finally(() => {
       btn.focus();
@@ -120,5 +155,26 @@ export class CrudLayoutComponent<T> implements OnInit {
 
   protected onSaveEntity(modal: NgbModalRef): void {
     this.entityModalSave.emit(modal);
+  }
+
+  protected onDeleteEntity(): void {
+    const modalRef = this.modalService.open(ConfirmDialogModalComponent, {backdrop: 'static', keyboard: true});
+    modalRef.componentInstance.message = 'Se eliminarán el registro seleccionado y las posibles relaciones que tenga con otros datos. ' +
+      'Esta operación podría no ser reversible (los datos eliminados no se podrán recuperar). Acepta para continuar con la operación.';
+    modalRef.result
+      .then((result) => {
+        if (result === 'CONFIRMED') {
+          this.entityModalDelete.emit();
+        }
+      })
+      .catch((reason) => {
+        if (![1, 'CANCELLED', 'CLOSED'].includes(reason)) {
+          this.toastService.showStandardToast({body: 'La operación fue cancelada.'});
+        }
+      });
+  }
+
+  public onEditToggle(): void {
+    this.setIsEditionEnabled(!this.isEditionEnabled);
   }
 }

@@ -6,13 +6,13 @@
   <ng-template #entityModalTemplate let-modal>
     <div class="modal-header bg-success text-light">
       <h5 class="modal-title">
-        @if (isEditing) {
+        @if (isEntitySelected) {
           {{ labels['edition'] || 'Ver/Editar Entidad' }}
         } @else {
           {{ labels['creation'] || 'Crear Nueva Entidad' }}
         }
       </h5>
-      <button type="button" class="btn-close btn-close-white" aria-label="Cerrar"
+      <button type="button" class="btn-close btn-close-white" aria-label="Cerrar" [disabled]="!canDismissModal"
               (click)="dismissModal(modal, 'CLOSED')"></button>
     </div>
     <div class="modal-body">
@@ -20,12 +20,33 @@
                     [ngTemplateOutletContext]="{$implicit: modal}"></ng-container>
     </div>
     <div class="modal-footer bg-success-subtle">
-      <button type="button" class="btn btn-secondary text-light"
+      <button type="button" class="btn btn-secondary text-light" [disabled]="!canDismissModal"
               (click)="dismissModal(modal, 'CANCELLED')">Cancelar
       </button>
-      <button type="button" class="btn btn-success text-light" [disabled]="formInvalid || isProcessing"
+      @if (isEntitySelected) {
+        <div>
+          <input type="checkbox" class="btn-check" id="btn-check-outlined" [checked]="isEditionEnabled"
+                 autocomplete="off" [disabled]="isSaving || isDeleting">
+          <label class="btn btn-outline-primary" for="btn-check-outlined" [class.text-light]="isEditionEnabled"
+                 (click)="onEditToggle()" (keydown.enter)="onEditToggle()"
+                 (keydown.space)="onEditToggle()">Habilitar Edición</label>
+        </div>
+        <button type="button" class="btn btn-danger text-light"
+                [disabled]="formInvalid || isSaving || isDeleting || (isEntitySelected && !isEditionEnabled)"
+                (click)="onDeleteEntity()">
+          @if (!isDeleting) {
+            Eliminar
+          } @else {
+            <output aria-live="polite">
+              <span class="spinner-border spinner-border-sm"></span> Eliminando...
+            </output>
+          }
+        </button>
+      }
+      <button type="button" class="btn btn-success text-light"
+              [disabled]="formInvalid || isSaving || isDeleting || (isEntitySelected && !isEditionEnabled)"
               (click)="onSaveEntity(modal)">
-        @if (!isProcessing) {
+        @if (!isSaving) {
           Guardar
         } @else {
           <output aria-live="polite">

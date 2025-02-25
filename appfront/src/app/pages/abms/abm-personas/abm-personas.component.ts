@@ -39,10 +39,16 @@ export class AbmPersonasComponent {
   ];
   protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Persona>> = (pagReq) => this.personasService.getPersonas(pagReq);
   protected isCreatingPersona = false;
-  protected isEditingPersona = false;
+  protected isUpdatingPersona = false;
+  protected isDeletingPersona = false;
+  protected isEditing = false;
+
+  protected get readonlyInputs(): boolean {
+    return !!this.selectedPersona && !this.isEditing;
+  }
 
   private entityModal: NgbModalRef | null = null;
-  private selectedPersona: Persona | null = null;
+  protected selectedPersona: Persona | null = null;
 
   private readonly formBuilder = inject(FormBuilder);
   protected personaForm = this.formBuilder.group({
@@ -119,13 +125,25 @@ export class AbmPersonasComponent {
     }
   }
 
-  private editPersona(persona: Omit<Persona, 'id'>): void {
-    if (!this.isEditingPersona && this.selectedPersona) {
-      this.isEditingPersona = true;
+  private updatePersona(persona: Omit<Persona, 'id'>): void {
+    if (!this.isUpdatingPersona && this.selectedPersona) {
+      this.isUpdatingPersona = true;
       this.personasService.updatePersona(this.selectedPersona.id, persona).subscribe({
         next: result => this.onEntitySaveEnd(result),
         complete: () => {
-          this.isEditingPersona = false;
+          this.isUpdatingPersona = false;
+        }
+      });
+    }
+  }
+
+  private deletePersona(): void {
+    if (!this.isDeletingPersona && this.selectedPersona) {
+      this.isDeletingPersona = true;
+      this.personasService.deletePersona(this.selectedPersona.id).subscribe({
+        next: result => this.onEntitySaveEnd(result),
+        complete: () => {
+          this.isDeletingPersona = false;
         }
       });
     }
@@ -144,7 +162,7 @@ export class AbmPersonasComponent {
         telefono: phone ?? '',
       };
       if (this.selectedPersona) {
-        this.editPersona(newPersona)
+        this.updatePersona(newPersona)
       } else {
         this.createPersona(newPersona);
       }
@@ -164,5 +182,9 @@ export class AbmPersonasComponent {
         phone: this.selectedPersona.telefono,
       });
     }
+  }
+
+  protected onDeletePersona(): void {
+    this.deletePersona();
   }
 }

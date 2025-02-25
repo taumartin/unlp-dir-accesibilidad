@@ -55,6 +55,15 @@ table.dataTable {
   }
 }
 
+input.form-control:read-only {
+  background-color: #f8f9fa !important;
+  border: none !important;
+  color: #6c757d !important;
+  cursor: default;
+  font-weight: bold;
+}
+
+
 label.form-label.required::after {
   content: " (*)";
   color: red;

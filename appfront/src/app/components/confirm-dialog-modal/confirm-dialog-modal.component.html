@@ -1,0 +1,11 @@
+<div class="modal-header bg-primary text-light">
+  <h4 class="modal-title">Confirmación</h4>
+  <button type="button" class="btn-close btn-close-white" aria-label="Cerrar" (click)="dismiss('CLOSED')"></button>
+</div>
+<div class="modal-body">
+  <p class="mb-0">{{ message }}</p>
+</div>
+<div class="modal-footer bg-primary-subtle">
+  <button type="button" class="btn btn-secondary text-light" (click)="dismiss('CANCELLED')">Cancelar</button>
+  <button type="button" class="btn btn-primary text-light" (click)="confirm()">Aceptar</button>
+</div>

@@ -3,18 +3,21 @@
                  [dtSource]="dtSource"
                  [entityModalBodyTemplate]="createModal"
                  [formInvalid]="!personaForm.valid"
-                 [isProcessing]="isCreatingPersona || isEditingPersona"
+                 [isSaving]="isCreatingPersona || isUpdatingPersona"
+                 [isDeleting]="isDeletingPersona"
+                 [(isEditionEnabled)]="isEditing"
                  (entityModalOpen)="onEntityModalOpen($event)"
-                 (entityModalSave)="onSavePersona($event)"></app-crud-layout>
+                 (entityModalSave)="onSavePersona($event)"
+                 (entityModalDelete)="onDeletePersona()"></app-crud-layout>
 
 <ng-template #createModal let-modal>
   <form class="row g-3" [formGroup]="personaForm" (ngSubmit)="onSavePersona(modal)" autocomplete="off">
     <div class="col-12 col-sm-6">
       <label for="inputName" class="form-label required">Nombre:</label>
       <input type="text" id="inputName" class="form-control"
-             [class.is-invalid]="isInvalid(name)" [class.is-valid]="isValid(name)"
+             [class.is-invalid]="!readonlyInputs && isInvalid(name)" [class.is-valid]="!readonlyInputs && isValid(name)"
              placeholder="Juan" name="name" formControlName="name" required maxlength="100"
-             aria-describedby="nameFeedback">
+             aria-describedby="nameFeedback" [readonly]="readonlyInputs">
       <div id="nameFeedback" class="invalid-feedback">
         {{ name?.errors?.['required'] ? 'El nombre es obligatorio.' : '' }}
         {{ name?.errors?.['maxlength'] ? 'El nombre es muy largo.' : '' }}
@@ -24,9 +27,10 @@
     <div class="col-12 col-sm-6">
       <label for="inputLastname" class="form-label required">Apellido:</label>
       <input type="text" id="inputLastname" class="form-control"
-             [class.is-invalid]="isInvalid(lastname)" [class.is-valid]="isValid(lastname)"
+             [class.is-invalid]="!readonlyInputs && isInvalid(lastname)"
+             [class.is-valid]="!readonlyInputs && isValid(lastname)"
              placeholder="Pérez" name="lastname" formControlName="lastname" required maxlength="100"
-             aria-describedby="lastnameFeedback">
+             aria-describedby="lastnameFeedback" [readonly]="readonlyInputs">
       <div id="lastnameFeedback" class="invalid-feedback">
         {{ lastname?.errors?.['required'] ? 'El apellido es obligatorio.' : '' }}
         {{ lastname?.errors?.['maxlength'] ? 'El apellido es muy largo.' : '' }}
@@ -36,10 +40,11 @@
     <div class="col-12 col-sm-6">
       <label for="inputDocumentNumber" class="form-label required">DNI:</label>
       <input type="number" id="inputDocumentNumber" class="form-control"
-             [class.is-invalid]="isInvalid(documentNumber)" [class.is-valid]="isValid(documentNumber)"
+             [class.is-invalid]="!readonlyInputs && isInvalid(documentNumber)"
+             [class.is-valid]="!readonlyInputs && isValid(documentNumber)"
              placeholder="33444555" name="documentNumber" formControlName="documentNumber" required
              minlength="8" maxlength="8" min="10000000" max="99999999"
-             aria-describedby="documentNumberHelp documentNumberFeedback">
+             aria-describedby="documentNumberHelp documentNumberFeedback" [readonly]="readonlyInputs">
       <div id="documentNumberHelp" class="form-text">
         Sin puntos.
       </div>
@@ -52,9 +57,10 @@
     <div class="col-12 col-sm-6">
       <label for="inputEmail" class="form-label required">E-mail:</label>
       <input type="email" id="inputEmail" class="form-control"
-             [class.is-invalid]="isInvalid(email)" [class.is-valid]="isValid(email)"
+             [class.is-invalid]="!readonlyInputs && isInvalid(email)"
+             [class.is-valid]="!readonlyInputs && isValid(email)"
              placeholder="usuario@ejemplo.com" name="email" formControlName="email" required maxlength="100"
-             aria-describedby="emailFeedback">
+             aria-describedby="emailFeedback" [readonly]="readonlyInputs">
       <div id="emailFeedback" class="invalid-feedback">
         {{ email?.errors?.['required'] ? 'El e-mail es obligatorio.' : '' }}
         {{ email?.errors?.['maxlength'] ? 'El e-mail es muy largo.' : '' }}
@@ -65,9 +71,10 @@
     <div class="col-12 col-sm-6">
       <label for="inputPhone" class="form-label">Teléfono:</label>
       <input type="tel" id="inputPhone" class="form-control"
-             [class.is-invalid]="isInvalid(phone)" [class.is-valid]="isValid(phone)"
+             [class.is-invalid]="!readonlyInputs && isInvalid(phone)"
+             [class.is-valid]="!readonlyInputs && isValid(phone)"
              placeholder="221 3333-4444" name="phone" formControlName="phone" maxlength="25"
-             aria-describedby="phoneFeedback">
+             aria-describedby="phoneFeedback" [readonly]="readonlyInputs">
       <div id="phoneFeedback" class="invalid-feedback">
         {{ phone?.errors?.['maxlength'] ? 'El teléfono es muy largo.' : '' }}
         {{ phone?.errors?.['backend'] ?? '' }}
