@@ -11,7 +11,7 @@ import {Observable} from 'rxjs';
 import {ApiResponsePage} from '../../services/network/api/api-response-page';
 import {DatatablesService} from '../../services/data/datatables/datatables.service';
 import {ToastService} from '../../services/ui/toast/toast.service';
-import {ConfirmDialogModalComponent} from '../confirm-dialog-modal/confirm-dialog-modal.component';
+import {DialogService} from '../../services/ui/dialog/dialog.service';
 
 export interface CrudLayoutEntityModalOpenEvent<T> {
   entity?: T;
@@ -55,10 +55,15 @@ export class CrudLayoutComponent<T> implements OnInit {
   @Input()
   public isDeleting: boolean = false;
   @Input()
+  public isEntityModified: boolean = false;
+  @Input()
   public isEditionEnabled: boolean = false;
   @Output()
   public isEditionEnabledChange = new EventEmitter<boolean>();
 
+  private get isPendingChanges(): boolean {
+    return this.isEntitySelected && this.isEntityModified;
+  }
 
   protected get canDismissModal(): boolean {
     return !this.isSaving && !this.isDeleting;
@@ -77,6 +82,7 @@ export class CrudLayoutComponent<T> implements OnInit {
     private readonly modalService: NgbModal,
     private readonly datatablesService: DatatablesService,
     private readonly toastService: ToastService,
+    private readonly dialogService: DialogService,
   ) {
   }
 
@@ -122,6 +128,11 @@ export class CrudLayoutComponent<T> implements OnInit {
         if (!this.canDismissModal) {
           this.triggerModalShake();
         }
+        if (this.isPendingChanges) {
+          return this.dialogService.openConfirmDialog('Se ha solicitado cerrar la ventana de edición, pero algunos datos fueron modificados y aún no han sido guardados.<br><br>' +
+            'Si cierra la ventana se perderán las modificaciones no guardadas.<br><br>' +
+            'Presiona <strong>«Aceptar»</strong> para descartar los cambios o <strong>«Cancelar»</strong> para seguir editando.');
+        }
         return this.canDismissModal;
       },
       modalDialogClass: 'modal-dialog-centered modal-dialog-scrollable',
@@ -158,18 +169,12 @@ export class CrudLayoutComponent<T> implements OnInit {
   }
 
   protected onDeleteEntity(): void {
-    const modalRef = this.modalService.open(ConfirmDialogModalComponent, {backdrop: 'static', keyboard: true});
-    modalRef.componentInstance.message = 'Se eliminarán el registro seleccionado y las posibles relaciones que tenga con otros datos. ' +
-      'Esta operación podría no ser reversible (los datos eliminados no se podrán recuperar). Acepta para continuar con la operación.';
-    modalRef.result
-      .then((result) => {
-        if (result === 'CONFIRMED') {
+    this.dialogService.openConfirmDialog('Se ha solicitado la eliminación del registro seleccionado y se requiere confirmación para continuar.<br><br>' +
+      'Esta operación podría ser irreversible (<strong class="text-danger">la información no se podrá recuperar una vez eliminada</strong>).<br><br>' +
+      'Presiona <strong>«Aceptar»</strong> para confirmar la operación de borrado.')
+      .then((confirmed) => {
+        if (confirmed) {
           this.entityModalDelete.emit();
-        }
-      })
-      .catch((reason) => {
-        if (![1, 'CANCELLED', 'CLOSED'].includes(reason)) {
-          this.toastService.showStandardToast({body: 'La operación fue cancelada.'});
         }
       });
   }

@@ -6,6 +6,7 @@
                  [isSaving]="isCreatingPersona || isUpdatingPersona"
                  [isDeleting]="isDeletingPersona"
                  [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isPersonaModified()"
                  (entityModalOpen)="onEntityModalOpen($event)"
                  (entityModalSave)="onSavePersona($event)"
                  (entityModalDelete)="onDeletePersona()"></app-crud-layout>

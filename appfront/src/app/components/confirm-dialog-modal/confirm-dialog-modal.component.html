@@ -3,7 +3,7 @@
   <button type="button" class="btn-close btn-close-white" aria-label="Cerrar" (click)="dismiss('CLOSED')"></button>
 </div>
 <div class="modal-body">
-  <p class="mb-0">{{ message }}</p>
+  <p class="mb-0" [innerHtml]="message"></p>
 </div>
 <div class="modal-footer bg-primary-subtle">
   <button type="button" class="btn btn-secondary text-light" (click)="dismiss('CANCELLED')">Cancelar</button>

@@ -32,7 +32,7 @@
                  (keydown.space)="onEditToggle()">Habilitar Edición</label>
         </div>
         <button type="button" class="btn btn-danger text-light"
-                [disabled]="formInvalid || isSaving || isDeleting || (isEntitySelected && !isEditionEnabled)"
+                [disabled]="isSaving || isDeleting || (isEntitySelected && !isEditionEnabled)"
                 (click)="onDeleteEntity()">
           @if (!isDeleting) {
             Eliminar
@@ -44,7 +44,7 @@
         </button>
       }
       <button type="button" class="btn btn-success text-light"
-              [disabled]="formInvalid || isSaving || isDeleting || (isEntitySelected && !isEditionEnabled)"
+              [disabled]="formInvalid || isSaving || isDeleting || (isEntitySelected && (!isEditionEnabled || !isEntityModified))"
               (click)="onSaveEntity(modal)">
         @if (!isSaving) {
           Guardar

@@ -169,6 +169,20 @@ export class AbmPersonasComponent {
     }
   }
 
+  protected isPersonaModified(): boolean {
+    if (!this.personaForm || !this.selectedPersona) {
+      return false;
+    }
+    const formValues = this.personaForm.value;
+    return this.personasService.isPersonaModified(this.selectedPersona, {
+      nombre: formValues.name ?? undefined,
+      apellido: formValues.lastname ?? undefined,
+      dni: formValues.documentNumber ?? undefined,
+      email: formValues.email ?? undefined,
+      telefono: formValues.phone ?? undefined,
+    });
+  }
+
   protected onEntityModalOpen(event: CrudLayoutEntityModalOpenEvent<Persona>): void {
     this.personaForm.reset();
     this.entityModal = event.modal;

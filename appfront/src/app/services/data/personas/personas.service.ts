@@ -37,4 +37,10 @@ export class PersonasService {
   public deletePersona(id: number): Observable<ApiSuccessResponse | ApiErrorResponse> {
     return this.apiService.deleteEndpoint<ApiSuccessResponse>(`${this.baseEndpoint}/${id}`);
   }
+
+  public isPersonaModified(original: Persona, newValues: Partial<Omit<Persona, 'id'>>): boolean {
+    return (original.nombre !== newValues.nombre) || (original.apellido !== newValues.apellido)
+      || (original.dni !== newValues.dni) || (original.email !== newValues.email)
+      || (original.telefono !== newValues.telefono);
+  }
 }
