@@ -9,7 +9,7 @@ router.get('/', personaController.listAll);
 /** Get Persona by ID. */
 router.get('/:id', personaController.findById);
 /** Update Persona by ID. */
-router.post('/:id', personaController.update);
+router.post('/:id', personaController.updateValidation, personaController.update);
 /** Delete Persona by ID. */
 router.delete('/:id', personaController.delete);
 

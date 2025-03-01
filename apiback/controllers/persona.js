@@ -3,28 +3,53 @@ const {asyncHandler} = require("../utils/async-handler");
 const {matchedData, body} = require("express-validator");
 const {buildValidation} = require("../utils/validation");
 const NotFoundException = require("../exceptions/not-found-exception");
+const ValidationException = require("../exceptions/validation-exception");
 const personaRepository = require("../repositories/persona").getInstance();
 
+const nombreValidation = () => body('nombre')
+    .trim()
+    .escape()
+    .notEmpty()
+    .isAlpha('es-ES', {ignore: [" "]})
+    .withMessage('Ingresa un nombre válido.')
+    .isLength({max: 100})
+    .withMessage('El nombre no puede tener más de 100 caracteres.');
+
+const apellidoValidation = () => body('apellido')
+    .trim()
+    .escape()
+    .notEmpty()
+    .isAlpha('es-ES', {ignore: [" "]})
+    .withMessage('Ingresa un apellido válido.')
+    .isLength({max: 100})
+    .withMessage('El apellido no puede tener más de 100 caracteres.');
+
+const dniValidation = () => body('dni')
+    .isInt({min: 10_000_000, max: 99_999_999})
+    .withMessage('Ingresa un DNI válido.');
+
+const telefonoValidation = () => body('telefono')
+    .trim()
+    .escape()
+    .optional({checkFalsy: true})
+    .isString()
+    .withMessage('Ingresa un teléfono válido.')
+    .isLength({min: 6, max: 25})
+    .withMessage('El teléfono debe tener entre 6 y 25 caracteres');
+
+const emailValidation = () => body('email')
+    .trim()
+    .isEmail()
+    .withMessage('Ingresa un e-mail válido.')
+    .bail()
+    .normalizeEmail()
+    .isLength({max: 100})
+    .withMessage('El e-mail no puede tener más de 100 caracteres.');
+
 module.exports.createValidation = buildValidation([
-    body('nombre')
-        .trim()
-        .escape()
-        .notEmpty()
-        .isAlpha('es-ES')
-        .withMessage('Ingresa un nombre válido.')
-        .isLength({max: 100})
-        .withMessage('El nombre no puede tener más de 100 caracteres.'),
-    body('apellido')
-        .trim()
-        .escape()
-        .notEmpty()
-        .isAlpha('es-ES')
-        .withMessage('Ingresa un apellido válido.')
-        .isLength({max: 100})
-        .withMessage('El apellido no puede tener más de 100 caracteres.'),
-    body('dni')
-        .isInt({min: 10_000_000, max: 99_999_999})
-        .withMessage('Ingresa un DNI válido.')
+    nombreValidation(),
+    apellidoValidation(),
+    dniValidation()
         .bail()
         .custom(async value => {
             const persona = await personaRepository.findPersonaByDni(value);
@@ -32,22 +57,8 @@ module.exports.createValidation = buildValidation([
                 throw new Error('El DNI ingresado ya existe.');
             }
         }),
-    body('telefono')
-        .trim()
-        .escape()
-        .optional({checkFalsy: true})
-        .isMobilePhone('es-AR')
-        .withMessage('Ingresa un teléfono válido.')
-        .isLength({min: 6, max: 25})
-        .withMessage('El teléfono debe tener entre 6 y 25 caracteres'),
-    body('email')
-        .trim()
-        .isEmail()
-        .withMessage('Ingresa un e-mail válido.')
-        .bail()
-        .normalizeEmail()
-        .isLength({max: 100})
-        .withMessage('El e-mail no puede tener más de 100 caracteres.')
+    telefonoValidation(),
+    emailValidation()
         .bail()
         .custom(async value => {
             const persona = await personaRepository.findPersonaByEmail(value);
@@ -70,24 +81,72 @@ module.exports.listAll = asyncHandler(async function (req, res) {
     apiResponse.success(res, response);
 });
 
-module.exports.findById = function (req, res) {
-    return personaRepository.findById(req.params.id)
-        .then(persona => res.status((persona === null) ? 404 : 200).send(persona))
-        .catch(error => res.status(400).send(error));
-};
+module.exports.findById = asyncHandler(async function (req, res) {
+    const persona = await personaRepository.findById(req.params.id);
+    if (persona === null) {
+        throw new NotFoundException("La persona no existe.");
+    }
+    apiResponse.success(res, persona);
+});
 
-module.exports.update = function (req, res) {
-    return personaRepository.update(req.params.id, {
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        dni: req.body.dni,
-        telefono: req.body.telefono,
-        email: req.body.email,
-    })
-        .then(persona => res.status((persona === null) ? 404 : 200).send(persona))
-        .catch(error => res.status(400).send(error));
-}
+module.exports.updateValidation = buildValidation([
+    nombreValidation(),
+    apellidoValidation(),
+    dniValidation(),
+    telefonoValidation(),
+    emailValidation(),
+]);
+module.exports.update = asyncHandler(async function (req, res) {
+    const persona = await personaRepository.findById(req.params.id);
+    if (persona === null) {
+        throw new NotFoundException('La persona no existe.');
+    }
+
+    const validated = matchedData(req);
+    const errors = {};
+    const updated = {};
+    if (persona.dni !== validated.dni) {
+        updated.dni = validated.dni;
+        const existePersonaDni = await personaRepository.findPersonaByDni(validated.dni);
+        if ((existePersonaDni !== null) && (existePersonaDni.id !== persona.id)) {
+            errors.dni = {
+                type: 'field',
+                msg: 'El DNI ingresado ya existe.',
+                path: 'dni',
+                location: 'body',
+            };
+        }
+    }
+    if (persona.email !== validated.email) {
+        updated.email = validated.email;
+        const existePersonaEmail = await personaRepository.findPersonaByEmail(validated.email);
+        if ((existePersonaEmail !== null) && (existePersonaEmail.id !== persona.id)) {
+            errors.email = {
+                type: 'field',
+                msg: 'El e-mail ingresado ya existe.',
+                path: 'email',
+                location: 'body',
+            };
+        }
+    }
+    if (errors.dni || errors.email) {
+        throw new ValidationException(errors);
+    }
+
+    if (persona.nombre !== validated.nombre) {
+        updated.nombre = validated.nombre;
+    }
+    if (persona.apellido !== validated.apellido) {
+        updated.apellido = validated.apellido;
+    }
+    if (persona.telefono !== validated.telefono) {
+        updated.telefono = validated.telefono;
+    }
+    const result = await personaRepository.update(req.params.id, updated);
+    apiResponse.success(res, result, "Persona actualizada.");
+});
 
 module.exports.delete = asyncHandler(async function (req, res) {
     await personaRepository.delete(req.params.id);
     apiResponse.success(res, null, "Persona eliminada.");
+});
