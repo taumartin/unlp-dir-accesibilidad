@@ -14,45 +14,46 @@
 <ng-template #createModal let-modal>
   <form class="row g-3" [formGroup]="personaForm" (ngSubmit)="onSavePersona(modal)" autocomplete="off">
     <div class="col-12 col-md-6 order-1">
-      <label for="inputName" class="form-label required">Nombre:</label>
-      <input type="text" id="inputName" class="form-control"
-             [class.is-invalid]="!readonlyInputs && isInvalid(name)" [class.is-valid]="!readonlyInputs && isValid(name)"
-             placeholder="Juan" name="name" formControlName="name" required maxlength="100"
-             aria-describedby="nameFeedback" [readonly]="readonlyInputs">
-      <div id="nameFeedback" class="invalid-feedback">
-        {{ name?.errors?.['required'] ? 'El nombre es obligatorio.' : '' }}
-        {{ name?.errors?.['maxlength'] ? 'El nombre es muy largo.' : '' }}
-        {{ name?.errors?.['backend'] ?? '' }}
+      <label for="inputNombre" class="form-label required">Nombre:</label>
+      <input type="text" id="inputNombre" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(nombre)"
+             [class.is-valid]="!readonlyInputs && isValid(nombre)"
+             placeholder="Juan" name="nombre" formControlName="nombre" required maxlength="100"
+             aria-describedby="nombreFeedback" [readonly]="readonlyInputs">
+      <div id="nombreFeedback" class="invalid-feedback">
+        {{ nombre?.errors?.['required'] ? 'El nombre es obligatorio.' : '' }}
+        {{ nombre?.errors?.['maxlength'] ? 'El nombre es muy largo.' : '' }}
+        {{ nombre?.errors?.['backend'] ?? '' }}
       </div>
     </div>
     <div class="col-12 col-md-6 order-2">
-      <label for="inputLastname" class="form-label required">Apellido:</label>
-      <input type="text" id="inputLastname" class="form-control"
-             [class.is-invalid]="!readonlyInputs && isInvalid(lastname)"
-             [class.is-valid]="!readonlyInputs && isValid(lastname)"
-             placeholder="Pérez" name="lastname" formControlName="lastname" required maxlength="100"
-             aria-describedby="lastnameFeedback" [readonly]="readonlyInputs">
-      <div id="lastnameFeedback" class="invalid-feedback">
-        {{ lastname?.errors?.['required'] ? 'El apellido es obligatorio.' : '' }}
-        {{ lastname?.errors?.['maxlength'] ? 'El apellido es muy largo.' : '' }}
-        {{ lastname?.errors?.['backend'] ?? '' }}
+      <label for="inputApellido" class="form-label required">Apellido:</label>
+      <input type="text" id="inputApellido" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(apellido)"
+             [class.is-valid]="!readonlyInputs && isValid(apellido)"
+             placeholder="Pérez" name="apellido" formControlName="apellido" required maxlength="100"
+             aria-describedby="apellidoFeedback" [readonly]="readonlyInputs">
+      <div id="apellidoFeedback" class="invalid-feedback">
+        {{ apellido?.errors?.['required'] ? 'El apellido es obligatorio.' : '' }}
+        {{ apellido?.errors?.['maxlength'] ? 'El apellido es muy largo.' : '' }}
+        {{ apellido?.errors?.['backend'] ?? '' }}
       </div>
     </div>
     <div class="col-12 col-md-6 order-3 order-md-4 order-lg-3">
-      <label for="inputDocumentNumber" class="form-label required">DNI:</label>
-      <input type="number" id="inputDocumentNumber" class="form-control"
-             [class.is-invalid]="!readonlyInputs && isInvalid(documentNumber)"
-             [class.is-valid]="!readonlyInputs && isValid(documentNumber)"
-             placeholder="33444555" name="documentNumber" formControlName="documentNumber" required
+      <label for="inputDni" class="form-label required">DNI:</label>
+      <input type="number" id="inputDni" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(dni)"
+             [class.is-valid]="!readonlyInputs && isValid(dni)"
+             placeholder="33444555" name="dni" formControlName="dni" required
              minlength="8" maxlength="8" min="10000000" max="99999999"
-             aria-describedby="documentNumberHelp documentNumberFeedback" [readonly]="readonlyInputs">
-      <div id="documentNumberHelp" class="form-text">
+             aria-describedby="dniHelp dniFeedback" [readonly]="readonlyInputs">
+      <div id="dniHelp" class="form-text">
         Sin puntos.
       </div>
-      <div id="documentNumberFeedback" class="invalid-feedback">
-        {{ documentNumber?.errors?.['required'] ? 'El DNI es obligatorio.' : '' }}
-        {{ (documentNumber?.errors?.['min'] || documentNumber?.errors?.['max'] || documentNumber?.errors?.['pattern']) ? 'Ingresa un DNI válido.' : '' }}
-        {{ documentNumber?.errors?.['backend'] ?? '' }}
+      <div id="dniFeedback" class="invalid-feedback">
+        {{ dni?.errors?.['required'] ? 'El DNI es obligatorio.' : '' }}
+        {{ (dni?.errors?.['min'] || dni?.errors?.['max'] || dni?.errors?.['pattern']) ? 'Ingresa un DNI válido.' : '' }}
+        {{ dni?.errors?.['backend'] ?? '' }}
       </div>
     </div>
     <div class="col-12 col-lg-6 order-4 order-md-3 order-lg-4">
@@ -70,15 +71,15 @@
       </div>
     </div>
     <div class="col-12 col-md-6 order-5">
-      <label for="inputPhone" class="form-label">Teléfono:</label>
-      <input type="tel" id="inputPhone" class="form-control"
-             [class.is-invalid]="!readonlyInputs && isInvalid(phone)"
-             [class.is-valid]="!readonlyInputs && isValid(phone)"
-             placeholder="221 3333-4444" name="phone" formControlName="phone" maxlength="25"
-             aria-describedby="phoneFeedback" [readonly]="readonlyInputs">
-      <div id="phoneFeedback" class="invalid-feedback">
-        {{ phone?.errors?.['maxlength'] ? 'El teléfono es muy largo.' : '' }}
-        {{ phone?.errors?.['backend'] ?? '' }}
+      <label for="inputTelefono" class="form-label">Teléfono:</label>
+      <input type="tel" id="inputTelefono" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(telefono)"
+             [class.is-valid]="!readonlyInputs && isValid(telefono)"
+             placeholder="221 3333-4444" name="telefono" formControlName="telefono" maxlength="25"
+             aria-describedby="telefonoFeedback" [readonly]="readonlyInputs">
+      <div id="telefonoFeedback" class="invalid-feedback">
+        {{ telefono?.errors?.['maxlength'] ? 'El teléfono es muy largo.' : '' }}
+        {{ telefono?.errors?.['backend'] ?? '' }}
       </div>
     </div>
     <button type="submit" class="d-none"

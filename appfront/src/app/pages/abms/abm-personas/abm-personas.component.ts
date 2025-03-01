@@ -52,12 +52,12 @@ export class AbmPersonasComponent {
 
   private readonly formBuilder = inject(FormBuilder);
   protected personaForm = this.formBuilder.group({
-    name: ['', [Validators.required, Validators.maxLength(100)]],
-    lastname: ['', [Validators.required, Validators.maxLength(100)]],
-    documentNumber: [0, [Validators.required, Validators.min(10_000_000), Validators.max(99_999_999),
+    nombre: ['', [Validators.required, Validators.maxLength(100)]],
+    apellido: ['', [Validators.required, Validators.maxLength(100)]],
+    dni: [0, [Validators.required, Validators.min(10_000_000), Validators.max(99_999_999),
       Validators.pattern(/^\d{8}$/)]],
     email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
-    phone: ['', [Validators.maxLength(25)]],
+    telefono: ['', [Validators.maxLength(25)]],
   });
 
   public constructor(
@@ -67,20 +67,20 @@ export class AbmPersonasComponent {
   ) {
   }
 
-  protected get name() {
-    return this.personaForm.get('name');
+  protected get nombre() {
+    return this.personaForm.get('nombre');
   }
 
-  protected get lastname() {
-    return this.personaForm.get('lastname');
+  protected get apellido() {
+    return this.personaForm.get('apellido');
   }
 
-  protected get documentNumber() {
-    return this.personaForm.get('documentNumber');
+  protected get dni() {
+    return this.personaForm.get('dni');
   }
 
-  protected get phone() {
-    return this.personaForm.get('phone');
+  protected get telefono() {
+    return this.personaForm.get('telefono');
   }
 
   protected get email() {
@@ -153,13 +153,13 @@ export class AbmPersonasComponent {
     if (this.personaForm.valid) {
       this.entityModal = this.entityModal || modal;
       this.formService.resetFormValidations(this.personaForm);
-      const {name, lastname, documentNumber, email, phone} = this.personaForm.value;
+      const {nombre, apellido, dni, email, telefono} = this.personaForm.value;
       const newPersona: Omit<Persona, 'id'> = {
-        nombre: name!,
-        apellido: lastname!,
-        dni: Number(documentNumber!),
+        nombre: nombre!,
+        apellido: apellido!,
+        dni: Number(dni!),
         email: email!,
-        telefono: phone ?? '',
+        telefono: telefono ?? '',
       };
       if (this.selectedPersona) {
         this.updatePersona(newPersona)
@@ -175,11 +175,11 @@ export class AbmPersonasComponent {
     }
     const formValues = this.personaForm.value;
     return this.personasService.isPersonaModified(this.selectedPersona, {
-      nombre: formValues.name ?? undefined,
-      apellido: formValues.lastname ?? undefined,
-      dni: formValues.documentNumber ?? undefined,
+      nombre: formValues.nombre ?? undefined,
+      apellido: formValues.apellido ?? undefined,
+      dni: formValues.dni ?? undefined,
       email: formValues.email ?? undefined,
-      telefono: formValues.phone ?? undefined,
+      telefono: formValues.telefono ?? undefined,
     });
   }
 
@@ -189,11 +189,11 @@ export class AbmPersonasComponent {
     this.selectedPersona = event.entity || null;
     if (this.selectedPersona) {
       this.personaForm.patchValue({
-        name: this.selectedPersona.nombre,
-        lastname: this.selectedPersona.apellido,
-        documentNumber: this.selectedPersona.dni,
+        nombre: this.selectedPersona.nombre,
+        apellido: this.selectedPersona.apellido,
+        dni: this.selectedPersona.dni,
         email: this.selectedPersona.email,
-        phone: this.selectedPersona.telefono,
+        telefono: this.selectedPersona.telefono,
       });
     }
   }

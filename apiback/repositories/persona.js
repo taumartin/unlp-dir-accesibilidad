@@ -1,5 +1,6 @@
 const {Persona} = require('../models');
 const BaseRepository = require("./base");
+const {where, fn, col, Op} = require("sequelize");
 
 class PersonaRepository extends BaseRepository {
     static _instance = null;
@@ -17,7 +18,7 @@ class PersonaRepository extends BaseRepository {
 
     createPersona(nombre, apellido, dni, telefono, email) {
         return super.create({nombre, apellido, dni, telefono, email,});
-    };
+    }
 
     listPersonas(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
@@ -25,6 +26,14 @@ class PersonaRepository extends BaseRepository {
             searchFields: ['nombre', 'apellido', 'telefono', 'email'],
             orderBy, orderDirection,
         });
+    }
+
+    findPersonaByEmail(email) {
+        return super.findOneWhere(where(fn("LOWER", col("email")), Op.eq, email));
+    }
+
+    findPersonaByDni(dni) {
+        return super.findOneWhere({dni});
     }
 }
 

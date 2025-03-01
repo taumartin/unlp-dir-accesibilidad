@@ -3,7 +3,7 @@ const router = express.Router();
 const personaController = require('../../controllers/persona');
 
 /** Create Persona. */
-router.post('/', personaController.create);
+router.post('/', personaController.createValidation, personaController.create);
 /** List all Personas. */
 router.get('/', personaController.listAll);
 /** Get Persona by ID. */
