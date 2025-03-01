@@ -15,7 +15,7 @@ class MediosDeComunicacionRepository extends BaseRepository {
         super(MediosDeComunicacion);
     }
 
-    createMedio(nombre) {
+    createMedioDeComunicacion(nombre) {
         return super.create({nombre});
     };
 

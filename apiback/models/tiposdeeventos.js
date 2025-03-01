@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
     },
     nombre: {
-      type:DataTypes.STRING(17),
+      type:DataTypes.STRING(17), // FIXME: esta dimensión es quizás muy conservadora, evaluar.
       allowNull:false,
       unique:true
     },

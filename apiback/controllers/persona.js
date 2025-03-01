@@ -84,7 +84,7 @@ module.exports.listAll = asyncHandler(async function (req, res) {
 module.exports.findById = asyncHandler(async function (req, res) {
     const persona = await personaRepository.findById(req.params.id);
     if (persona === null) {
-        throw new NotFoundException("La persona no existe.");
+        throw new NotFoundException("La Persona no existe.");
     }
     apiResponse.success(res, persona);
 });

@@ -1,20 +1,79 @@
 const apiResponse = require("../utils/api-response");
 const {asyncHandler} = require("../utils/async-handler");
+const NotFoundException = require("../exceptions/not-found-exception");
+const {buildValidation} = require("../utils/validation");
+const {body, matchedData} = require("express-validator");
+const ValidationException = require("../exceptions/validation-exception");
 const usuarioRepository = require("../repositories/usuario").getInstance();
 
-module.exports.create = function (req, res) {
-    // TODO: validar inputs...
-    return usuarioRepository.createUsuario(
-        req.body.nombre,
-        req.body.contrasenia,
-        req.body.correo,
-        req.body.esAdmin,
-        req.body.estaActivo,
-        req.body.fotoDePerfil
-    )
-        .then(usuario => res.status(200).send(usuario))
-        .catch(error => res.status(400).send(error));
-};
+const nombreValidation = () => body('nombre') // Username.
+    .trim()
+    .escape()
+    .notEmpty()
+    .isString()
+    .withMessage('Ingresa un nombre válido.')
+    .isLength({max: 32})
+    .withMessage('El nombre no puede tener más de 32 caracteres.');
+
+const estaActivoValidation = () => body('estaActivo')
+    .isBoolean()
+    .withMessage('El valor ingresado no es válido.');
+
+const contraseniaValidation = () => body('contrasenia')
+    .isLength({min: 6, max: 255})
+    .withMessage('La contraseña debe tener al menos 6 caracteres.');
+
+const correoValidation = () => body('correo')
+    .trim()
+    .isEmail()
+    .withMessage('Ingresa un email válido.')
+    .bail()
+    .normalizeEmail()
+    .isLength({max: 100})
+    .withMessage('El email no puede tener más de 100 caracteres.');
+
+const esAdminValidation = () => body('esAdmin')
+    .isBoolean()
+    .withMessage('El valor ingresado no es válido.');
+
+const fotoDePerfilValidation = () => body('fotoDePerfil')
+    .trim()
+    .escape()
+    .optional({checkFalsy: true})
+    .isURL()
+    .withMessage('Ingresa una URL válida.')
+    .bail()
+    .isLength({max: 255})
+    .withMessage('La URL no puede tener más de 255 caracteres.');
+
+module.exports.createValidation = buildValidation([
+    nombreValidation()
+        .bail()
+        .custom(async value => {
+            const usuario = await usuarioRepository.findUsuarioByUsername(value);
+            if (usuario !== null) {
+                throw new Error('El nombre ingresado ya existe.');
+            }
+        }),
+    estaActivoValidation(),
+    contraseniaValidation(),
+    correoValidation()
+        .bail()
+        .custom(async value => {
+            const usuario = await usuarioRepository.findUsuarioByEmail(value);
+            if (usuario !== null) {
+                throw new Error('El e-mail ingresado ya existe.');
+            }
+        }),
+    esAdminValidation(),
+    fotoDePerfilValidation(),
+]);
+module.exports.create = asyncHandler(async function (req, res) {
+    const validated = matchedData(req);
+    const usuario = await usuarioRepository.createUsuario(validated.nombre, validated.contrasenia, validated.correo,
+        validated.esAdmin, validated.estaActivo, validated.fotoDePerfil);
+    apiResponse.success(res, usuario, "Usuario creado.", 201);
+});
 
 module.exports.listAll = asyncHandler(async function (req, res) {
     // TODO: no se debe publicar la contraseña de los usuarios...
@@ -24,27 +83,77 @@ module.exports.listAll = asyncHandler(async function (req, res) {
     apiResponse.success(res, response);
 });
 
-module.exports.findById = function (req, res) {
-    return usuarioRepository.findById(req.params.id)
-        .then(usuario => res.status((usuario === null) ? 404 : 200).send(usuario))
-        .catch(error => res.status(400).send(error));
-};
+module.exports.findById = asyncHandler(async function (req, res) {
+    const usuario = await usuarioRepository.findById(req.params.id);
+    if (usuario === null) {
+        throw new NotFoundException("El Usuario no existe.");
+    }
+    apiResponse.success(res, usuario);
+});
 
-module.exports.update = function (req, res) {
-    return usuarioRepository.update(req.params.id, {
-        nombre: req.body.nombre,
-        contrasenia: req.body.contrasenia,
-        correo: req.body.correo,
-        tipo: req.body.tipo,
-        estaActivo: req.body.estaActivo,
-        fotoDePerfil: req.body.fotoDePerfil
-    })
-        .then(usuario => res.status((usuario === null) ? 404 : 200).send(usuario))
-        .catch(error => res.status(400).send(error));
-}
+module.exports.updateValidation = buildValidation([
+    nombreValidation(),
+    estaActivoValidation(),
+    contraseniaValidation(),
+    correoValidation(),
+    esAdminValidation(),
+    fotoDePerfilValidation(),
+]);
+module.exports.update = asyncHandler(async function (req, res) {
+    const usuario = await usuarioRepository.findById(req.params.id);
+    if (usuario === null) {
+        throw new NotFoundException('El Usuario no existe.');
+    }
 
-module.exports.delete = function (req, res) {
-    return usuarioRepository.delete(req.params.id)
-        .then(() => res.status(200).send())
-        .catch(error => res.status(400).send(error));
-}
+    const validated = matchedData(req);
+    const errors = {};
+    const updated = {};
+    if (usuario.nombre !== validated.nombre) {
+        updated.nombre = validated.nombre;
+        const existeUsuarioUsername = await usuarioRepository.findUsuarioByUsername(validated.nombre);
+        if ((existeUsuarioUsername !== null) && (existeUsuarioUsername.id !== usuario.id)) {
+            errors.nombre = {
+                type: 'field',
+                msg: 'El nombre ingresado ya existe.',
+                path: 'nombre',
+                location: 'body',
+            };
+        }
+    }
+    if (usuario.correo !== validated.correo) {
+        updated.correo = validated.correo;
+        const existeUsuarioEmail = await usuarioRepository.findUsuarioByEmail(validated.correo);
+        if ((existeUsuarioEmail !== null) && (existeUsuarioEmail.id !== usuario.id)) {
+            errors.correo = {
+                type: 'field',
+                msg: 'El e-mail ingresado ya existe.',
+                path: 'correo',
+                location: 'body',
+            };
+        }
+    }
+    if (errors.nombre || errors.correo) {
+        throw new ValidationException(errors);
+    }
+
+    if (usuario.contrasenia !== validated.contrasenia) {
+        updated.contrasenia = validated.contrasenia;
+    }
+    if (usuario.tipo !== validated.tipo) {
+        updated.tipo = validated.tipo;
+    }
+    if (usuario.estaActivo !== validated.estaActivo) {
+        updated.estaActivo = validated.estaActivo;
+    }
+    if (usuario.fotoDePerfil !== validated.fotoDePerfil) {
+        updated.fotoDePerfil = validated.fotoDePerfil;
+    }
+
+    const result = await usuarioRepository.update(req.params.id, updated);
+    apiResponse.success(res, result, "Usuario actualizado.");
+});
+
+module.exports.delete = asyncHandler(async function (req, res) {
+    await usuarioRepository.delete(req.params.id);
+    apiResponse.success(res, null, "Usuario eliminado.");
+});
