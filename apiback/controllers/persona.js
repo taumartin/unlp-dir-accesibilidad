@@ -88,8 +88,6 @@ module.exports.update = function (req, res) {
         .catch(error => res.status(400).send(error));
 }
 
-module.exports.delete = function (req, res) {
-    return personaRepository.delete(req.params.id)
-        .then(() => res.status(200).send())
-        .catch(error => res.status(400).send(error));
-}
+module.exports.delete = asyncHandler(async function (req, res) {
+    await personaRepository.delete(req.params.id);
+    apiResponse.success(res, null, "Persona eliminada.");
