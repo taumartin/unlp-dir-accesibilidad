@@ -4,7 +4,7 @@ const {runSeedOnlyInEnv} = require("../utils/seed_runners");
 const faker = fakerES_MX;
 const {Semestres} = require('../models');
 
-const SEED_LENGTH = 200;
+const SEED_LENGTH = 104;
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
