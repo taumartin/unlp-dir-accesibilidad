@@ -9,7 +9,6 @@ const SEED_LENGTH = 200;
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        return runSeedOnlyInEnv("development", async () => {
             const {count} = await Semestres.findAndCountAll();
             const seedCount = Math.max(0, SEED_LENGTH - count)/2+1999;
             const now = new Date();
@@ -28,7 +27,6 @@ module.exports = {
             if (semestresSeed.length) {
                 return queryInterface.bulkInsert('semestres', semestresSeed, {});
             }
-        });
     },
 
     async down(queryInterface, Sequelize) {

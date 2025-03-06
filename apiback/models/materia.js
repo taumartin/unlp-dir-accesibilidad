@@ -27,12 +27,12 @@ module.exports = (sequelize, DataTypes) => {
     docentes: {
       type: DataTypes.TEXT,
       allowNull: false,
-      default: '',
+      defaultValue:'',
     },
     contacto: {
       type: DataTypes.TEXT,
       allowNull: false,
-      default: "",
+      defaultValue:"",
     },
   }, {
       sequelize,

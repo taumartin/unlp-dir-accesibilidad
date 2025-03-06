@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         descripcion: {
             type: DataTypes.TEXT,
             allowNull: false, //Atributo opcional.
-            default: "",
+            defaultValue: "",
         },
     }, {
         sequelize,

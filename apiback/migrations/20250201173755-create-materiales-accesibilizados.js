@@ -35,7 +35,7 @@ module.exports = {
       titulo: {
         type: Sequelize.STRING(100),
         allowNull: false,
-        default: '',
+        defaultValue:'',
       },
       link: {
         type: Sequelize.STRING(255),

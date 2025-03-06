@@ -32,6 +32,15 @@ module.exports = {
             key: 'id',
         }
     },
+    materiaId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        field: 'materia_id',
+        references: {
+            model: 'materias',
+            key: 'id',
+        }
+    },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -41,7 +50,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-
+    
     await queryInterface.addIndex('reuniones', ['tutor_id', 'fecha_y_hora'], {
       unique: true,
       name: 'unique_tutor_id_fecha_y_hora'

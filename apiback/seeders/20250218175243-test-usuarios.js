@@ -21,7 +21,7 @@ module.exports = {
             for (let i = 0; i < seedCount; i++) {
                 usuariosSeed.push({
                     contrasenia: testPasswordForAll,
-                    nombre: usernames[i].slice(0, 31).toLowerCase(),
+                    username: usernames[i].slice(0, 31).toLowerCase(),
                     correo: emails[i].toLowerCase(),
                     esta_activo: faker.datatype.boolean(),
                     es_admin: faker.datatype.boolean(0.1),

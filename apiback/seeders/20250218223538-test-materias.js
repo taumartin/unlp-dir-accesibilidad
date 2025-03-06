@@ -1,12 +1,10 @@
 'use strict';
-const {runSeedOnlyInEnv} = require("../utils/seed_runners");
 const {fakerES_MX} = require('@faker-js/faker');
 const faker = fakerES_MX;
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        return runSeedOnlyInEnv("development", async () => {
             const now = new Date();
             const materiasSeed = [{
                 nombre: "Expresión de Problemas y Algoritmos",
@@ -977,7 +975,6 @@ module.exports = {
           ]
             await queryInterface.bulkDelete('materias',null,{}) //Borro los registros anteriores para reemplazarlos con estos.
             return queryInterface.bulkInsert('materias', materiasSeed, {});
-        });
     },
 
     async down(queryInterface, Sequelize) {

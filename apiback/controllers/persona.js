@@ -32,7 +32,7 @@ const telefonoValidation = () => body('telefono')
     .trim()
     .escape()
     .optional({checkFalsy: true})
-    .isString()
+    .isNumeric()
     .withMessage('Ingresa un teléfono válido.')
     .isLength({min: 6, max: 25})
     .withMessage('El teléfono debe tener entre 6 y 25 caracteres');
@@ -102,7 +102,7 @@ module.exports.update = asyncHandler(async function (req, res) {
         throw new NotFoundException('La persona no existe.');
     }
 
-    const validated = matchedData(req);
+    const validated = matchedData(req,{ includeOptionals: true });
     const errors = {};
     const updated = {};
     if (persona.dni !== validated.dni) {

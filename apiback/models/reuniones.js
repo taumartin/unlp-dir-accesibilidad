@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
           as: 'tutor',
           foreignKey: 'tutorId',
       })
+
+      Reuniones.belongsTo(models.Materia,{
+          as: 'materia',
+          foreignKey: 'materiaId',
+      })
   }
   }
   Reuniones.init({
@@ -37,6 +42,15 @@ module.exports = (sequelize, DataTypes) => {
       field: 'tutor_id',
       references: {
           model: 'Tutor',
+          key: 'id',
+      }
+  },
+  materiaId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      field: 'materia_id',
+      references: {
+          model: 'Materia',
           key: 'id',
       }
   },

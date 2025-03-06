@@ -17,7 +17,7 @@ module.exports = {
       descripcion: {
         type:Sequelize.TEXT,
         allowNull:false, //Atributo opcional.
-        default:"",
+        defaultValue:"",
       },
       createdAt: {
         allowNull: false,
