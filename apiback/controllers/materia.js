@@ -21,7 +21,7 @@ const docentesValidation = () => body('docentes')
     .isString()
     .withMessage('Ingresa un valor válido.')
     .isLength({max: 500})
-    .withMessage('El valor no puede tener más de 500 caracteres.')
+    .withMessage('El valor no puede tener más de 500 caracteres.');
     
 
 const contactoValidation = () => body('contacto')

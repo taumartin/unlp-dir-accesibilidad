@@ -89,7 +89,6 @@ module.exports.findById = asyncHandler(async function (req, res) {
     if (usuario === null) {
         throw new NotFoundException("El Usuario no existe.");
     }
-    usuario.contrasenia=undefined
     apiResponse.success(res, usuario);
 });
 

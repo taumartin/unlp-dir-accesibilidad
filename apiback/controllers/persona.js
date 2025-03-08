@@ -32,10 +32,10 @@ const telefonoValidation = () => body('telefono')
     .trim()
     .escape()
     .optional({checkFalsy: true})
-    .isNumeric()
+    .isString()
     .withMessage('Ingresa un teléfono válido.')
     .isLength({min: 6, max: 25})
-    .withMessage('El teléfono debe tener entre 6 y 25 caracteres');
+    .withMessage('El teléfono debe tener entre 6 y 25 caracteres.');
 
 const emailValidation = () => body('email')
     .trim()
