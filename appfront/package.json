@@ -5,6 +5,9 @@
     "ng": "ng",
     "start": "ng serve --configuration development",
     "build": "ng build",
+    "build:prod": "ng build -c production",
+    "gen:env:docker": "envsub src/environments/environment.ts src/environments/environment.production.ts",
+    "build:docker": "npm run gen:env:docker & npm run build:prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "deploy": "npm run build & .\\bin\\deploy"
@@ -41,6 +44,7 @@
     "@angular/localize": "^19.1.5",
     "@types/jasmine": "~5.1.0",
     "@types/jquery": "^3.5.9",
+    "envsub": "^4.1.0",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",

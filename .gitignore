@@ -134,3 +134,4 @@ venv/
 apiback/.idea/
 apiback/public_portal/
 apiback/sessions/
+appfront/src/environments/environment.production.ts

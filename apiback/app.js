@@ -44,6 +44,7 @@ app.use('/api/v1', apiRouter);
 
 // Public sites.
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public_portal')));
 app.use('/portal', express.static(path.join(__dirname, 'public_portal')));
 
 // View engine setup.
@@ -52,7 +53,7 @@ app.set('view engine', 'ejs');
 
 // Angular (portal) catch-all.
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './public_portal/index.html'));
+    return res.sendFile(path.join(__dirname, './public_portal/index.html'));
 });
 
 // Error handling.

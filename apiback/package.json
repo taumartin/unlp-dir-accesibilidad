@@ -5,6 +5,7 @@
   "scripts": {
     "debug": ".\\bin\\debug",
     "start": "nodemon ./bin/www",
+    "start:docker": "node ./bin/www",
     "db:migrate": "sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all"
   },
