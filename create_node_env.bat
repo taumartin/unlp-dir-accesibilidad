@@ -1,1 +1,1 @@
-nodeenv --node=20.14.0 --npm=10.8.3 node_env
+nodeenv --node=20.18.0 --npm=10.8.3 node_env
