@@ -102,7 +102,7 @@ module.exports.update = asyncHandler(async function (req, res) {
         throw new NotFoundException('La persona no existe.');
     }
 
-    const validated = matchedData(req,{ includeOptionals: true });
+    const validated = matchedData(req, {includeOptionals: true});
     const errors = {};
     const updated = {};
     if (persona.dni !== validated.dni) {

@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
             field: 'persona_id',
             references: {
-                model: 'Persona',
+                model: 'personas',
                 key: 'id',
             }
         },

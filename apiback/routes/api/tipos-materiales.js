@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const tiposDeMaterialesController = require('../../controllers/tipo-material');
+const tiposMaterialController = require('../../controllers/tipo-material');
 
-/** Create TiposDeMateriales. */
-router.post('/', tiposDeMaterialesController.createValidation, tiposDeMaterialesController.create);
-/** List all TiposDeMateriales. */
-router.get('/', tiposDeMaterialesController.listAll);
-/** Get TiposDeMateriales by ID. */
-router.get('/:id', tiposDeMaterialesController.findById);
-/** Update TiposDeMateriales by ID. */
-router.post('/:id', tiposDeMaterialesController.updateValidation, tiposDeMaterialesController.update);
-/** Delete TiposDeMateriales by ID. */
-router.delete('/:id', tiposDeMaterialesController.delete);
+/** Create TipoMaterial. */
+router.post('/', tiposMaterialController.createValidation, tiposMaterialController.create);
+/** List all TipoMaterial. */
+router.get('/', tiposMaterialController.listAll);
+/** Get TipoMaterial by ID. */
+router.get('/:id', tiposMaterialController.findById);
+/** Update TipoMaterial by ID. */
+router.post('/:id', tiposMaterialController.updateValidation, tiposMaterialController.update);
+/** Delete TipoMaterial by ID. */
+router.delete('/:id', tiposMaterialController.delete);
 
 module.exports = router;

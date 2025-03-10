@@ -48,7 +48,7 @@ class BaseRepository {
             order: [[orderBy, validOrderDirection]],
             limit,
             offset,
-            attributes: { exclude: excludeAttributes }
+            attributes: {exclude: excludeAttributes}
         });
         const totalCount = await this._model.count();
 
@@ -63,8 +63,8 @@ class BaseRepository {
     }
 
 
-    findById(id) {
-        return this._model.findByPk(id, null);
+    findById(id, options = null) {
+        return this._model.findByPk(id, options);
     }
 
     findOneWhere(where) {

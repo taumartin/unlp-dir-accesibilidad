@@ -3,39 +3,31 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Materia extends Model {
-        static associate(models) {
-            // None.
-        }
+    class Evento extends Model {
     }
 
-    Materia.init({
+    Evento.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        nombre: {
-            type: DataTypes.STRING(100),
-            unique: true,
+        fechaYHora: {
+            type: DataTypes.DATE,
             allowNull: false,
+            field: 'fecha_y_hora'
         },
-        docentes: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-            defaultValue: '',
-        },
-        contacto: {
+        descripcion: {
             type: DataTypes.TEXT,
             allowNull: false,
             defaultValue: "",
         },
     }, {
         sequelize,
-        modelName: 'Materia',
-        tableName: 'materias',
+        modelName: 'Evento',
+        tableName: 'eventos',
         createdAt: 'created_at',
         updatedAt: 'updated_at',
     });
-    return Materia;
+    return Evento;
 };

@@ -22,7 +22,6 @@ const docentesValidation = () => body('docentes')
     .withMessage('Ingresa un valor válido.')
     .isLength({max: 500})
     .withMessage('El valor no puede tener más de 500 caracteres.');
-    
 
 const contactoValidation = () => body('contacto')
     .trim()
@@ -70,7 +69,7 @@ module.exports.update = asyncHandler(async function (req, res) {
         throw new NotFoundException('La Materia no existe.');
     }
 
-    const validated = matchedData(req,{ includeOptionals: true });
+    const validated = matchedData(req, {includeOptionals: true});
     const updated = {};
     if (materia.nombre !== validated.nombre) {
         updated.nombre = validated.nombre;

@@ -3,31 +3,26 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Eventos extends Model {
+    class TipoEvento extends Model {
     }
 
-    Eventos.init({
+    TipoEvento.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        fechaYHora: {
-            type: DataTypes.DATE,
+        nombre: {
+            type: DataTypes.STRING(17), // FIXME: esta dimensión es quizás muy conservadora, evaluar.
             allowNull: false,
-            field: 'fecha_y_hora'
-        },
-        descripcion: {
-            type: DataTypes.TEXT,
-            allowNull: false, //Atributo opcional.
-            defaultValue: "",
+            unique: true
         },
     }, {
         sequelize,
-        modelName: 'Eventos',
-        tableName: 'eventos',
+        modelName: 'TipoEvento',
+        tableName: 'tipos_eventos',
         createdAt: 'created_at',
         updatedAt: 'updated_at',
     });
-    return Eventos;
+    return TipoEvento;
 };

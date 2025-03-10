@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const mediosDeComunicacionController = require('../../controllers/medio-comunicacion');
+const medioComunicacionController = require('../../controllers/medio-comunicacion');
 
-/** Create MediosDeComunicacion. */
-router.post('/', mediosDeComunicacionController.createValidation, mediosDeComunicacionController.create);
-/** List all MediosDeComunicacion. */
-router.get('/', mediosDeComunicacionController.listAll);
-/** Get MediosDeComunicacion by ID. */
-router.get('/:id', mediosDeComunicacionController.findById);
-/** Update MediosDeComunicacion by ID. */
-router.post('/:id', mediosDeComunicacionController.updateValidation, mediosDeComunicacionController.update);
-/** Delete MediosDeComunicacion by ID. */
-router.delete('/:id', mediosDeComunicacionController.delete);
+/** Create MedioComunicacion. */
+router.post('/', medioComunicacionController.createValidation, medioComunicacionController.create);
+/** List all MedioComunicacion. */
+router.get('/', medioComunicacionController.listAll);
+/** Get MedioComunicacion by ID. */
+router.get('/:id', medioComunicacionController.findById);
+/** Update MedioComunicacion by ID. */
+router.post('/:id', medioComunicacionController.updateValidation, medioComunicacionController.update);
+/** Delete MedioComunicacion by ID. */
+router.delete('/:id', medioComunicacionController.delete);
 
 module.exports = router;

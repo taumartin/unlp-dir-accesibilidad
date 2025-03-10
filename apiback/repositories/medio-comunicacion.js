@@ -1,25 +1,25 @@
-const {MediosDeComunicacion} = require('../models');
+const {MedioComunicacion} = require('../models');
 const BaseRepository = require("./base");
 
-class MediosDeComunicacionRepository extends BaseRepository {
+class MedioComunicacionRepository extends BaseRepository {
     static _instance = null;
 
     static getInstance() {
-        if (MediosDeComunicacionRepository._instance === null) {
-            MediosDeComunicacionRepository._instance = new MediosDeComunicacionRepository();
+        if (MedioComunicacionRepository._instance === null) {
+            MedioComunicacionRepository._instance = new MedioComunicacionRepository();
         }
-        return MediosDeComunicacionRepository._instance;
+        return MedioComunicacionRepository._instance;
     }
 
     constructor() {
-        super(MediosDeComunicacion);
+        super(MedioComunicacion);
     }
 
-    createMedioDeComunicacion(nombre) {
+    createMedioComunicacion(nombre) {
         return super.create({nombre});
     };
 
-    listMediosDeComunicacion(page, pageSize, search, orderBy, orderDirection) {
+    listMediosComunicacion(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
             page, pageSize, search,
             searchFields: ['nombre'],
@@ -28,4 +28,4 @@ class MediosDeComunicacionRepository extends BaseRepository {
     }
 }
 
-module.exports = MediosDeComunicacionRepository;
+module.exports = MedioComunicacionRepository;

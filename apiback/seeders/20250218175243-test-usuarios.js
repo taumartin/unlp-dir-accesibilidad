@@ -25,7 +25,7 @@ module.exports = {
                     correo: emails[i].toLowerCase(),
                     esta_activo: faker.datatype.boolean(),
                     es_admin: faker.datatype.boolean(0.1),
-                    foto_de_perfil: (Math.random() > 0.5) ? faker.image.avatar() : null,
+                    foto_perfil: (Math.random() > 0.5) ? faker.image.avatar() : null,
                     created_at: now,
                     updated_at: now,
                 });

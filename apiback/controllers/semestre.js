@@ -7,7 +7,7 @@ const semestresRepository = require("../repositories/semestre").getInstance();
 
 const anioValidation = () => body('anio')
     .isInt({min: 1_999, max: 2_050})
-    .withMessage('Ingresa un Año válido (2025-2050');
+    .withMessage('Ingresa un Año válido (1999-2050');
 
 const esPrimerSemestreValidation = () => body('esPrimerSemestre')
     .isBoolean()

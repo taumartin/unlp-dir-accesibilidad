@@ -1,6 +1,7 @@
 const {Usuario} = require('../models');
 const BaseRepository = require("./base");
 const {Op, fn, col, where} = require("sequelize");
+const {hashPassword} = require("../utils/hash");
 
 class UsuarioRepository extends BaseRepository {
     static _instance = null;
@@ -16,8 +17,9 @@ class UsuarioRepository extends BaseRepository {
         super(Usuario);
     }
 
-    createUsuario(username, contrasenia, correo, esAdmin, estaActivo, fotoDePerfil) {
-        return super.create({username, contrasenia, correo, esAdmin, estaActivo, fotoDePerfil,});
+    async createUsuario(username, contrasenia, correo, esAdmin, estaActivo, fotoDePerfil) {
+        const password = await hashPassword(contrasenia);
+        return super.create({username, password, correo, esAdmin, estaActivo, fotoDePerfil,});
     };
 
     listUsuarios(page, pageSize, search, orderBy, orderDirection) {
@@ -37,13 +39,10 @@ class UsuarioRepository extends BaseRepository {
         return super.findOneWhere(where(fn("LOWER", col("username")), Op.eq, username));
     }
 
-    findById(id) {
-        const rta=super.findById(id).then(usuario=>{
-            if(usuario)
-                usuario.contrasenia=undefined;
-            return usuario;
-        })
-        return rta
+    async findByIdWithoutPassword(id) {
+        return super.findById(id, {
+            attributes: {exclude: ["contrasenia"]},
+        });
     }
 }
 

@@ -6,7 +6,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Usuario extends Model {
         static associate(models) {
-            // Nada.
+            // None.
         }
 
         isActive() {
@@ -46,9 +46,9 @@ module.exports = (sequelize, DataTypes) => {
             field: 'es_admin',
             defaultValue: false,
         },
-        fotoDePerfil: {
+        fotoPerfil: {
             type: DataTypes.STRING(255),
-            field: 'foto_de_perfil',
+            field: 'foto_perfil',
         }
     }, {
         sequelize,

@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'personaId',
             });
 
-            Tutor.belongsTo(models.Usuario,{
+            Tutor.belongsTo(models.Usuario, {
                 as: 'usuario',
                 foreignKey: 'usuarioId',
-            })
+            });
         }
     }
 
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
             field: 'persona_id',
             references: {
-                model: 'Persona',
+                model: 'personas',
                 key: 'id',
             }
         },
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
             unique: true,
             field: 'usuario_id',
             references: {
-                model: 'Usuario',
+                model: 'usuarios',
                 key: 'id',
             }
         },

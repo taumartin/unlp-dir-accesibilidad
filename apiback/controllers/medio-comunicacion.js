@@ -3,7 +3,7 @@ const {asyncHandler} = require("../utils/async-handler");
 const NotFoundException = require("../exceptions/not-found-exception");
 const {buildValidation} = require("../utils/validation");
 const {body, matchedData} = require("express-validator");
-const medioDeComunicacionRepository = require("../repositories/medio-comunicacion").getInstance();
+const medioComunicacionRepository = require("../repositories/medio-comunicacion").getInstance();
 
 const nombreValidation = () => body('nombre')
     .trim()
@@ -19,19 +19,19 @@ module.exports.createValidation = buildValidation([
 ]);
 module.exports.create = asyncHandler(async function (req, res) {
     const validated = matchedData(req);
-    const medioComunicacion = await medioDeComunicacionRepository.createMedioDeComunicacion(validated.nombre);
+    const medioComunicacion = await medioComunicacionRepository.createMedioComunicacion(validated.nombre);
     apiResponse.success(res, medioComunicacion, "Medio de Comunicación creado.", 201);
 });
 
 module.exports.listAll = asyncHandler(async function (req, res) {
     const {page, pageSize, search, orderBy, orderDirection} = req.query;
-    const response = await medioDeComunicacionRepository.listMediosDeComunicacion(parseInt(page) || 1, parseInt(pageSize) || 10,
+    const response = await medioComunicacionRepository.listMediosComunicacion(parseInt(page) || 1, parseInt(pageSize) || 10,
         search || "", orderBy || "id", orderDirection || "asc",);
     apiResponse.success(res, response);
 });
 
 module.exports.findById = asyncHandler(async function (req, res) {
-    const medioComunicacion = await medioDeComunicacionRepository.findById(req.params.id);
+    const medioComunicacion = await medioComunicacionRepository.findById(req.params.id);
     if (medioComunicacion === null) {
         throw new NotFoundException("El Medio de Comunicación no existe.");
     }
@@ -42,7 +42,7 @@ module.exports.updateValidation = buildValidation([
     nombreValidation(),
 ]);
 module.exports.update = asyncHandler(async function (req, res) {
-    const medioComunicacion = await medioDeComunicacionRepository.findById(req.params.id);
+    const medioComunicacion = await medioComunicacionRepository.findById(req.params.id);
     if (medioComunicacion === null) {
         throw new NotFoundException('El Medio de Comunicación no existe.');
     }
@@ -53,11 +53,11 @@ module.exports.update = asyncHandler(async function (req, res) {
         updated.nombre = validated.nombre;
     }
 
-    const result = await medioDeComunicacionRepository.update(req.params.id, updated);
+    const result = await medioComunicacionRepository.update(req.params.id, updated);
     apiResponse.success(res, result, "Medio de Comunicación actualizado.");
 });
 
 module.exports.delete = asyncHandler(async function (req, res) {
-    await medioDeComunicacionRepository.delete(req.params.id);
+    await medioComunicacionRepository.delete(req.params.id);
     apiResponse.success(res, null, "Medio de Comunicación eliminado.");
 });

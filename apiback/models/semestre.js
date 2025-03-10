@@ -3,39 +3,38 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Materia extends Model {
+    class Semestre extends Model {
         static associate(models) {
             // None.
         }
     }
 
-    Materia.init({
+    Semestre.init({
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        nombre: {
-            type: DataTypes.STRING(100),
-            unique: true,
+        anio: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
-        docentes: {
-            type: DataTypes.TEXT,
+        esPrimerSemestre: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
-            defaultValue: '',
-        },
-        contacto: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-            defaultValue: "",
+            defaultValue: true,
+            field: 'es_primer_semestre',
         },
     }, {
         sequelize,
-        modelName: 'Materia',
-        tableName: 'materias',
+        modelName: 'Semestre',
+        tableName: 'semestres',
         createdAt: 'created_at',
         updatedAt: 'updated_at',
+        indexes: [{
+            unique: true,
+            fields: ['anio', 'es_primer_semestre'],
+        }]
     });
-    return Materia;
+    return Semestre;
 };

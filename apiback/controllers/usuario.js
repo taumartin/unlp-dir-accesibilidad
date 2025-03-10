@@ -4,6 +4,7 @@ const NotFoundException = require("../exceptions/not-found-exception");
 const {buildValidation} = require("../utils/validation");
 const {body, matchedData} = require("express-validator");
 const ValidationException = require("../exceptions/validation-exception");
+const {hashPassword} = require("../utils/hash");
 const usuarioRepository = require("../repositories/usuario").getInstance();
 
 const usernameValidation = () => body('username') // Username.
@@ -11,18 +12,24 @@ const usernameValidation = () => body('username') // Username.
     .escape()
     .notEmpty()
     .isString()
-    .withMessage('Ingresa un nombre válido.')
+    .withMessage('Ingresa un nombre de usuario válido.')
     .isLength({max: 32})
-    .withMessage('El nombre no puede tener más de 32 caracteres.');
+    .withMessage('El nombre de usuario no puede tener más de 32 caracteres.');
 
 const estaActivoValidation = () => body('estaActivo')
-    .optional({checkFalsy:true})
+    .optional({checkFalsy: true})
     .isBoolean()
     .withMessage('El valor ingresado no es válido.');
 
-const contraseniaValidation = () => body('contrasenia')
-    .isLength({min: 6, max: 255})
-    .withMessage('La contraseña debe tener entre 6 y 255 caracteres.');
+const contraseniaValidation = (optional = false) => {
+    let validation = body('contrasenia');
+    if (optional) {
+        validation = validation.optional({checkFalsy: true});
+    }
+    return validation
+        .isLength({min: 6, max: 255})
+        .withMessage('La contraseña debe tener entre 6 y 255 caracteres.')
+};
 
 const correoValidation = () => body('correo')
     .trim()
@@ -34,7 +41,7 @@ const correoValidation = () => body('correo')
     .withMessage('El email no puede tener más de 100 caracteres.');
 
 const esAdminValidation = () => body('esAdmin')
-    .optional({checkFalsy:true})
+    .optional({checkFalsy: true})
     .isBoolean()
     .withMessage('El valor ingresado no es válido.');
 
@@ -54,7 +61,7 @@ module.exports.createValidation = buildValidation([
         .custom(async value => {
             const usuario = await usuarioRepository.findUsuarioByUsername(value);
             if (usuario !== null) {
-                throw new Error('El nombre ingresado ya existe.');
+                throw new Error('El nombre de usuario ingresado ya existe.');
             }
         }),
     estaActivoValidation(),
@@ -71,7 +78,7 @@ module.exports.createValidation = buildValidation([
     fotoDePerfilValidation(),
 ]);
 module.exports.create = asyncHandler(async function (req, res) {
-    const validated = matchedData(req);
+    const validated = matchedData(req, {includeOptionals: true});
     const usuario = await usuarioRepository.createUsuario(validated.username, validated.contrasenia, validated.correo,
         validated.esAdmin, validated.estaActivo, validated.fotoDePerfil);
     apiResponse.success(res, usuario, "Usuario creado.", 201);
@@ -85,7 +92,7 @@ module.exports.listAll = asyncHandler(async function (req, res) {
 });
 
 module.exports.findById = asyncHandler(async function (req, res) {
-    const usuario = await usuarioRepository.findById(req.params.id);
+    const usuario = await usuarioRepository.findByIdWithoutPassword(req.params.id);
     if (usuario === null) {
         throw new NotFoundException("El Usuario no existe.");
     }
@@ -95,18 +102,18 @@ module.exports.findById = asyncHandler(async function (req, res) {
 module.exports.updateValidation = buildValidation([
     usernameValidation(),
     estaActivoValidation(),
-    contraseniaValidation(),
+    contraseniaValidation(true),
     correoValidation(),
     esAdminValidation(),
     fotoDePerfilValidation(),
 ]);
-module.exports.update = asyncHandler(async function (req, res) {
+module.exports.update = asyncHandler(async (req, res) => {
     const usuario = await usuarioRepository.findById(req.params.id);
     if (usuario === null) {
         throw new NotFoundException('El Usuario no existe.');
     }
 
-    const validated = matchedData(req,{ includeOptionals: true });
+    const validated = matchedData(req, {includeOptionals: true});
     const errors = {};
     const updated = {};
     if (usuario.username !== validated.username) {
@@ -115,7 +122,7 @@ module.exports.update = asyncHandler(async function (req, res) {
         if ((existeUsuarioUsername !== null) && (existeUsuarioUsername.id !== usuario.id)) {
             errors.username = {
                 type: 'field',
-                msg: 'El nombre ingresado ya existe.',
+                msg: 'El nombre de usuario ingresado ya existe.',
                 path: 'username',
                 location: 'body',
             };
@@ -137,8 +144,11 @@ module.exports.update = asyncHandler(async function (req, res) {
         throw new ValidationException(errors);
     }
 
-    if (usuario.contrasenia !== validated.contrasenia) {
-        updated.contrasenia = validated.contrasenia;
+    if (validated.contrasenia) {
+        const password = await hashPassword(validated.contrasenia);
+        if (usuario.contrasenia !== password) {
+            updated.contrasenia = password;
+        }
     }
     if (usuario.tipo !== validated.tipo) {
         updated.tipo = validated.tipo;

@@ -51,7 +51,7 @@ module.exports.update = asyncHandler(async function (req, res) {
         throw new NotFoundException('El Evento no existe.');
     }
 
-    const validated = matchedData(req,{ includeOptionals: true });
+    const validated = matchedData(req, {includeOptionals: true});
     const updated = {};
     if (evento.fechaYHora !== validated.fechaYHora) {
         updated.fechaYHora = validated.fechaYHora;

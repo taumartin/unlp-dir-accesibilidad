@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const tiposDeEventosController = require('../../controllers/tipo-evento');
+const tipoEventoController = require('../../controllers/tipo-evento');
 
-/** Create TiposDeEventos. */
-router.post('/', tiposDeEventosController.createValidation, tiposDeEventosController.create);
-/** List all TiposDeEventos. */
-router.get('/', tiposDeEventosController.listAll);
-/** Get TiposDeEventos by ID. */
-router.get('/:id', tiposDeEventosController.findById);
-/** Update TiposDeEventos by ID. */
-router.post('/:id', tiposDeEventosController.updateValidation, tiposDeEventosController.update);
-/** Delete TiposDeEventos by ID. */
-router.delete('/:id', tiposDeEventosController.delete);
+/** Create TipoEvento. */
+router.post('/', tipoEventoController.createValidation, tipoEventoController.create);
+/** List all TipoEvento. */
+router.get('/', tipoEventoController.listAll);
+/** Get TipoEvento by ID. */
+router.get('/:id', tipoEventoController.findById);
+/** Update TipoEvento by ID. */
+router.post('/:id', tipoEventoController.updateValidation, tipoEventoController.update);
+/** Delete TipoEvento by ID. */
+router.delete('/:id', tipoEventoController.delete);
 
 module.exports = router;

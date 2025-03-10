@@ -1,25 +1,25 @@
-const {TiposDeMateriales} = require('../models');
+const {TipoMaterial} = require('../models');
 const BaseRepository = require("./base");
 
-class TiposDeMaterialRepository extends BaseRepository {
+class TipoMaterialRepository extends BaseRepository {
     static _instance = null;
 
     static getInstance() {
-        if (TiposDeMaterialRepository._instance === null) {
-            TiposDeMaterialRepository._instance = new TiposDeMaterialRepository();
+        if (TipoMaterialRepository._instance === null) {
+            TipoMaterialRepository._instance = new TipoMaterialRepository();
         }
-        return TiposDeMaterialRepository._instance;
+        return TipoMaterialRepository._instance;
     }
 
     constructor() {
-        super(TiposDeMateriales);
+        super(TipoMaterial);
     }
 
-    createTipoDeMaterial(nombre) {
+    createTipoMaterial(nombre) {
         return super.create({nombre});
     };
 
-    listTiposDeMateriales(page, pageSize, search, orderBy, orderDirection) {
+    listTiposMateriales(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
             page, pageSize, search,
             searchFields: ['nombre'],
@@ -28,4 +28,4 @@ class TiposDeMaterialRepository extends BaseRepository {
     }
 }
 
-module.exports = TiposDeMaterialRepository;
+module.exports = TipoMaterialRepository;

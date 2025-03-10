@@ -2,55 +2,53 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('semestres_alumnos', {
+        await queryInterface.createTable('reuniones', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            observaciones: {
-                type: Sequelize.TEXT,
+            fechaYHora: {
+                type: Sequelize.DATE,
                 allowNull: false,
-                defaultValue: "",
+                field: 'fecha_y_hora',
             },
-            alumnoId: {
+            medioComunicacionId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
-                field: 'alumno_id',
+                field: 'medio_comunicacion_id',
                 references: {
-                    model: 'alumnos',
+                    model: 'medios_comunicacion',
                     key: 'id',
                 }
             },
-            semestreId: {
+            tutorId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
-                field: 'semestre_id',
+                field: 'tutor_id',
                 references: {
-                    model: 'semestres',
+                    model: 'tutores',
                     key: 'id',
                 }
             },
             createdAt: {
                 allowNull: false,
-                type: Sequelize.DATE,
-                field: 'created_at'
+                type: Sequelize.DATE
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE,
-                field: 'updated_at'
+                type: Sequelize.DATE
             }
         });
 
-        await queryInterface.addIndex('semestres_alumnos', ['semestre_id', 'alumno_id'], {
+        await queryInterface.addIndex('reuniones', ['tutor_id', 'fecha_y_hora'], {
             unique: true,
-            name: 'unique_semestre_id_alumno_id'
+            name: 'unique_tutor_id_fecha_y_hora'
         });
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.removeIndex('semestres_alumnos', 'unique_semestre_id_alumno_id');
-        await queryInterface.dropTable('semestres_alumnos');
+        await queryInterface.removeIndex('reuniones', 'unique_tutor_id_fecha_y_hora');
+        await queryInterface.dropTable('reuniones');
     }
 };

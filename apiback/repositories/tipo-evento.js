@@ -1,25 +1,25 @@
-const {TiposDeEventos} = require('../models');
+const {TipoEvento} = require('../models');
 const BaseRepository = require("./base");
 
-class TiposDeEventosRepository extends BaseRepository {
+class TipoEventoRepository extends BaseRepository {
     static _instance = null;
 
     static getInstance() {
-        if (TiposDeEventosRepository._instance === null) {
-            TiposDeEventosRepository._instance = new TiposDeEventosRepository();
+        if (TipoEventoRepository._instance === null) {
+            TipoEventoRepository._instance = new TipoEventoRepository();
         }
-        return TiposDeEventosRepository._instance;
+        return TipoEventoRepository._instance;
     }
 
     constructor() {
-        super(TiposDeEventos);
+        super(TipoEvento);
     }
 
-    createTipoDeEvento(nombre) {
+    createTipoEvento(nombre) {
         return super.create({nombre});
     };
 
-    listTiposDeEventos(page, pageSize, search, orderBy, orderDirection) {
+    listTiposEventos(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
             page, pageSize, search,
             searchFields: ['nombre'],
@@ -28,4 +28,4 @@ class TiposDeEventosRepository extends BaseRepository {
     }
 }
 
-module.exports = TiposDeEventosRepository;
+module.exports = TipoEventoRepository;

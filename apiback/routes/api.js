@@ -5,17 +5,17 @@ const router = express.Router();
 const personasRouter = require('./api/personas');
 router.use('/personas', personasRouter);
 
-const mediosDeComunicacionRouter = require('./api/medios-comunicacion');
-router.use('/medios-comunicacion', mediosDeComunicacionRouter);
+const mediosComunicacionRouter = require('./api/medios-comunicacion');
+router.use('/medios-comunicacion', mediosComunicacionRouter);
 
 const semestresRouter = require('./api/semestres');
 router.use('/semestres', semestresRouter);
 
-const tiposDeMaterialesRouter = require('./api/tipos-materiales');
-router.use('/tipos-materiales', tiposDeMaterialesRouter);
+const tiposMaterialesRouter = require('./api/tipos-materiales');
+router.use('/tipos-materiales', tiposMaterialesRouter);
 
-const tiposDeEventosRouter = require('./api/tipos-eventos');
-router.use('/tipos-eventos', tiposDeEventosRouter);
+const tiposEventosRouter = require('./api/tipos-eventos');
+router.use('/tipos-eventos', tiposEventosRouter);
 
 const materiasRouter = require('./api/materias');
 router.use('/materias', materiasRouter);

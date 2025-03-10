@@ -1,5 +1,5 @@
 const {body, matchedData} = require("express-validator");
-const {verifyPassword, hashPassword} = require("../utils/hash");
+const {verifyPassword} = require("../utils/hash");
 const {
     jwtCreateAccessToken,
     jwtCreateRefreshToken,
@@ -49,13 +49,11 @@ module.exports.signup = asyncHandler(async function (req, res) {
         counter++;
     }
 
-    const password = await hashPassword(validated.password);
-    const email = validated.email;
     const isAdmin = false;
     const isActive = false;
     const profilePhoto = null;
 
-    await usuarioRepository.createUsuario(username, password, email, isAdmin, isActive, profilePhoto);
+    await usuarioRepository.createUsuario(username, validated.password, validated.email, isAdmin, isActive, profilePhoto);
     apiResponse.success(res, null,
         'Usuario registrado en estado inactivo. Contacta con el administrador para habilitar el login.');
 });
