@@ -12,7 +12,7 @@ module.exports = {
     observaciones: {
       type:Sequelize.TEXT,
       allowNull:false,
-      default:"",
+      defaultValue:"",
     },
     alumnoId: {
       type: Sequelize.INTEGER,

@@ -16,7 +16,7 @@ module.exports = {
       esPrimerSemestre: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        default: true,
+        defaultValue:true,
         field:'es_primer_semestre'
       },
       createdAt: {

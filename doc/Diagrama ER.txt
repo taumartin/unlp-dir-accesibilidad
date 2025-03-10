@@ -1,0 +1,213 @@
+@startchen
+
+entity Personas{
+nombre
+apellido
+dni <<key>>
+teléfono
+mail
+}
+
+entity Usuarios{
+nombre <<key>>
+contraseña
+correo <<key>>
+tipo
+"está activo" as está_activo
+"foto de perfil (opcional)" as foto_perfil_opcional
+}
+
+entity Alumnos{
+legajo <<key>>
+"tiene certificado" as tiene_certificado
+Situación
+}
+
+entity Tutores <<weak>>{
+"horas asignadas" as horas_asignadas
+}
+
+entity Materias{
+nombre <<key>>
+docentes
+contacto
+}
+
+entity "Eventos para alumnos" as fechas_importantes <<weak>>{
+}
+
+entity "Eventos para dirección" as eventosDir <<weak>>{
+lugar
+}
+
+entity Eventos <<weak>>{
+"fecha y hora" as fecha
+"descripción (opcional)" as des
+}
+
+entity "Tipos de eventos" as tipo{
+nombre <<key>>
+}
+
+entity "Reuniones" as reunion <<weak>>{
+"fecha y hora" as fecha <<key>>
+}
+
+entity "semestres de alumnos" as semestres_de_alumnos <<weak>>{
+observaciones
+}
+
+entity "Semestres" as semestres{
+"año" as anio <<key>>
+"es primer semestre" as es_primer_semestre <<key>>
+}
+
+entity "Apoyos" as ap <<weak>>{
+}
+
+entity "Ayudantías" as ay <<weak>>{
+}
+
+entity "Medios de comunicación" as med{
+nombre <<key>>
+}
+
+entity "Materiales accesibilizados" as mat{
+título
+link <<key>>
+"fecha de publicación" as fecha
+
+}
+
+entity "Tipos de materiales" as tipoM{
+nombre <<key>>
+}
+
+
+
+relationship "es un (1)" as es_un_1{
+}
+
+relationship "es un (2)" as es_un_2 <<identifying>>{
+}
+
+relationship "es un (3)" as es_un_3{
+}
+
+relationship "se aprobó" as se_aprobo{
+}
+
+relationship "se cursó sin aprobar" as se_curso_sin_aprobar{
+}
+
+relationship "es relevante para" as relevante_para{
+}
+
+relationship "trabajó en" as trabajo_en{
+semana
+"minutos trabajando" as min
+}
+
+relationship "involucró a alumno" as involucro_a_alumno{
+
+}
+
+relationship "involucró a tutor" as involucro_a_tutor <<identifying>>{
+
+}
+
+relationship "estudió durante" as estudio_durante <<identifying>>{
+
+}
+
+relationship "pertenece a (1)" as per <<identifying>>{
+}
+
+relationship "ocurrió durante (2)" as oc2 <<identifying>>{
+}
+
+relationship "recibió" as rec <<identifying>>{
+}
+
+relationship "brindó" as br <<identifying>>{
+}
+
+relationship "ocurrió durante (1)" as oc3  <<identifying>>{
+}
+
+relationship realiza <<identifying>>{
+}
+
+relationship ofrece <<identifying>>{
+}
+
+relationship usa{
+}
+
+relationship "se clasifica como" as clasif{
+}
+
+relationship "es un (4)" as eu4 <<identifying>>{
+}
+
+relationship "es un (5)" as eu5 <<identifying>>{
+}
+
+relationship "se clasifica como (2)" as clasif2{
+}
+
+relationship "pertenece a (2)" as per2{
+}
+
+relationship "es sobre" as essobre{
+}
+
+Alumnos--es_un_1
+es_un_1-(0,1)-Personas
+Tutores==es_un_2
+es_un_2-(0,1)-Personas
+Usuarios-(0,1)-es_un_3
+es_un_3--Tutores
+semestres_de_alumnos-(0,N)-se_aprobo
+se_aprobo-(0,N)-Materias
+semestres_de_alumnos-(0,N)-se_curso_sin_aprobar
+se_curso_sin_aprobar-(0,N)-Materias
+fechas_importantes--relevante_para
+relevante_para-(0,N)-Materias
+mat-(1,N)-trabajo_en
+trabajo_en-(0,N)-Tutores
+reunion==involucro_a_tutor
+involucro_a_tutor-(0,N)-Tutores
+reunion-(1,N)-involucro_a_alumno
+involucro_a_alumno-(0,N)-Alumnos
+Alumnos-(1,N)-estudio_durante
+estudio_durante==semestres_de_alumnos
+semestres-(0,N)-per
+per==semestres_de_alumnos
+ap==oc2
+oc2-(0,N)-semestres
+Alumnos-(0,N)-rec
+rec==ap
+Tutores-(0,N)-br
+br==ap
+ay==oc3
+semestres-(0,N)-oc3
+Tutores-(1,N)-realiza
+realiza==ay
+Materias-(0,N)-ofrece
+ofrece==ay
+reunion--usa
+usa-(0,N)-med
+fechas_importantes--clasif
+clasif-(0,N)-tipo
+eventosDir==eu4
+eu4-(0,N)-Eventos
+eu5==fechas_importantes
+Eventos-(0,N)-eu5
+clasif2-(0,N)-tipoM
+mat--clasif2
+Materias-(0,N)-per2
+per2--mat
+reunion--essobre
+essobre-(0,N)-Materias
+@endchen

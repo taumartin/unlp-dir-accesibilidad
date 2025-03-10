@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     esPrimerSemestre: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      default: true,
+      defaultValue:true,
       field: 'es_primer_semestre',
     },
   }, {

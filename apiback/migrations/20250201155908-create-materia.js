@@ -17,12 +17,12 @@ module.exports = {
       docentes: {
         type: Sequelize.TEXT,
         allowNull: false,
-        default: '',
+        defaultValue:'',
       },
       contacto: {
         type: Sequelize.TEXT,
         allowNull: false,
-        default: "",
+        defaultValue:"",
       },
       createdAt: {
         allowNull: false,

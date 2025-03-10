@@ -1,10 +1,8 @@
 'use strict';
-const {runSeedOnlyInEnv} = require("../utils/seed_runners");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        return runSeedOnlyInEnv("development", async () => {
             const now = new Date();
             const tiposDeMaterialesSeed = [{
                 nombre: "Video",
@@ -23,7 +21,6 @@ module.exports = {
             }]
             await queryInterface.bulkDelete('tipos_materiales',null,{}) //Borro los registros anteriores para reemplazarlos con estos.
             return queryInterface.bulkInsert('tipos_materiales', tiposDeMaterialesSeed, {});
-        });
     },
 
     async down(queryInterface, Sequelize) {

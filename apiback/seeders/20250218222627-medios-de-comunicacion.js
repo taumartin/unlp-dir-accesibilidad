@@ -1,10 +1,8 @@
 'use strict';
-const {runSeedOnlyInEnv} = require("../utils/seed_runners");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        return runSeedOnlyInEnv("development", async () => {
             const now = new Date();
             const mediosDeComunicacionSeed = [{
                 nombre: "Mail",
@@ -34,7 +32,6 @@ module.exports = {
           ]
             await queryInterface.bulkDelete('medios_comunicacion',null,{}) //Borro los registros anteriores para reemplazarlos con estos.
             return queryInterface.bulkInsert('medios_comunicacion', mediosDeComunicacionSeed, {});
-        });
     },
 
     async down(queryInterface, Sequelize) {

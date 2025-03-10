@@ -21,7 +21,8 @@ class BaseRepository {
                                search = "",
                                searchFields = [],
                                orderBy = "id",
-                               orderDirection = "asc"
+                               orderDirection = "asc",
+                               excludeAttributes = []
                            } = {}) {
         // Filtering.
         let whereClause = {};
@@ -47,6 +48,7 @@ class BaseRepository {
             order: [[orderBy, validOrderDirection]],
             limit,
             offset,
+            attributes: { exclude: excludeAttributes }
         });
         const totalCount = await this._model.count();
 

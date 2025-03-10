@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     observaciones: {
       type:DataTypes.TEXT,
       allowNull:false,
-      default:"",
+      defaultValue:"",
     },
     alumnoId: {
       type: DataTypes.INTEGER,

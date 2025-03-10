@@ -16,15 +16,16 @@ class UsuarioRepository extends BaseRepository {
         super(Usuario);
     }
 
-    createUsuario(nombre, contrasenia, correo, esAdmin, estaActivo, fotoDePerfil) {
-        return super.create({nombre, contrasenia, correo, esAdmin, estaActivo, fotoDePerfil,});
+    createUsuario(username, contrasenia, correo, esAdmin, estaActivo, fotoDePerfil) {
+        return super.create({username, contrasenia, correo, esAdmin, estaActivo, fotoDePerfil,});
     };
 
     listUsuarios(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
             page, pageSize, search,
-            searchFields: ['nombre', 'correo'],
+            searchFields: ['username', 'correo'],
             orderBy, orderDirection,
+            excludeAttributes: ['contrasenia']
         });
     }
 
@@ -33,7 +34,16 @@ class UsuarioRepository extends BaseRepository {
     }
 
     findUsuarioByUsername(username) {
-        return super.findOneWhere(where(fn("LOWER", col("nombre")), Op.eq, username));
+        return super.findOneWhere(where(fn("LOWER", col("username")), Op.eq, username));
+    }
+
+    findById(id) {
+        const rta=super.findById(id).then(usuario=>{
+            if(usuario)
+                usuario.contrasenia=undefined;
+            return usuario;
+        })
+        return rta
     }
 }
 

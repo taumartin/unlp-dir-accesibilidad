@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
     titulo: {
       type: DataTypes.STRING(100),
       allowNull: false,
-      default: '',
+      defaultValue:'',
     },
     link: {
       type: DataTypes.STRING(255),

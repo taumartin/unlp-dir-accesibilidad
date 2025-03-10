@@ -6,7 +6,7 @@ const {body, matchedData} = require("express-validator");
 const ValidationException = require("../exceptions/validation-exception");
 const usuarioRepository = require("../repositories/usuario").getInstance();
 
-const nombreValidation = () => body('nombre') // Username.
+const usernameValidation = () => body('username') // Username.
     .trim()
     .escape()
     .notEmpty()
@@ -16,12 +16,13 @@ const nombreValidation = () => body('nombre') // Username.
     .withMessage('El nombre no puede tener más de 32 caracteres.');
 
 const estaActivoValidation = () => body('estaActivo')
+    .optional({checkFalsy:true})
     .isBoolean()
     .withMessage('El valor ingresado no es válido.');
 
 const contraseniaValidation = () => body('contrasenia')
     .isLength({min: 6, max: 255})
-    .withMessage('La contraseña debe tener al menos 6 caracteres.');
+    .withMessage('La contraseña debe tener entre 6 y 255 caracteres.');
 
 const correoValidation = () => body('correo')
     .trim()
@@ -33,6 +34,7 @@ const correoValidation = () => body('correo')
     .withMessage('El email no puede tener más de 100 caracteres.');
 
 const esAdminValidation = () => body('esAdmin')
+    .optional({checkFalsy:true})
     .isBoolean()
     .withMessage('El valor ingresado no es válido.');
 
@@ -47,7 +49,7 @@ const fotoDePerfilValidation = () => body('fotoDePerfil')
     .withMessage('La URL no puede tener más de 255 caracteres.');
 
 module.exports.createValidation = buildValidation([
-    nombreValidation()
+    usernameValidation()
         .bail()
         .custom(async value => {
             const usuario = await usuarioRepository.findUsuarioByUsername(value);
@@ -70,13 +72,12 @@ module.exports.createValidation = buildValidation([
 ]);
 module.exports.create = asyncHandler(async function (req, res) {
     const validated = matchedData(req);
-    const usuario = await usuarioRepository.createUsuario(validated.nombre, validated.contrasenia, validated.correo,
+    const usuario = await usuarioRepository.createUsuario(validated.username, validated.contrasenia, validated.correo,
         validated.esAdmin, validated.estaActivo, validated.fotoDePerfil);
     apiResponse.success(res, usuario, "Usuario creado.", 201);
 });
 
 module.exports.listAll = asyncHandler(async function (req, res) {
-    // TODO: no se debe publicar la contraseña de los usuarios...
     const {page, pageSize, search, orderBy, orderDirection} = req.query;
     const response = await usuarioRepository.listUsuarios(parseInt(page) || 1, parseInt(pageSize) || 10,
         search || "", orderBy || "id", orderDirection || "asc",);
@@ -92,7 +93,7 @@ module.exports.findById = asyncHandler(async function (req, res) {
 });
 
 module.exports.updateValidation = buildValidation([
-    nombreValidation(),
+    usernameValidation(),
     estaActivoValidation(),
     contraseniaValidation(),
     correoValidation(),
@@ -105,17 +106,17 @@ module.exports.update = asyncHandler(async function (req, res) {
         throw new NotFoundException('El Usuario no existe.');
     }
 
-    const validated = matchedData(req);
+    const validated = matchedData(req,{ includeOptionals: true });
     const errors = {};
     const updated = {};
-    if (usuario.nombre !== validated.nombre) {
-        updated.nombre = validated.nombre;
-        const existeUsuarioUsername = await usuarioRepository.findUsuarioByUsername(validated.nombre);
+    if (usuario.username !== validated.username) {
+        updated.username = validated.username;
+        const existeUsuarioUsername = await usuarioRepository.findUsuarioByUsername(validated.username);
         if ((existeUsuarioUsername !== null) && (existeUsuarioUsername.id !== usuario.id)) {
-            errors.nombre = {
+            errors.username = {
                 type: 'field',
                 msg: 'El nombre ingresado ya existe.',
-                path: 'nombre',
+                path: 'username',
                 location: 'body',
             };
         }
@@ -132,7 +133,7 @@ module.exports.update = asyncHandler(async function (req, res) {
             };
         }
     }
-    if (errors.nombre || errors.correo) {
+    if (errors.username || errors.correo) {
         throw new ValidationException(errors);
     }
 
