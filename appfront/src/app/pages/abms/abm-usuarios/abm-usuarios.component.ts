@@ -38,7 +38,7 @@ export class AbmUsuariosComponent extends GenericAbm<Usuario> {
         render: data => data ? `<img src="${data}" alt="Avatar " class="img-data-avatar">` : null,
       },
     ], {
-      title: 'ABM Usuarios 2222',
+      title: 'ABM Usuarios',
       creation: 'Nuevo Usuario',
       edition: 'Ver/Editar Usuario',
     }, {
@@ -70,6 +70,16 @@ export class AbmUsuariosComponent extends GenericAbm<Usuario> {
     return this.getFormControlByKey('estaActivo');
   }
 
+  protected getModified(formValues: any): Partial<Omit<Usuario, "id">> {
+    return {
+      username: formValues.username ?? undefined,
+      correo: formValues.correo ?? undefined,
+      fotoPerfil: formValues.fotoPerfil ?? null,
+      esAdmin: formValues.esAdmin ?? undefined,
+      estaActivo: formValues.estaActivo ?? undefined,
+    };
+  }
+
   protected getNewModel(formValues: any): Omit<Usuario, "id"> {
     const {username, correo, fotoPerfil, esAdmin, estaActivo} = formValues;
     return {
@@ -78,16 +88,6 @@ export class AbmUsuariosComponent extends GenericAbm<Usuario> {
       fotoPerfil: fotoPerfil ?? '',
       esAdmin: esAdmin!,
       estaActivo: estaActivo!,
-    };
-  }
-
-  protected getModified(formValues: any): Partial<Omit<Usuario, "id">> {
-    return {
-      username: formValues.username ?? undefined,
-      correo: formValues.correo ?? undefined,
-      fotoPerfil: formValues.fotoPerfil ?? null,
-      esAdmin: formValues.esAdmin ?? undefined,
-      estaActivo: formValues.estaActivo ?? undefined,
     };
   }
 

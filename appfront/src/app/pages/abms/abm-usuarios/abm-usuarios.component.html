@@ -13,7 +13,7 @@
 
 <ng-template #createModal let-modal>
   <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
-    <div class="col-12 col-md-6 order-1">
+    <div class="col-12 col-md-6">
       <label for="inputUsername" class="form-label required">Username:</label>
       <input type="text" id="inputUsername" class="form-control"
              [class.is-invalid]="!readonlyInputs && isInvalid(username)"
@@ -26,7 +26,7 @@
         {{ username?.errors?.['backend'] ?? '' }}
       </div>
     </div>
-    <div class="col-12 col-md-6 order-2">
+    <div class="col-12 col-md-6">
       <label for="inputCorreo" class="form-label required">E-mail:</label>
       <input type="email" id="inputCorreo" class="form-control"
              [class.is-invalid]="!readonlyInputs && isInvalid(correo)"
@@ -40,7 +40,7 @@
         {{ correo?.errors?.['backend'] ?? '' }}
       </div>
     </div>
-    <div class="col-12 col-md-9 col-lg-6 order-3">
+    <div class="col-12 col-md-9 col-lg-6">
       <label for="inputFotoPerfil" class="form-label">Avatar:</label>
       <input type="url" id="inputFotoPerfil" class="form-control"
              [class.is-invalid]="!readonlyInputs && isInvalid(fotoPerfil)"
@@ -53,12 +53,12 @@
         {{ fotoPerfil?.errors?.['backend'] ?? '' }}
       </div>
     </div>
-    <div class="col-6 col-md-auto order-4">
+    <div class="col-6 col-md-auto">
       @if (fotoPerfil?.value) {
         <img [ngSrc]="fotoPerfil?.value!" alt="Avatar " class="img-fluid rounded" height="100" width="100">
       }
     </div>
-    <div class="col-6 order-5">
+    <div class="col-6">
       <div class="form-check">
         <input type="checkbox" id="inputEsAdmin" class="form-check-input"
                [class.is-invalid]="!readonlyInputs && isInvalid(esAdmin)"
@@ -91,6 +91,6 @@
       </div>
     </div>
     <button type="submit" class="d-none"
-            [disabled]="!modelForm.valid || isCreating"><!--Permite hacer submit con ENTER--></button>
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
   </form>
 </ng-template>
