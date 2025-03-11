@@ -1,3 +1,57 @@
 <app-crud-layout [labels]="labels"
                  [dtColumns]="dtColumns"
-                 [dtSource]="dtSource"></app-crud-layout>
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
+    <div class="col-12 col-xl-6">
+      <label for="inputNombre" class="form-label required">Nombre:</label>
+      <input type="text" id="inputNombre" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(nombre)"
+             [class.is-valid]="!readonlyInputs && isValid(nombre)"
+             placeholder="Examen" name="nombre" formControlName="nombre" required maxlength="100"
+             aria-describedby="nombreFeedback" [readonly]="readonlyInputs">
+      <div id="nombreFeedback" class="invalid-feedback">
+        {{ nombre?.errors?.['required'] ? 'El nombre es obligatorio.' : '' }}
+        {{ nombre?.errors?.['maxlength'] ? 'El nombre es muy largo.' : '' }}
+        {{ nombre?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-xl-6">
+      <label for="inputDocentes" class="form-label">Docentes:</label>
+      <input type="text" id="inputDocentes" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(docentes)"
+             [class.is-valid]="!readonlyInputs && isValid(docentes)"
+             placeholder="Juan Pérez, Juana Pérez" name="docentes" formControlName="docentes" maxlength="500"
+             aria-describedby="docentesFeedback" [readonly]="readonlyInputs">
+      <div id="docentesFeedback" class="invalid-feedback">
+        {{ docentes?.errors?.['maxlength'] ? 'El valor es muy largo.' : '' }}
+        {{ docentes?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-xl-6">
+      <label for="inputContacto" class="form-label">Contacto:</label>
+      <input type="text" id="inputContacto" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(contacto)"
+             [class.is-valid]="!readonlyInputs && isValid(contacto)"
+             placeholder="mail@example.com, mail2@example.com" name="contacto" formControlName="contacto"
+             maxlength="500" aria-describedby="contactoFeedback" [readonly]="readonlyInputs">
+      <div id="contactoFeedback" class="invalid-feedback">
+        {{ contacto?.errors?.['maxlength'] ? 'El valor es muy largo.' : '' }}
+        {{ contacto?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>
+
