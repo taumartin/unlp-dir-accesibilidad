@@ -7,7 +7,7 @@ const ValidationException = require("../exceptions/validation-exception");
 const {hashPassword} = require("../utils/hash");
 const usuarioRepository = require("../repositories/usuario").getInstance();
 
-const usernameValidation = () => body('username') // Username.
+const usernameValidation = () => body('username')
     .trim()
     .escape()
     .notEmpty()
@@ -45,7 +45,7 @@ const esAdminValidation = () => body('esAdmin')
     .isBoolean()
     .withMessage('El valor ingresado no es válido.');
 
-const fotoDePerfilValidation = () => body('fotoDePerfil')
+const fotoPerfilValidation = () => body('fotoPerfil')
     .trim()
     .escape()
     .optional({checkFalsy: true})
@@ -75,12 +75,12 @@ module.exports.createValidation = buildValidation([
             }
         }),
     esAdminValidation(),
-    fotoDePerfilValidation(),
+    fotoPerfilValidation(),
 ]);
 module.exports.create = asyncHandler(async function (req, res) {
     const validated = matchedData(req, {includeOptionals: true});
     const usuario = await usuarioRepository.createUsuario(validated.username, validated.contrasenia, validated.correo,
-        validated.esAdmin, validated.estaActivo, validated.fotoDePerfil);
+        validated.esAdmin, validated.estaActivo, validated.fotoPerfil);
     apiResponse.success(res, usuario, "Usuario creado.", 201);
 });
 
@@ -105,7 +105,7 @@ module.exports.updateValidation = buildValidation([
     contraseniaValidation(true),
     correoValidation(),
     esAdminValidation(),
-    fotoDePerfilValidation(),
+    fotoPerfilValidation(),
 ]);
 module.exports.update = asyncHandler(async (req, res) => {
     const usuario = await usuarioRepository.findById(req.params.id);
@@ -156,8 +156,8 @@ module.exports.update = asyncHandler(async (req, res) => {
     if (usuario.estaActivo !== validated.estaActivo) {
         updated.estaActivo = validated.estaActivo;
     }
-    if (usuario.fotoDePerfil !== validated.fotoDePerfil) {
-        updated.fotoDePerfil = validated.fotoDePerfil;
+    if (usuario.fotoPerfil !== validated.fotoPerfil) {
+        updated.fotoPerfil = validated.fotoPerfil;
     }
 
     const result = await usuarioRepository.update(req.params.id, updated);

@@ -108,7 +108,7 @@ module.exports.me = asyncHandler(async (req, res) => {
     }
     apiResponse.success(res, {
         displayName: user.nombre || user.correo,
-        profilePhoto: user.fotoDePerfil,
+        profilePhoto: user.fotoPerfil,
     });
     // TODO: agregar roles, permisos...
 });

@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
         isActive() {
             return this.estaActivo;
         }
+
+        toJSON() {
+            const attributes = {...this.get()};
+            delete attributes.contrasenia;
+            return attributes;
+        }
     }
 
     Usuario.init({

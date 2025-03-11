@@ -17,9 +17,9 @@ class UsuarioRepository extends BaseRepository {
         super(Usuario);
     }
 
-    async createUsuario(username, contrasenia, correo, esAdmin, estaActivo, fotoDePerfil) {
+    async createUsuario(username, contrasenia, correo, esAdmin, estaActivo, fotoPerfil) {
         const password = await hashPassword(contrasenia);
-        return super.create({username, password, correo, esAdmin, estaActivo, fotoDePerfil,});
+        return super.create({username, contrasenia: password, correo, esAdmin, estaActivo, fotoPerfil,});
     };
 
     listUsuarios(page, pageSize, search, orderBy, orderDirection) {
