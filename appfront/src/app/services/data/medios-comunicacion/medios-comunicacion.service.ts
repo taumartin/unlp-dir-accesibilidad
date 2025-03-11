@@ -1,24 +1,19 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
-import {ApiPageRequest} from '../../network/api/api-page-request';
-import {Observable} from 'rxjs';
 import {MedioComunicacion} from '../../../models/medio-comunicacion';
-import {ApiResponsePage} from '../../network/api/api-response-page';
+import {CrudService} from '../crud/crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MediosComunicacionService {
-  private readonly baseEndpoint: string = "/medios-comunicacion";
-
+export class MediosComunicacionService extends CrudService<MedioComunicacion> {
   constructor(
-    private readonly apiService: ApiService,
+    apiService: ApiService,
   ) {
+    super(apiService, "/medios-comunicacion");
   }
 
-  public getMediosComunicacion(pageRequested: ApiPageRequest): Observable<ApiResponsePage<MedioComunicacion>> {
-    return this.apiService.getPaginatedEndpoint<MedioComunicacion>(`${this.baseEndpoint}/`, pageRequested);
+  public isModified(original: MedioComunicacion, newValues: Partial<Omit<MedioComunicacion, "id">>): boolean {
+    return (original.nombre !== newValues.nombre);
   }
-
-  // TODO: agregar resto de operaciones..
 }

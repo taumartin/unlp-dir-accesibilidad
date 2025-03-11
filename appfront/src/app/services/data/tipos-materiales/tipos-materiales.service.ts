@@ -1,24 +1,19 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
-import {ApiPageRequest} from '../../network/api/api-page-request';
-import {Observable} from 'rxjs';
 import {TipoMaterial} from '../../../models/tipo-material';
-import {ApiResponsePage} from '../../network/api/api-response-page';
+import {CrudService} from '../crud/crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TiposMaterialesService {
-  private readonly baseEndpoint: string = "/tipos-materiales";
-
+export class TiposMaterialesService extends CrudService<TipoMaterial> {
   constructor(
-    private readonly apiService: ApiService,
+    apiService: ApiService,
   ) {
+    super(apiService, "/tipos-materiales");
   }
 
-  public getTiposMateriales(pageRequested: ApiPageRequest): Observable<ApiResponsePage<TipoMaterial>> {
-    return this.apiService.getPaginatedEndpoint<TipoMaterial>(`${this.baseEndpoint}/`, pageRequested);
+  public isModified(original: TipoMaterial, newValues: Partial<Omit<TipoMaterial, "id">>): boolean {
+    return (original.nombre !== newValues.nombre);
   }
-
-  // TODO: agregar resto de operaciones..
 }

@@ -1,24 +1,19 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
-import {ApiPageRequest} from '../../network/api/api-page-request';
-import {Observable} from 'rxjs';
 import {Semestre} from '../../../models/semestre';
-import {ApiResponsePage} from '../../network/api/api-response-page';
+import {CrudService} from '../crud/crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SemestresService {
-  private readonly baseEndpoint: string = "/semestres";
-
+export class SemestresService extends CrudService<Semestre> {
   constructor(
-    private readonly apiService: ApiService,
+    apiService: ApiService,
   ) {
+    super(apiService, "/semestres");
   }
 
-  public getSemestres(pageRequested: ApiPageRequest): Observable<ApiResponsePage<Semestre>> {
-    return this.apiService.getPaginatedEndpoint<Semestre>(`${this.baseEndpoint}/`, pageRequested);
+  public isModified(original: Semestre, newValues: Partial<Omit<Semestre, "id">>): boolean {
+    return (original.anio !== newValues.anio) || (original.esPrimerSemestre !== newValues.esPrimerSemestre);
   }
-
-  // TODO: agregar resto de operaciones..
 }

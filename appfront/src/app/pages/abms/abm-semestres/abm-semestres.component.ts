@@ -26,7 +26,7 @@ export class AbmSemestresComponent {
       render: data => data ? 'Sí' : 'No',
     },
   ];
-  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Semestre>> = (pagReq) => this.semestresService.getSemestres(pagReq);
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Semestre>> = (pagReq) => this.semestresService.listAll(pagReq);
 
   public constructor(
     private readonly semestresService: SemestresService,

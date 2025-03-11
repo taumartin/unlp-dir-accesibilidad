@@ -24,7 +24,7 @@ export class AbmMateriasComponent {
     {title: 'Docentes', data: 'docentes', name: 'docentes'},
     {title: 'Contacto', data: 'contacto', name: 'contacto'},
   ];
-  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Materia>> = (pagReq) => this.materiasService.getMaterias(pagReq);
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Materia>> = (pagReq) => this.materiasService.listAll(pagReq);
 
   public constructor(
     private readonly materiasService: MateriasService,

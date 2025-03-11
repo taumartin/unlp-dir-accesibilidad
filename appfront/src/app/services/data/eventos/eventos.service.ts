@@ -4,20 +4,20 @@ import {ApiPageRequest} from '../../network/api/api-page-request';
 import {Observable, tap} from 'rxjs';
 import {Evento} from '../../../models/evento';
 import {ApiResponsePage} from '../../network/api/api-response-page';
+import {CrudService} from '../crud/crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventosService {
-  private readonly baseEndpoint: string = "/eventos";
-
+export class EventosService extends CrudService<Evento> {
   constructor(
-    private readonly apiService: ApiService,
+    apiService: ApiService,
   ) {
+    super(apiService, "/eventos");
   }
 
-  public getEventos(pageRequested: ApiPageRequest): Observable<ApiResponsePage<Evento>> {
-    return this.apiService.getPaginatedEndpoint<Evento>(`${this.baseEndpoint}/`, pageRequested)
+  public override listAll(pageRequested: ApiPageRequest): Observable<ApiResponsePage<Evento>> {
+    return super.listAll(pageRequested)
       .pipe(
         tap(response => {
           response.data.forEach(item => item._timestamp = new Date(item.fechaYHora));
@@ -25,5 +25,8 @@ export class EventosService {
       );
   }
 
-  // TODO: agregar resto de operaciones..
+  public isModified(original: Evento, newValues: Partial<Omit<Evento, "id">>): boolean {
+    // FIXME: revisar comparación de fecha y hora.
+    return (original.descripcion !== newValues.descripcion) || (original.fechaYHora !== newValues.fechaYHora);
+  }
 }

@@ -1,5 +1,6 @@
-export interface Persona {
-  id: number;
+import {Model} from './model';
+
+export interface Persona extends Model {
   nombre: string;
   apellido: string;
   dni: number;

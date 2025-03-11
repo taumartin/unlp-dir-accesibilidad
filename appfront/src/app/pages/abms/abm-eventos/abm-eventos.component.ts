@@ -33,7 +33,7 @@ export class AbmEventosComponent {
     },
     {title: 'Descripción', data: 'descripcion', name: 'descripcion'},
   ];
-  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Evento>> = (pagReq) => this.eventosService.getEventos(pagReq);
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Evento>> = (pagReq) => this.eventosService.listAll(pagReq);
 
   public constructor(
     private readonly eventosService: EventosService,

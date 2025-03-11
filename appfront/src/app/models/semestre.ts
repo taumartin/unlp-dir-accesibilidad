@@ -1,5 +1,6 @@
-export interface Semestre {
-  id: number;
+import {Model} from './model';
+
+export interface Semestre extends Model {
   anio: number;
   esPrimerSemestre: boolean;
 }

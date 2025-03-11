@@ -22,7 +22,7 @@ export class AbmTiposMaterialesComponent {
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Nombre', data: 'nombre', name: 'nombre'},
   ];
-  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<TipoMaterial>> = (pagReq) => this.tiposMaterialesService.getTiposMateriales(pagReq);
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<TipoMaterial>> = (pagReq) => this.tiposMaterialesService.listAll(pagReq);
 
   public constructor(
     private readonly tiposMaterialesService: TiposMaterialesService,

@@ -1,24 +1,19 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
-import {ApiPageRequest} from '../../network/api/api-page-request';
-import {Observable} from 'rxjs';
 import {TipoEvento} from '../../../models/tipo-evento';
-import {ApiResponsePage} from '../../network/api/api-response-page';
+import {CrudService} from '../crud/crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TiposEventosService {
-  private readonly baseEndpoint: string = "/tipos-eventos";
-
+export class TiposEventosService extends CrudService<TipoEvento> {
   constructor(
-    private readonly apiService: ApiService,
+    apiService: ApiService,
   ) {
+    super(apiService, "/tipos-eventos");
   }
 
-  public getTiposEventos(pageRequested: ApiPageRequest): Observable<ApiResponsePage<TipoEvento>> {
-    return this.apiService.getPaginatedEndpoint<TipoEvento>(`${this.baseEndpoint}/`, pageRequested);
+  public isModified(original: TipoEvento, newValues: Partial<Omit<TipoEvento, "id">>): boolean {
+    return (original.nombre !== newValues.nombre);
   }
-
-  // TODO: agregar resto de operaciones..
 }

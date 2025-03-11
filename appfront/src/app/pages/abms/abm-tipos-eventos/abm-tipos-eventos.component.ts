@@ -22,7 +22,7 @@ export class AbmTiposEventosComponent {
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Nombre', data: 'nombre', name: 'nombre'},
   ];
-  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<TipoEvento>> = (pagReq) => this.tiposEventosService.getTiposEventos(pagReq);
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<TipoEvento>> = (pagReq) => this.tiposEventosService.listAll(pagReq);
 
   public constructor(
     private readonly tiposEventosService: TiposEventosService,

@@ -22,7 +22,7 @@ export class AbmMediosComunicacionComponent {
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Nombre', data: 'nombre', name: 'nombre'},
   ];
-  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<MedioComunicacion>> = (pagReq) => this.mediosComunicacionService.getMediosComunicacion(pagReq);
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<MedioComunicacion>> = (pagReq) => this.mediosComunicacionService.listAll(pagReq);
 
   public constructor(
     private readonly mediosComunicacionService: MediosComunicacionService,
