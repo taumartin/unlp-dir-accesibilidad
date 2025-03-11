@@ -32,6 +32,14 @@ a {
   background: rgba(0, 0, 0, 0.25);
 }
 
+.click-disabled {
+  pointer-events: none;
+}
+
+input[readonly]::placeholder {
+  opacity: 0;
+}
+
 table.dataTable {
   tbody td {
     vertical-align: middle;

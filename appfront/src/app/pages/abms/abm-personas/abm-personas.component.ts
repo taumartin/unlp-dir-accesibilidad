@@ -37,7 +37,7 @@ export class AbmPersonasComponent {
     {title: 'Teléfono', data: 'telefono', name: 'telefono'},
     {title: 'E-mail', data: 'email', name: 'email'},
   ];
-  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Persona>> = (pagReq) => this.personasService.getPersonas(pagReq);
+  protected dtSource: (pagReq: ApiPageRequest) => Observable<ApiResponsePage<Persona>> = (pagReq) => this.personasService.listAll(pagReq);
   protected isCreatingPersona = false;
   protected isUpdatingPersona = false;
   protected isDeletingPersona = false;
@@ -101,10 +101,9 @@ export class AbmPersonasComponent {
   }
 
   private createPersona(persona: Omit<Persona, 'id'>): void {
-    console.log("creating");
     if (!this.isCreatingPersona) {
       this.isCreatingPersona = true;
-      this.personasService.createPersona(persona).subscribe({
+      this.personasService.create(persona).subscribe({
         next: result => this.onEntitySaveEnd(result),
         complete: () => {
           this.isCreatingPersona = false;
@@ -128,7 +127,7 @@ export class AbmPersonasComponent {
   private updatePersona(persona: Omit<Persona, 'id'>): void {
     if (!this.isUpdatingPersona && this.selectedPersona) {
       this.isUpdatingPersona = true;
-      this.personasService.updatePersona(this.selectedPersona.id, persona).subscribe({
+      this.personasService.update(this.selectedPersona.id, persona).subscribe({
         next: result => this.onEntitySaveEnd(result),
         complete: () => {
           this.isUpdatingPersona = false;
@@ -140,7 +139,7 @@ export class AbmPersonasComponent {
   private deletePersona(): void {
     if (!this.isDeletingPersona && this.selectedPersona) {
       this.isDeletingPersona = true;
-      this.personasService.deletePersona(this.selectedPersona.id).subscribe({
+      this.personasService.delete(this.selectedPersona.id).subscribe({
         next: result => this.onEntitySaveEnd(result),
         complete: () => {
           this.isDeletingPersona = false;
@@ -150,7 +149,7 @@ export class AbmPersonasComponent {
   }
 
   protected onSavePersona(modal: NgbModalRef | null = null) {
-    if (this.personaForm.valid) {
+    if (this.personaForm.valid && !this.readonlyInputs) {
       this.entityModal = this.entityModal || modal;
       this.formService.resetFormValidations(this.personaForm);
       const {nombre, apellido, dni, email, telefono} = this.personaForm.value;
@@ -174,7 +173,7 @@ export class AbmPersonasComponent {
       return false;
     }
     const formValues = this.personaForm.value;
-    return this.personasService.isPersonaModified(this.selectedPersona, {
+    return this.personasService.isModified(this.selectedPersona, {
       nombre: formValues.nombre ?? undefined,
       apellido: formValues.apellido ?? undefined,
       dni: formValues.dni ?? undefined,

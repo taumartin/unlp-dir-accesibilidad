@@ -1,3 +1,96 @@
 <app-crud-layout [labels]="labels"
                  [dtColumns]="dtColumns"
-                 [dtSource]="dtSource"></app-crud-layout>
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!usuarioForm.valid"
+                 [isSaving]="isCreatingUsuario || isUpdatingUsuario"
+                 [isDeleting]="isDeletingUsuario"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isUsuarioModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSaveUsuario($event)"
+                 (entityModalDelete)="onDeleteUsuario()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="usuarioForm" (ngSubmit)="onSaveUsuario(modal)" autocomplete="off">
+    <div class="col-12 col-md-6 order-1">
+      <label for="inputUsername" class="form-label required">Username:</label>
+      <input type="text" id="inputUsername" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(username)"
+             [class.is-valid]="!readonlyInputs && isValid(username)"
+             placeholder="Juan123" name="username" formControlName="username" required maxlength="32"
+             aria-describedby="usernameFeedback" [readonly]="readonlyInputs">
+      <div id="usernameFeedback" class="invalid-feedback">
+        {{ username?.errors?.['required'] ? 'El username es obligatorio.' : '' }}
+        {{ username?.errors?.['maxlength'] ? 'El username es muy largo.' : '' }}
+        {{ username?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6 order-2">
+      <label for="inputCorreo" class="form-label required">E-mail:</label>
+      <input type="email" id="inputCorreo" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(correo)"
+             [class.is-valid]="!readonlyInputs && isValid(correo)"
+             placeholder="usuario@ejemplo.com" name="correo" formControlName="correo" required maxlength="100"
+             aria-describedby="correoFeedback" [readonly]="readonlyInputs">
+      <div id="correoFeedback" class="invalid-feedback">
+        {{ correo?.errors?.['required'] ? 'El e-mail es obligatorio.' : '' }}
+        {{ correo?.errors?.['maxlength'] ? 'El e-mail es muy largo.' : '' }}
+        {{ correo?.errors?.['email'] ? 'Ingresa un e-mail válido.' : '' }}
+        {{ correo?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-9 col-lg-6 order-3">
+      <label for="inputFotoPerfil" class="form-label">Avatar:</label>
+      <input type="url" id="inputFotoPerfil" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(fotoPerfil)"
+             [class.is-valid]="!readonlyInputs && isValid(fotoPerfil)"
+             placeholder="https://www.example.com/imagen.jpg" name="fotoPerfil" formControlName="fotoPerfil"
+             maxlength="255" aria-describedby="fotoPerfilFeedback" [readonly]="readonlyInputs">
+      <div id="fotoPerfilFeedback" class="invalid-feedback">
+        {{ fotoPerfil?.errors?.['maxlength'] ? 'La URL es muy larga.' : '' }}
+        {{ fotoPerfil?.errors?.['pattern'] ? 'Ingresa una URL válida.' : '' }}
+        {{ fotoPerfil?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-6 col-md-auto order-4">
+      @if (fotoPerfil?.value) {
+        <img [ngSrc]="fotoPerfil?.value!" alt="Avatar " class="img-fluid rounded" height="100" width="100">
+      }
+    </div>
+    <div class="col-6 order-5">
+      <div class="form-check">
+        <input type="checkbox" id="inputEsAdmin" class="form-check-input"
+               [class.is-invalid]="!readonlyInputs && isInvalid(esAdmin)"
+               [class.is-valid]="!readonlyInputs && isValid(esAdmin)"
+               [class.click-disabled]="readonlyInputs" [tabIndex]="readonlyInputs? -1 : undefined"
+               name="esAdmin" formControlName="esAdmin"
+               aria-describedby="esAdminFeedback" [readonly]="readonlyInputs">
+        <label class="form-check-label" for="inputEsAdmin"
+               [class.click-disabled]="readonlyInputs" [class.text-muted]="readonlyInputs">
+          Admin
+        </label>
+        <div id="esAdminFeedback" class="invalid-feedback">
+          {{ esAdmin?.errors?.['backend'] ?? '' }}
+        </div>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" id="inputEstaActivo" class="form-check-input"
+               [class.is-invalid]="!readonlyInputs && isInvalid(estaActivo)"
+               [class.is-valid]="!readonlyInputs && isValid(estaActivo)"
+               [class.click-disabled]="readonlyInputs" [tabIndex]="readonlyInputs? -1 : undefined"
+               name="estaActivo" formControlName="estaActivo"
+               aria-describedby="estaActivoFeedback" [readonly]="readonlyInputs">
+        <label class="form-check-label" for="inputEstaActivo"
+               [class.click-disabled]="readonlyInputs" [class.text-muted]="readonlyInputs">
+          Activo
+        </label>
+        <div id="estaActivoFeedback" class="invalid-feedback">
+          {{ estaActivo?.errors?.['backend'] ?? '' }}
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!usuarioForm.valid || isCreatingUsuario"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>

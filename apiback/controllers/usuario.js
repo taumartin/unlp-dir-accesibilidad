@@ -47,7 +47,6 @@ const esAdminValidation = () => body('esAdmin')
 
 const fotoPerfilValidation = () => body('fotoPerfil')
     .trim()
-    .escape()
     .optional({checkFalsy: true})
     .isURL()
     .withMessage('Ingresa una URL válida.')
@@ -158,6 +157,9 @@ module.exports.update = asyncHandler(async (req, res) => {
     }
     if (usuario.fotoPerfil !== validated.fotoPerfil) {
         updated.fotoPerfil = validated.fotoPerfil;
+    }
+    if (usuario.esAdmin !== validated.esAdmin) {
+        updated.esAdmin = validated.esAdmin;
     }
 
     const result = await usuarioRepository.update(req.params.id, updated);

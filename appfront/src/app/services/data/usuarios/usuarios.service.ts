@@ -1,24 +1,21 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/api/api.service';
-import {ApiPageRequest} from '../../network/api/api-page-request';
-import {Observable} from 'rxjs';
 import {Usuario} from '../../../models/usuario';
-import {ApiResponsePage} from '../../network/api/api-response-page';
+import {CrudService} from '../crud/crud.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuariosService {
-  private readonly baseEndpoint: string = "/usuarios";
-
+export class UsuariosService extends CrudService<Usuario> {
   constructor(
-    private readonly apiService: ApiService,
+    apiService: ApiService,
   ) {
+    super(apiService, "/usuarios");
   }
 
-  public getUsuarios(pageRequested: ApiPageRequest): Observable<ApiResponsePage<Usuario>> {
-    return this.apiService.getPaginatedEndpoint<Usuario>(`${this.baseEndpoint}/`, pageRequested);
+  public isModified(original: Usuario, newValues: Partial<Omit<Usuario, "id">>): boolean {
+    return (original.username !== newValues.username) || (original.correo !== newValues.correo)
+      || (original.fotoPerfil !== newValues.fotoPerfil) || (original.esAdmin !== newValues.esAdmin)
+      || (original.estaActivo !== newValues.estaActivo);
   }
-
-  // TODO: agregar resto de operaciones..
 }
