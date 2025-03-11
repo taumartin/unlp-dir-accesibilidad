@@ -1,4 +1,4 @@
-const {Eventos: Evento} = require('../models');
+const {Evento} = require('../models');
 const BaseRepository = require("./base");
 
 class EventoRepository extends BaseRepository {

@@ -1,22 +1,22 @@
-const {Semestres} = require('../models');
+const {Semestre} = require('../models');
 const BaseRepository = require("./base");
 
-class SemestresRepository extends BaseRepository {
+class SemestreRepository extends BaseRepository {
     static _instance = null;
 
     static getInstance() {
-        if (SemestresRepository._instance === null) {
-            SemestresRepository._instance = new SemestresRepository();
+        if (SemestreRepository._instance === null) {
+            SemestreRepository._instance = new SemestreRepository();
         }
-        return SemestresRepository._instance;
+        return SemestreRepository._instance;
     }
 
     constructor() {
-        super(Semestres);
+        super(Semestre);
     }
 
-    createSemestre(anio,esPrimerSemestre) {
-        return super.create({anio,esPrimerSemestre,});
+    createSemestre(anio, esPrimerSemestre) {
+        return super.create({anio, esPrimerSemestre,});
     };
 
     listSemestres(page, pageSize, search, orderBy, orderDirection) {
@@ -28,4 +28,4 @@ class SemestresRepository extends BaseRepository {
     }
 }
 
-module.exports = SemestresRepository;
+module.exports = SemestreRepository;
