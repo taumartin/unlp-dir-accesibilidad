@@ -93,7 +93,7 @@ export abstract class GenericAbm<T extends Model> {
     }
   }
 
-  protected abstract getNewModel(formValues: any): Omit<T, 'id'>;
+  protected abstract getNewModel(formValues: Partial<Omit<T, 'id'>>): Omit<T, 'id'>;
 
   protected onSave(modal: NgbModalRef | null = null) {
     if (this.modelForm.valid && !this.readonlyInputs) {
@@ -108,7 +108,7 @@ export abstract class GenericAbm<T extends Model> {
     }
   }
 
-  protected abstract getModified(formValues: any): Partial<Omit<T, 'id'>>;
+  protected abstract getModified(formValues: Partial<Omit<T, 'id'>>): Partial<Omit<T, 'id'>>;
 
   protected isModified(): boolean {
     if (!this.modelForm || !this.selectedModel) {

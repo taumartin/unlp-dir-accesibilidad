@@ -36,13 +36,13 @@ export class AbmTiposEventosComponent extends GenericAbm<TipoEvento> {
     return this.getFormControlByKey('nombre');
   }
 
-  protected getModified(formValues: any): Partial<Omit<TipoEvento, "id">> {
+  protected getModified(formValues: Partial<Omit<TipoEvento, 'id'>>): Partial<Omit<TipoEvento, "id">> {
     return {
       nombre: formValues.nombre ?? undefined,
     };
   }
 
-  protected getNewModel(formValues: any): Omit<TipoEvento, "id"> {
+  protected getNewModel(formValues: Partial<Omit<TipoEvento, 'id'>>): Omit<TipoEvento, "id"> {
     const {nombre} = formValues;
     return {
       nombre: nombre!,

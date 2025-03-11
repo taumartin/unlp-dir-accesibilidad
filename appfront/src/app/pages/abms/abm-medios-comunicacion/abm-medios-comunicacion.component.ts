@@ -36,13 +36,13 @@ export class AbmMediosComunicacionComponent extends GenericAbm<MedioComunicacion
     return this.getFormControlByKey('nombre');
   }
 
-  protected getModified(formValues: any): Partial<Omit<MedioComunicacion, "id">> {
+  protected getModified(formValues: Partial<Omit<MedioComunicacion, 'id'>>): Partial<Omit<MedioComunicacion, "id">> {
     return {
       nombre: formValues.nombre ?? undefined,
     };
   }
 
-  protected getNewModel(formValues: any): Omit<MedioComunicacion, "id"> {
+  protected getNewModel(formValues: Partial<Omit<MedioComunicacion, 'id'>>): Omit<MedioComunicacion, "id"> {
     const {nombre} = formValues;
     return {
       nombre: nombre!,

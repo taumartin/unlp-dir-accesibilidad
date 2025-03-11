@@ -37,13 +37,13 @@ export class AbmTiposMaterialesComponent extends GenericAbm<TipoMaterial> {
     return this.getFormControlByKey('nombre');
   }
 
-  protected getModified(formValues: any): Partial<Omit<TipoMaterial, "id">> {
+  protected getModified(formValues: Partial<Omit<TipoMaterial, 'id'>>): Partial<Omit<TipoMaterial, "id">> {
     return {
       nombre: formValues.nombre ?? undefined,
     };
   }
 
-  protected getNewModel(formValues: any): Omit<TipoMaterial, "id"> {
+  protected getNewModel(formValues: Partial<Omit<TipoMaterial, 'id'>>): Omit<TipoMaterial, "id"> {
     const {nombre} = formValues;
     return {
       nombre: nombre!,

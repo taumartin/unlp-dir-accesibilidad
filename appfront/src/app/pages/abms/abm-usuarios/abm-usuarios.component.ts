@@ -70,7 +70,7 @@ export class AbmUsuariosComponent extends GenericAbm<Usuario> {
     return this.getFormControlByKey('estaActivo');
   }
 
-  protected getModified(formValues: any): Partial<Omit<Usuario, "id">> {
+  protected getModified(formValues: Partial<Omit<Usuario, 'id'>>): Partial<Omit<Usuario, "id">> {
     return {
       username: formValues.username ?? undefined,
       correo: formValues.correo ?? undefined,
@@ -80,7 +80,7 @@ export class AbmUsuariosComponent extends GenericAbm<Usuario> {
     };
   }
 
-  protected getNewModel(formValues: any): Omit<Usuario, "id"> {
+  protected getNewModel(formValues: Partial<Omit<Usuario, 'id'>>): Omit<Usuario, "id"> {
     const {username, correo, fotoPerfil, esAdmin, estaActivo} = formValues;
     return {
       username: username!,

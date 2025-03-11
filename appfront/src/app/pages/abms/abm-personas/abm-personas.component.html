@@ -2,17 +2,17 @@
                  [dtColumns]="dtColumns"
                  [dtSource]="dtSource"
                  [entityModalBodyTemplate]="createModal"
-                 [formInvalid]="!personaForm.valid"
-                 [isSaving]="isCreatingPersona || isUpdatingPersona"
-                 [isDeleting]="isDeletingPersona"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
                  [(isEditionEnabled)]="isEditing"
-                 [isEntityModified]="isPersonaModified()"
+                 [isEntityModified]="isModified()"
                  (entityModalOpen)="onEntityModalOpen($event)"
-                 (entityModalSave)="onSavePersona($event)"
-                 (entityModalDelete)="onDeletePersona()"></app-crud-layout>
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
 
 <ng-template #createModal let-modal>
-  <form class="row g-3" [formGroup]="personaForm" (ngSubmit)="onSavePersona(modal)" autocomplete="off">
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
     <div class="col-12 col-md-6 order-1">
       <label for="inputNombre" class="form-label required">Nombre:</label>
       <input type="text" id="inputNombre" class="form-control"
@@ -83,6 +83,6 @@
       </div>
     </div>
     <button type="submit" class="d-none"
-            [disabled]="!personaForm.valid || isCreatingPersona"><!--Permite hacer submit con ENTER--></button>
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
   </form>
 </ng-template>
