@@ -17,7 +17,7 @@ import {Evento} from '../../../models/evento';
 export class AbmEventosComponent {
   protected labels = {
     title: 'ABM Eventos',
-  }
+  };
   protected readonly dtColumns: ConfigColumns[] = [
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {

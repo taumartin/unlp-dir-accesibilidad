@@ -17,7 +17,7 @@ import {MedioComunicacion} from '../../../models/medio-comunicacion';
 export class AbmMediosComunicacionComponent {
   protected labels = {
     title: 'ABM Medios de Comunicación',
-  }
+  };
   protected readonly dtColumns: ConfigColumns[] = [
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Nombre', data: 'nombre', name: 'nombre'},

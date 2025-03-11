@@ -17,7 +17,7 @@ import {TipoEvento} from '../../../models/tipo-evento';
 export class AbmTiposEventosComponent {
   protected labels = {
     title: 'ABM Tipos de Eventos',
-  }
+  };
   protected readonly dtColumns: ConfigColumns[] = [
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Nombre', data: 'nombre', name: 'nombre'},

@@ -17,7 +17,7 @@ import {TipoMaterial} from '../../../models/tipo-material';
 export class AbmTiposMaterialesComponent {
   protected labels = {
     title: 'ABM Tipos de Materiales',
-  }
+  };
   protected readonly dtColumns: ConfigColumns[] = [
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Nombre', data: 'nombre', name: 'nombre'},

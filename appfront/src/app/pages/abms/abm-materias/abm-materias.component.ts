@@ -17,7 +17,7 @@ import {Materia} from '../../../models/materia';
 export class AbmMateriasComponent {
   protected labels = {
     title: 'ABM Materias',
-  }
+  };
   protected readonly dtColumns: ConfigColumns[] = [
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Nombre', data: 'nombre', name: 'nombre'},

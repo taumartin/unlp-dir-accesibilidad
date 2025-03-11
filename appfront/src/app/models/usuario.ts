@@ -5,5 +5,5 @@ export interface Usuario extends Model {
   estaActivo: boolean;
   correo: string;
   esAdmin: boolean;
-  fotoPerfil: string;
+  fotoPerfil: string | null;
 }

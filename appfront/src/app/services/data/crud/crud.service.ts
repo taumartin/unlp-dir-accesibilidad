@@ -29,7 +29,7 @@ export abstract class CrudService<T extends Model> {
     return this.apiService.postEndpoint<ApiSuccessResponse>(`${this.baseEndpoint}/`, model);
   }
 
-  public update(id: number, model: Partial<T>): Observable<ApiSuccessResponse | ApiErrorResponse> {
+  public update(id: number, model: Partial<Omit<T, 'id'>>): Observable<ApiSuccessResponse | ApiErrorResponse> {
     return this.apiService.postEndpoint<ApiSuccessResponse>(`${this.baseEndpoint}/${id}`, model);
   }
 

@@ -28,7 +28,7 @@ export class AbmPersonasComponent {
     title: 'ABM Personas',
     creation: 'Nueva Persona',
     edition: 'Ver/Editar Persona',
-  }
+  };
   protected readonly dtColumns: ConfigColumns[] = [
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Nombre', data: 'nombre', name: 'nombre'},

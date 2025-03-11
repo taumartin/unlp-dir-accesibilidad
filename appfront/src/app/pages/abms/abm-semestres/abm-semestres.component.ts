@@ -17,7 +17,7 @@ import {Semestre} from '../../../models/semestre';
 export class AbmSemestresComponent {
   protected labels = {
     title: 'ABM Semestres',
-  }
+  };
   protected readonly dtColumns: ConfigColumns[] = [
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
     {title: 'Año', data: 'anio', name: 'anio', className: 'text-center'},
