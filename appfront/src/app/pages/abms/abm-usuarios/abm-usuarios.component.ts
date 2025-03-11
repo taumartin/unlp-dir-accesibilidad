@@ -20,14 +20,14 @@ export class AbmUsuariosComponent {
   }
   protected readonly dtColumns: ConfigColumns[] = [
     {title: 'ID', data: 'id', name: 'id', className: 'text-start'},
-    {title: 'Usuario', data: 'nombre', name: 'nombre'},
+    {title: 'Usuario', data: 'username', name: 'username'},
     {title: 'E-mail', data: 'correo', name: 'correo'},
     {
       title: 'Admin', data: 'esAdmin', name: 'esAdmin', className: 'text-center',
       render: data => data ? 'Sí' : 'No',
     },
     {
-      title: 'Avatar', data: 'fotoDePerfil', name: 'fotoDePerfil', className: 'text-center',
+      title: 'Avatar', data: 'fotoPerfil', name: 'fotoPerfil', className: 'text-center',
       render: data => data ? `<img src="${data}" alt="Avatar " class="img-data-avatar">` : null,
     },
   ];

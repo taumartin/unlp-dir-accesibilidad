@@ -1,9 +1,8 @@
 export interface Usuario {
   id: number;
-  nombre: string;
+  username: string;
   estaActivo: boolean;
-  contrasenia: string;
   correo: string;
   esAdmin: boolean;
-  fotoDePerfil: string;
+  fotoPerfil: string;
 }
