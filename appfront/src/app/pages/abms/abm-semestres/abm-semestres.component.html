@@ -1,3 +1,50 @@
 <app-crud-layout [labels]="labels"
                  [dtColumns]="dtColumns"
-                 [dtSource]="dtSource"></app-crud-layout>
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
+    <div class="col-6">
+      <label for="inputAnio" class="form-label required">Año:</label>
+      <input type="number" id="inputAnio" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(anio)"
+             [class.is-valid]="!readonlyInputs && isValid(anio)"
+             [placeholder]="currentYear" name="anio" formControlName="anio" required
+             minlength="4" maxlength="4" min="1999" max="2050"
+             aria-describedby="anioFeedback" [readonly]="readonlyInputs">
+      <div id="anioFeedback" class="invalid-feedback">
+        {{ anio?.errors?.['required'] ? 'El año es obligatorio.' : '' }}
+        {{ (anio?.errors?.['min'] || anio?.errors?.['max'] || anio?.errors?.['pattern']) ? 'Ingresa un año válido.' : '' }}
+        {{ anio?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-check mt-4 pt-3">
+        <input type="checkbox" id="inputEsPrimerSemestre" class="form-check-input"
+               [class.is-invalid]="!readonlyInputs && isInvalid(esPrimerSemestre)"
+               [class.is-valid]="!readonlyInputs && isValid(esPrimerSemestre)"
+               [class.click-disabled]="readonlyInputs" [tabIndex]="readonlyInputs? -1 : undefined"
+               name="esPrimerSemestre" formControlName="esPrimerSemestre"
+               aria-describedby="esPrimerSemestreFeedback" [readonly]="readonlyInputs">
+        <label class="form-check-label" for="inputEsPrimerSemestre"
+               [class.click-disabled]="readonlyInputs" [class.text-muted]="readonlyInputs">
+          Primer Semestre
+        </label>
+        <div id="esPrimerSemestreFeedback" class="invalid-feedback">
+          {{ esPrimerSemestre?.errors?.['backend'] ?? '' }}
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>
