@@ -6,7 +6,10 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Persona extends Model {
         static associate(models) {
-            // None.
+            Persona.hasOne(models.Tutor, {
+                as: 'tutor',
+                foreignKey: 'personaId'
+            });
         }
 
         getNombreCompleto() {

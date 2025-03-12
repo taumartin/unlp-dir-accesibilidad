@@ -10,7 +10,6 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'persona',
                 foreignKey: 'personaId',
             });
-
             Tutor.belongsTo(models.Usuario, {
                 as: 'usuario',
                 foreignKey: 'usuarioId',

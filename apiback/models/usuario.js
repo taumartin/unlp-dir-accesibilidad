@@ -6,7 +6,10 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Usuario extends Model {
         static associate(models) {
-            // None.
+            Usuario.hasOne(models.Tutor, {
+                as: 'tutor',
+                foreignKey: 'usuarioId'
+            });
         }
 
         isActive() {
