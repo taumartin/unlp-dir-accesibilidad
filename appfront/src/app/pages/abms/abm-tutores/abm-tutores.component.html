@@ -21,7 +21,7 @@
              placeholder="Escriba un nombre" name="_persona" formControlName="_persona" required
              aria-describedby="personaIdFeedback" [readonly]="readonlyInputs"
              [inputFormatter]="personaFormatter" [resultFormatter]="personaFormatter" [ngbTypeahead]="searchPersona"
-             (selectItem)="onSelectPersona($event)" (blur)="onBlurPersona()">
+             (selectItem)="onSelectPersona($event)" (blur)="onBlurPersona()" container="body">
       <div id="personaIdFeedback" class="invalid-feedback">
         {{ personaId?.errors?.['required'] || _persona?.errors?.['required'] ? 'La Persona es obligatoria.' : '' }}
         {{ personaId?.errors?.['backend'] ?? '' }}
@@ -35,7 +35,7 @@
              placeholder="Escriba un correo" name="_usuario" formControlName="_usuario" required
              aria-describedby="usuarioIdFeedback" [readonly]="readonlyInputs"
              [inputFormatter]="usuarioFormatter" [resultFormatter]="usuarioFormatter" [ngbTypeahead]="searchUsuario"
-             (selectItem)="onSelectUsuario($event)" (blur)="onBlurUsuario()">
+             (selectItem)="onSelectUsuario($event)" (blur)="onBlurUsuario()" container="body">
       <div id="usuarioIdFeedback" class="invalid-feedback">
         {{ usuarioId?.errors?.['required'] || _usuario?.errors?.['required'] ? 'El Usuario es obligatorio.' : '' }}
         {{ usuarioId?.errors?.['backend'] ?? '' }}
