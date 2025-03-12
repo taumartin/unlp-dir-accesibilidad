@@ -14,42 +14,30 @@
 <ng-template #createModal let-modal>
   <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
     <div class="col-12 col-md-6">
-      <label for="inputPersonaId" class="form-label required"
-             [class.click-disabled]="readonlyInputs">Persona:</label>
-      <!-- TODO: convertir a Typehead -->
-      <select id="inputPersonaId" class="form-select"
-              [class.is-invalid]="!readonlyInputs && isInvalid(personaId)"
-              [class.is-valid]="!readonlyInputs && isValid(personaId)"
-              name="personaId" formControlName="personaId" required
-              aria-describedby="personaIdFeedback"
-              [class.select-readonly]="readonlyInputs" [tabIndex]="readonlyInputs? -1 : undefined">
-        <option value="">Seleccionar...</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option [ngValue]="3">Three</option>
-      </select>
+      <label for="inputPersonaId" class="form-label required">Persona:</label>
+      <input type="text" id="inputPersonaId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(personaId) || isInvalid(_persona))"
+             [class.is-valid]="!readonlyInputs && isValid(personaId)"
+             placeholder="Escriba un nombre" name="_persona" formControlName="_persona" required
+             aria-describedby="personaIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="personaFormatter" [resultFormatter]="personaFormatter" [ngbTypeahead]="searchPersona"
+             (selectItem)="onSelectPersona($event)" (blur)="onBlurPersona()">
       <div id="personaIdFeedback" class="invalid-feedback">
-        {{ personaId?.errors?.['required'] ? 'La Persona es obligatoria.' : '' }}
+        {{ personaId?.errors?.['required'] || _persona?.errors?.['required'] ? 'La Persona es obligatoria.' : '' }}
         {{ personaId?.errors?.['backend'] ?? '' }}
       </div>
     </div>
     <div class="col-12 col-md-6">
-      <label for="inputUsuarioId" class="form-label required"
-             [class.click-disabled]="readonlyInputs">Usuario:</label>
-      <!-- TODO: convertir a Typehead -->
-      <select id="inputUsuarioId" class="form-select"
-              [class.is-invalid]="!readonlyInputs && isInvalid(usuarioId)"
-              [class.is-valid]="!readonlyInputs && isValid(usuarioId)"
-              name="usuarioId" formControlName="usuarioId" required
-              aria-describedby="usuarioIdFeedback"
-              [class.select-readonly]="readonlyInputs" [tabIndex]="readonlyInputs? -1 : undefined">
-        <option value="">Seleccionar...</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option [ngValue]="3">Three</option>
-      </select>
+      <label for="inputUsuarioId" class="form-label required">Usuario:</label>
+      <input type="text" id="inputUsuarioId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(usuarioId) || isInvalid(_usuario))"
+             [class.is-valid]="!readonlyInputs && isValid(usuarioId)"
+             placeholder="Escriba un correo" name="_usuario" formControlName="_usuario" required
+             aria-describedby="usuarioIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="usuarioFormatter" [resultFormatter]="usuarioFormatter" [ngbTypeahead]="searchUsuario"
+             (selectItem)="onSelectUsuario($event)" (blur)="onBlurUsuario()">
       <div id="usuarioIdFeedback" class="invalid-feedback">
-        {{ usuarioId?.errors?.['required'] ? 'El Usuario es obligatorio.' : '' }}
+        {{ usuarioId?.errors?.['required'] || _usuario?.errors?.['required'] ? 'El Usuario es obligatorio.' : '' }}
         {{ usuarioId?.errors?.['backend'] ?? '' }}
       </div>
     </div>

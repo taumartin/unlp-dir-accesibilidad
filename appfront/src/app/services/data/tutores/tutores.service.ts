@@ -7,7 +7,6 @@ import {ApiService} from '../../network/api/api.service';
   providedIn: 'root'
 })
 export class TutoresService extends CrudService<Tutor> {
-
   constructor(
     apiService: ApiService,
   ) {

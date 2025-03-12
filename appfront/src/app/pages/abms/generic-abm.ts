@@ -40,7 +40,7 @@ export abstract class GenericAbm<T extends Model> {
     this.modelForm = inject(FormBuilder).group(formControls);
   }
 
-  protected getFormControlByKey(key: string): AbstractControl<string, string> | null {
+  protected getFormControlByKey<U = any>(key: string): AbstractControl<U, U> | null {
     return this.modelForm.get(key);
   }
 
