@@ -63,11 +63,11 @@ export class AbmPersonasComponent extends GenericAbm<Persona> {
 
   protected getModified(formValues: Partial<Omit<Persona, 'id'>>): Partial<Omit<Persona, "id">> {
     return {
-      nombre: formValues.nombre ?? undefined,
-      apellido: formValues.apellido ?? undefined,
-      dni: formValues.dni ?? undefined,
-      email: formValues.email ?? undefined,
-      telefono: formValues.telefono ?? undefined,
+      nombre: formValues.nombre,
+      apellido: formValues.apellido,
+      dni: formValues.dni,
+      email: formValues.email,
+      telefono: formValues.telefono,
     };
   }
 

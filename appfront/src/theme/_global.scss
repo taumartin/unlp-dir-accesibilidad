@@ -32,7 +32,8 @@ a {
   background: rgba(0, 0, 0, 0.25);
 }
 
-.click-disabled {
+.click-disabled,
+.select-readonly {
   pointer-events: none;
 }
 
@@ -63,7 +64,8 @@ table.dataTable {
   }
 }
 
-input.form-control:read-only {
+input.form-control:read-only,
+.select-readonly {
   background-color: #f8f9fa !important;
   border: none !important;
   color: #6c757d !important;

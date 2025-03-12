@@ -14,6 +14,7 @@ import {LoginComponent} from './pages/auth/login/login.component';
 import {authGuard} from './guards/auth/auth.guard';
 import {SignupComponent} from './pages/auth/signup/signup.component';
 import {ForgotPasswordComponent} from './pages/auth/forgot-password/forgot-password.component';
+import {AbmTutoresComponent} from './pages/abms/abm-tutores/abm-tutores.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -39,6 +40,7 @@ export const routes: Routes = [
       {path: 'semestres', component: AbmSemestresComponent},
       {path: 'tipos-eventos', component: AbmTiposEventosComponent},
       {path: 'tipos-materiales', component: AbmTiposMaterialesComponent},
+      {path: 'tutores', component: AbmTutoresComponent},
       {path: 'usuarios', component: AbmUsuariosComponent},
     ],
   },

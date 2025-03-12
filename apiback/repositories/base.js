@@ -22,7 +22,8 @@ class BaseRepository {
                                searchFields = [],
                                orderBy = "id",
                                orderDirection = "asc",
-                               excludeAttributes = []
+                               excludeAttributes = [],
+                               include = [],
                            } = {}) {
         // Filtering.
         let whereClause = {};
@@ -37,6 +38,9 @@ class BaseRepository {
         }
 
         // Orders.
+        if (!Array.isArray(orderBy)) {
+            orderBy = [orderBy];
+        }
         orderDirection = orderDirection.toLowerCase();
         const validOrderDirection = ["asc", "desc"].includes(orderDirection) ? orderDirection : "asc";
 
@@ -45,10 +49,11 @@ class BaseRepository {
         const limit = pageSize;
         const {count, rows} = await this._model.findAndCountAll({
             where: whereClause,
-            order: [[orderBy, validOrderDirection]],
+            order: [[...orderBy, validOrderDirection]],
             limit,
             offset,
-            attributes: {exclude: excludeAttributes}
+            attributes: {exclude: excludeAttributes},
+            include,
         });
         const totalCount = await this._model.count();
 

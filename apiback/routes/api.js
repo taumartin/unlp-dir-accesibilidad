@@ -5,6 +5,9 @@ const router = express.Router();
 const personasRouter = require('./api/personas');
 router.use('/personas', personasRouter);
 
+const tutoresRouter = require('./api/tutores');
+router.use('/tutores', tutoresRouter);
+
 const mediosComunicacionRouter = require('./api/medios-comunicacion');
 router.use('/medios-comunicacion', mediosComunicacionRouter);
 
