@@ -1,3 +1,43 @@
 <app-crud-layout [labels]="labels"
                  [dtColumns]="dtColumns"
-                 [dtSource]="dtSource"></app-crud-layout>
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
+    <div class="col-6">
+      <label for="inputFechaYHora" class="form-label required">Fecha y Hora:</label>
+      <input type="datetime-local" id="inputFechaYHora" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(fechaYHora)"
+             [class.is-valid]="!readonlyInputs && isValid(fechaYHora)"
+             name="fechaYHora" formControlName="fechaYHora" required
+             aria-describedby="fechaYHoraFeedback" [readonly]="readonlyInputs">
+      <div id="fechaYHoraFeedback" class="invalid-feedback">
+        {{ fechaYHora?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-6">
+      <label for="inputDescripcion" class="form-label">Descripción:</label>
+      <input type="text" id="inputDescripcion" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(descripcion)"
+             [class.is-valid]="!readonlyInputs && isValid(descripcion)"
+             placeholder="Apertura de inscripciones" name="descripcion" formControlName="descripcion" maxlength="5000"
+             aria-describedby="descripcionFeedback" [readonly]="readonlyInputs">
+      <div id="descripcionFeedback" class="invalid-feedback">
+        {{ descripcion?.errors?.['maxlength'] ? 'El valor es muy largo.' : '' }}
+        {{ descripcion?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>
+

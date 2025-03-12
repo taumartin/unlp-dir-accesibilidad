@@ -6,7 +6,7 @@ const {body, matchedData} = require("express-validator");
 const eventoRepository = require("../repositories/evento").getInstance();
 
 const fechaYHoraValidation = () => body('fechaYHora')
-    .isDate()
+    .isISO8601()
     .withMessage('El valor ingresado no es válido.');
 
 const descripcionValidation = () => body('descripcion')

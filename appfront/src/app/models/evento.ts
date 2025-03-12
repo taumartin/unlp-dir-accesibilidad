@@ -6,4 +6,5 @@ export interface Evento extends Model {
 
   // Parsed.
   _timestamp?: Date;
+  _dateTimeString?: string;
 }

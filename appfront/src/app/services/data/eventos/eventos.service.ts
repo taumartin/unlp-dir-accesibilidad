@@ -5,6 +5,7 @@ import {Observable, tap} from 'rxjs';
 import {Evento} from '../../../models/evento';
 import {ApiResponsePage} from '../../network/api/api-response-page';
 import {CrudService} from '../crud/crud.service';
+import {DatesService} from '../dates/dates.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +13,27 @@ import {CrudService} from '../crud/crud.service';
 export class EventosService extends CrudService<Evento> {
   constructor(
     apiService: ApiService,
+    private readonly datesService: DatesService,
   ) {
     super(apiService, "/eventos");
+  }
+
+  private parseDate(evento: Evento): Evento {
+    evento._timestamp = this.datesService.isoStringToDateLocale(evento.fechaYHora);
+    evento._dateTimeString = this.datesService.dateLocaleToInputString(evento._timestamp);
+    return evento;
   }
 
   public override listAll(pageRequested: ApiPageRequest): Observable<ApiResponsePage<Evento>> {
     return super.listAll(pageRequested)
       .pipe(
         tap(response => {
-          response.data.forEach(item => item._timestamp = new Date(item.fechaYHora));
+          response.data = response.data.map(evento => this.parseDate(evento));
         })
       );
   }
 
   public isModified(original: Evento, newValues: Partial<Omit<Evento, "id">>): boolean {
-    // FIXME: revisar comparación de fecha y hora.
-    return (original.descripcion !== newValues.descripcion) || (original.fechaYHora !== newValues.fechaYHora);
+    return (original.descripcion !== newValues.descripcion) || (original._dateTimeString !== newValues.fechaYHora);
   }
 }

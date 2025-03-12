@@ -114,11 +114,7 @@ export abstract class GenericAbm<T extends Model> {
     if (!this.modelForm || !this.selectedModel) {
       return false;
     }
-    const result = this.modelService.isModified(this.selectedModel, this.getModified(this.modelForm.value));
-    if (result) {
-      console.log(this.selectedModel, this.getModified(this.modelForm.value));
-    }
-    return result;
+    return this.modelService.isModified(this.selectedModel, this.getModified(this.modelForm.value));
   }
 
   protected abstract getPatchedValues(model: T): any;

@@ -15,8 +15,11 @@ module.exports = {
             const now = new Date();
             const eventosSeed = [];
             for (let i = 0; i < seedCount; i++) {
+                const timestamp = faker.date.future();
+                timestamp.setSeconds(0);
+                timestamp.setMilliseconds(0);
                 eventosSeed.push({
-                    fecha_y_hora: faker.date.future(),
+                    fecha_y_hora: timestamp,
                     descripcion: faker.lorem.sentences({min: 0, max: 5}),
                     created_at: now,
                     updated_at: now,
