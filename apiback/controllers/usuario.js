@@ -161,9 +161,6 @@ module.exports.update = asyncHandler(async (req, res) => {
     if (usuario.esAdmin !== validated.esAdmin) {
         updated.esAdmin = validated.esAdmin;
     }
-    if (usuario.esAdmin !== validated.esAdmin) {
-        updated.esAdmin = validated.esAdmin;
-    }
 
     const result = await usuarioRepository.update(req.params.id, updated);
     apiResponse.success(res, result, "Usuario actualizado.");
