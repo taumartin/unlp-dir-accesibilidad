@@ -65,7 +65,8 @@ table.dataTable {
 }
 
 input.form-control:read-only,
-.select-readonly {
+.select-readonly,
+.textarea-readonly {
   background-color: #f8f9fa !important;
   border: none !important;
   color: #6c757d !important;

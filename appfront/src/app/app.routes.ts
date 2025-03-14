@@ -15,6 +15,7 @@ import {authGuard} from './guards/auth/auth.guard';
 import {SignupComponent} from './pages/auth/signup/signup.component';
 import {ForgotPasswordComponent} from './pages/auth/forgot-password/forgot-password.component';
 import {AbmTutoresComponent} from './pages/abms/abm-tutores/abm-tutores.component';
+import {AbmAlumnosComponent} from './pages/abms/abm-alumnos/abm-alumnos.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -33,6 +34,7 @@ export const routes: Routes = [
     path: 'abm',
     canActivate: [authGuard],
     children: [
+      {path: 'alumnos', component: AbmAlumnosComponent},
       {path: 'eventos', component: AbmEventosComponent},
       {path: 'materias', component: AbmMateriasComponent},
       {path: 'medios-comunicacion', component: AbmMediosComunicacionComponent},

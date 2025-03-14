@@ -5,6 +5,9 @@ const router = express.Router();
 const personasRouter = require('./api/personas');
 router.use('/personas', personasRouter);
 
+const alumnosRouter = require('./api/alumnos');
+router.use('/alumnos', alumnosRouter);
+
 const tutoresRouter = require('./api/tutores');
 router.use('/tutores', tutoresRouter);
 

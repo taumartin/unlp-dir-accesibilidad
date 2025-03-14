@@ -1,0 +1,77 @@
+<app-crud-layout [labels]="labels"
+                 [dtColumns]="dtColumns"
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
+    <div class="col-12 col-md-6">
+      <label for="inputPersonaId" class="form-label required">Persona:</label>
+      <input type="text" id="inputPersonaId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(personaId) || isInvalid(_persona))"
+             [class.is-valid]="!readonlyInputs && isValid(personaId)"
+             placeholder="Escriba un nombre" name="_persona" formControlName="_persona" required
+             aria-describedby="personaIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="personaFormatter" [resultFormatter]="personaFormatter" [ngbTypeahead]="searchPersona"
+             (selectItem)="onSelectPersona($event)" (blur)="onBlurPersona()" container="body">
+      <div id="personaIdFeedback" class="invalid-feedback">
+        {{ personaId?.errors?.['required'] || _persona?.errors?.['required'] ? 'La Persona es obligatoria.' : '' }}
+        {{ personaId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputLegajo" class="form-label required">Legajo:</label>
+      <input type="text" id="inputLegajo" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(legajo)"
+             [class.is-valid]="!readonlyInputs && isValid(legajo)"
+             placeholder="12345/6" name="legajo" formControlName="legajo" maxlength="10" required
+             aria-describedby="legajoFeedback" [readonly]="readonlyInputs">
+      <div id="legajoFeedback" class="invalid-feedback">
+        {{ legajo?.errors?.['required'] ?? 'El Legajo es requerido.' }}
+        {{ legajo?.errors?.['maxlength'] ? 'El valor es muy largo.' : '' }}
+        {{ legajo?.errors?.['pattern'] ? 'Ingresa un valor válido.' : '' }}
+        {{ legajo?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12">
+      <label for="inputSituacion" class="form-label">Situación:</label>
+      <textarea id="inputSituacion" class="form-control" rows="3"
+                [class.is-invalid]="!readonlyInputs && isInvalid(situacion)"
+                [class.is-valid]="!readonlyInputs && isValid(situacion)"
+                [class.textarea-readonly]="readonlyInputs"
+                placeholder="" name="situacion" formControlName="situacion" maxlength="5000"
+                aria-describedby="situacionFeedback" [readonly]="readonlyInputs"></textarea>
+      <div id="situacionFeedback" class="invalid-feedback">
+        {{ situacion?.errors?.['maxlength'] ? 'El texto es muy largo.' : '' }}
+        {{ situacion?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-check">
+        <input type="checkbox" id="inputTieneCertificado" class="form-check-input"
+               [class.is-invalid]="!readonlyInputs && isInvalid(tieneCertificado)"
+               [class.is-valid]="!readonlyInputs && isValid(tieneCertificado)"
+               [class.click-disabled]="readonlyInputs" [tabIndex]="readonlyInputs? -1 : undefined"
+               name="tieneCertificado" formControlName="tieneCertificado"
+               aria-describedby="tieneCertificadoFeedback" [readonly]="readonlyInputs">
+        <label class="form-check-label" for="inputTieneCertificado"
+               [class.click-disabled]="readonlyInputs" [class.text-muted]="readonlyInputs">
+          ¿Tiene certificado?
+        </label>
+        <div id="tieneCertificadoFeedback" class="invalid-feedback">
+          {{ tieneCertificado?.errors?.['backend'] ?? '' }}
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>

@@ -24,7 +24,7 @@ module.exports = {
                     attributes: [],
                 }],
                 where: {
-                    '$tutor.id$': null // Sin tutor.
+                    '$tutor.id$': null // Sin Tutor.
                 }
             });
             const usuariosSinTutores = await Usuario.findAndCountAll({
