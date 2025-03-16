@@ -9,12 +9,10 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'semestre',
                 foreignKey: 'semestreId',
             });
-
             Apoyo.belongsTo(models.Tutor, {
                 as: 'tutor',
                 foreignKey: 'tutorId',
             });
-
             Apoyo.belongsTo(models.Alumno, {
                 as: 'alumno',
                 foreignKey: 'alumnoId',
