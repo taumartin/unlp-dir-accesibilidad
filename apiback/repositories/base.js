@@ -1,4 +1,4 @@
-const {Op} = require("sequelize");
+const {Op, where, cast, col} = require("sequelize");
 
 class BaseRepository {
     _model = null;
@@ -20,6 +20,7 @@ class BaseRepository {
                                pageSize = 10,
                                search = "",
                                searchFields = [],
+                               numericSearchFields = [],
                                orderBy = "id",
                                orderDirection = "asc",
                                excludeAttributes = [],
@@ -27,14 +28,28 @@ class BaseRepository {
                            } = {}) {
         // Filtering.
         let whereClause = {};
-        if (search && (searchFields.length > 0)) {
-            whereClause = {
-                [Op.or]: searchFields.map(field => ({
-                    [field]: {
-                        [Op.iLike]: `%${search}%`
-                    },
-                })),
-            };
+        let conditions = [];
+        if (search) {
+            if (searchFields.length > 0) {
+                conditions.push(
+                    ...searchFields.map(field => ({
+                        [field]: {[Op.iLike]: `%${search}%`}
+                    }))
+                );
+            }
+            if (numericSearchFields.length > 0) {
+                conditions.push(
+                    ...numericSearchFields.map(field =>
+                        where(
+                            cast(col(field), "TEXT"),
+                            {[Op.iLike]: `%${search}%`}
+                        )
+                    )
+                );
+            }
+        }
+        if (conditions.length > 0) {
+            whereClause = {[Op.or]: conditions};
         }
 
         // Orders.
@@ -66,7 +81,6 @@ class BaseRepository {
             data: rows,
         };
     }
-
 
     findById(id, options = null) {
         return this._model.findByPk(id, options);

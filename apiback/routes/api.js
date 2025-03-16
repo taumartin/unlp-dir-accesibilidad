@@ -11,6 +11,9 @@ router.use('/alumnos', alumnosRouter);
 const tutoresRouter = require('./api/tutores');
 router.use('/tutores', tutoresRouter);
 
+const apoyosRouter = require('./api/apoyos');
+router.use('/apoyos', apoyosRouter);
+
 const mediosComunicacionRouter = require('./api/medios-comunicacion');
 router.use('/medios-comunicacion', mediosComunicacionRouter);
 
