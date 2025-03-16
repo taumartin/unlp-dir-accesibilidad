@@ -24,6 +24,7 @@ class PersonaRepository extends BaseRepository {
         return super.listAllPaginated({
             page, pageSize, search,
             searchFields: ['nombre', 'apellido', 'telefono', 'email'],
+            numericSearchFields: ['dni'],
             orderBy, orderDirection,
         });
     }

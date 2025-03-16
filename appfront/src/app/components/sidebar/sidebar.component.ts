@@ -5,7 +5,8 @@ import {
   faAngleRight,
   faAngleDown,
   faHome,
-  faDatabase
+  faDatabase,
+  faPeopleArrows,
 } from '@fortawesome/free-solid-svg-icons';
 import {CommonModule} from '@angular/common';
 import {RouterLink, RouterLinkActive} from '@angular/router';
@@ -136,9 +137,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
                       label: 'Semestres',
                       route: 'abm/semestres',
                     },
+                    {
+                      id: 21111,
+                      label: 'Apoyos',
+                      route: 'abm/apoyos',
+                    },
                   ]
                 },
               ],
+            }, {
+              id: 22,
+              icon: faPeopleArrows,
+              label: 'Apoyos / Ayudantías',
+              route: 'asignaciones',
             },
           ],
         },

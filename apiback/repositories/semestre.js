@@ -22,7 +22,7 @@ class SemestreRepository extends BaseRepository {
     listSemestres(page, pageSize, search, orderBy, orderDirection) {
         return super.listAllPaginated({
             page, pageSize, search,
-            searchFields: ['anio', 'esPrimerSemestre'],
+            numericSearchFields: ['anio'],
             orderBy, orderDirection,
         });
     }

@@ -20,7 +20,9 @@ class AlumnoRepository extends BaseRepository {
     }
 
     listAlumnos(page, pageSize, search, orderBy, orderDirection) {
-        if (orderBy === "$persona.nombre$") {
+        if (orderBy === "@persona") {
+            orderBy = [[{model: Persona, as: 'persona'}, 'apellido'], [{model: Persona, as: 'persona'}, 'nombre']];
+        } else if (orderBy === "$persona.nombre$") {
             orderBy = [{model: Persona, as: 'persona'}, 'nombre'];
         } else if (orderBy === "$persona.apellido$") {
             orderBy = [{model: Persona, as: 'persona'}, 'apellido'];

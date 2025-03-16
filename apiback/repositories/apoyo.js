@@ -20,18 +20,17 @@ class ApoyoRepository extends BaseRepository {
     }
 
     listApoyos(page, pageSize, search, orderBy, orderDirection) {
-        if (orderBy === "$semestre.anio$") {
-            orderBy = [{model: Semestre, as: 'semestre'}, 'anio'];
-        } else if (orderBy === "$tutor.apellido$") {
-            orderBy = [[{model: Tutor, as: 'tutor'}, {model: Persona, as: 'persona'}, 'apellido']];
-        } else if (orderBy === "$tutor.dni$") {
-            orderBy = [[{model: Tutor, as: 'tutor'}, {model: Persona, as: 'persona'}, 'dni']];
-        } else if (orderBy === "$alumno.apellido$") {
-            orderBy = [[{model: Alumno, as: 'alumno'}, {model: Persona, as: 'persona'}, 'apellido']];
-        } else if (orderBy === "$alumno.dni$") {
-            orderBy = [[{model: Alumno, as: 'alumno'}, {model: Persona, as: 'persona'}, 'dni']];
-        } else if (orderBy === "$alumno.legajo$") {
-            orderBy = [{model: Alumno, as: 'alumno'}, 'legajo'];
+        if (orderBy === "@semestre") {
+            orderBy = [[{model: Semestre, as: 'semestre'}, 'anio'], [{
+                model: Semestre,
+                as: 'semestre'
+            }, 'es_primer_semestre']];
+        } else if (orderBy === "@tutor") {
+            orderBy = [[{model: Tutor, as: 'tutor'}, {model: Persona, as: 'persona'}, 'apellido'],
+                [{model: Tutor, as: 'tutor'}, {model: Persona, as: 'persona'}, 'nombre']];
+        } else if (orderBy === "@alumno") {
+            orderBy = [[{model: Alumno, as: 'alumno'}, {model: Persona, as: 'persona'}, 'apellido'],
+                [{model: Alumno, as: 'alumno'}, {model: Persona, as: 'persona'}, 'nombre']];
         }
         return super.listAllPaginated({
             page, pageSize, search,

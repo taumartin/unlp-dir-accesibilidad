@@ -21,8 +21,8 @@ class BaseRepository {
                                search = "",
                                searchFields = [],
                                numericSearchFields = [],
-                               orderBy = "id",
-                               orderDirection = "asc",
+                               orderBy = ["id"],
+                               orderDirection = ["asc"],
                                excludeAttributes = [],
                                include = [],
                            } = {}) {
@@ -56,15 +56,24 @@ class BaseRepository {
         if (!Array.isArray(orderBy)) {
             orderBy = [orderBy];
         }
-        orderDirection = orderDirection.toLowerCase();
-        const validOrderDirection = ["asc", "desc"].includes(orderDirection) ? orderDirection : "asc";
+        if (!Array.isArray(orderDirection)) {
+            orderDirection = [orderDirection.toLowerCase()];
+        } else {
+            orderDirection = orderDirection.map(dir => dir.toLowerCase());
+        }
+        orderDirection = orderBy.map((_, index) =>
+            ["asc", "desc"].includes(orderDirection[index]) ? orderDirection[index] : orderDirection[0]
+        );
+        const order = orderBy.map((field, index) =>
+            Array.isArray(field) ? [...field, orderDirection[index]] : [field, orderDirection[index]]
+        );
 
         // Pagination.
         const offset = (page - 1) * pageSize;
         const limit = pageSize;
         const {count, rows} = await this._model.findAndCountAll({
             where: whereClause,
-            order: [[...orderBy, validOrderDirection]],
+            order,
             limit,
             offset,
             attributes: {exclude: excludeAttributes},
