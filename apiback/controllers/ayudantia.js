@@ -49,7 +49,7 @@ module.exports.createValidation = buildValidation([
 ]);
 module.exports.create = asyncHandler(async function (req, res) {
     const validated = matchedData(req);
-    const ayudantia = await ayudantiaRepository.createApoyo(validated.semestreId, validated.tutorId, validated.materiaId);
+    const ayudantia = await ayudantiaRepository.createAyudantia(validated.semestreId, validated.tutorId, validated.materiaId);
     apiResponse.success(res, ayudantia, "Ayudantía creada.", 201);
 });
 
