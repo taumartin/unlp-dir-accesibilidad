@@ -1,0 +1,61 @@
+<app-crud-layout [labels]="labels"
+                 [dtColumns]="dtColumns"
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
+    <div class="col-12 col-md-6">
+      <label for="inputTutorId" class="form-label required">Tutor:</label>
+      <input type="text" id="inputTutorId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(tutorId) || isInvalid(_tutor))"
+             [class.is-valid]="!readonlyInputs && isValid(tutorId)"
+             placeholder="Escriba un nombre" name="_tutor" formControlName="_tutor" required
+             aria-describedby="tutorIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="tutorFormatter" [resultFormatter]="tutorFormatter" [ngbTypeahead]="searchTutor"
+             (selectItem)="onSelectTutor($event)" (blur)="onBlurTutor()" container="body">
+      <div id="tutorIdFeedback" class="invalid-feedback">
+        {{ tutorId?.errors?.['required'] || _tutor?.errors?.['required'] ? 'El Tutor es obligatorio.' : '' }}
+        {{ tutorId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputMateriaId" class="form-label required">Materia:</label>
+      <input type="text" id="inputMateriaId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(materiaId) || isInvalid(_materia))"
+             [class.is-valid]="!readonlyInputs && isValid(materiaId)"
+             placeholder="Escriba un nombre" name="_materia" formControlName="_materia" required
+             aria-describedby="materiaIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="materiaFormatter" [resultFormatter]="materiaFormatter" [ngbTypeahead]="searchMateria"
+             (selectItem)="onSelectMateria($event)" (blur)="onBlurMateria()" container="body">
+      <div id="materiaIdFeedback" class="invalid-feedback">
+        {{ materiaId?.errors?.['required'] || _materia?.errors?.['required'] ? 'La Materia es obligatoria.' : '' }}
+        {{ materiaId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputSemestreId" class="form-label required">Semestre:</label>
+      <input type="text" id="inputSemestreId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(semestreId) || isInvalid(_semestre))"
+             [class.is-valid]="!readonlyInputs && isValid(semestreId)"
+             placeholder="Escriba un año" name="_semestre" formControlName="_semestre" required
+             aria-describedby="semestreIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="semestreFormatter" [resultFormatter]="semestreFormatter" [ngbTypeahead]="searchSemestre"
+             (selectItem)="onSelectSemestre($event)" (blur)="onBlurSemestre()" container="body">
+      <div id="semestreIdFeedback" class="invalid-feedback">
+        {{ semestreId?.errors?.['required'] || _semestre?.errors?.['required'] ? 'El Semestre es obligatorio.' : '' }}
+        {{ semestreId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>

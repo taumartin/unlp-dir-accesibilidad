@@ -9,12 +9,10 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'semestre',
                 foreignKey: 'semestreId',
             });
-
             Ayudantia.belongsTo(models.Tutor, {
                 as: 'tutor',
                 foreignKey: 'tutorId',
             });
-
             Ayudantia.belongsTo(models.Materia, {
                 as: 'materia',
                 foreignKey: 'materiaId'

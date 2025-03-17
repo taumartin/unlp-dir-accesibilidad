@@ -142,6 +142,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
                       label: 'Apoyos',
                       route: 'abm/apoyos',
                     },
+                    {
+                      id: 21112,
+                      label: 'Ayudantías',
+                      route: 'abm/ayudantias',
+                    },
                   ]
                 },
               ],

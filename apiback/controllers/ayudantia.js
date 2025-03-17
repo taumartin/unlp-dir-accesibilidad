@@ -6,8 +6,8 @@ const NotFoundException = require("../exceptions/not-found-exception");
 const ValidationException = require("../exceptions/validation-exception");
 const semestreRepository = require("../repositories/semestre").getInstance();
 const tutorRepository = require("../repositories/tutor").getInstance();
-const alumnoRepository = require("../repositories/alumno").getInstance();
-const apoyoRepository = require("../repositories/apoyo").getInstance();
+const materiaRepository = require("../repositories/materia").getInstance();
+const ayudantiaRepository = require("../repositories/ayudantia").getInstance();
 
 const semestreIdValidation = () => body('semestreId')
     .isInt({min: 1})
@@ -31,12 +31,12 @@ const tutorIdValidation = () => body('tutorId')
         }
     });
 
-const alumnoIdValidation = () => body('alumnoId')
+const materiaIdValidation = () => body('materiaId')
     .isInt({min: 1})
-    .withMessage('Ingresa un ID de Alumno válido.')
+    .withMessage('Ingresa un ID de Materia válido.')
     .bail()
     .custom(async value => {
-        const alumno = await alumnoRepository.findById(value);
+        const alumno = await materiaRepository.findById(value);
         if (alumno === null) {
             throw new Error('El ID de Alumno ingresado no existe.');
         }
@@ -45,85 +45,86 @@ const alumnoIdValidation = () => body('alumnoId')
 module.exports.createValidation = buildValidation([
     semestreIdValidation(),
     tutorIdValidation(),
-    alumnoIdValidation(),
+    materiaIdValidation(),
 ]);
 module.exports.create = asyncHandler(async function (req, res) {
     const validated = matchedData(req);
-    const apoyo = await apoyoRepository.createApoyo(validated.semestreId, validated.tutorId, validated.alumnoId);
-    apiResponse.success(res, apoyo, "Apoyo creado.", 201);
+    const ayudantia = await ayudantiaRepository.createApoyo(validated.semestreId, validated.tutorId, validated.materiaId);
+    apiResponse.success(res, ayudantia, "Ayudantía creada.", 201);
 });
 
 module.exports.listAll = asyncHandler(async function (req, res) {
     const {page, pageSize, search, orderBy, orderDirection} = req.query;
-    const response = await apoyoRepository.listApoyos(parseInt(page) || 1, parseInt(pageSize) || 10,
+    const response = await ayudantiaRepository.listAyudantias(parseInt(page) || 1, parseInt(pageSize) || 10,
         search || "", orderBy || "id", orderDirection || "asc",);
     apiResponse.success(res, response);
 });
 
 module.exports.findById = asyncHandler(async function (req, res) {
-    const apoyo = await apoyoRepository.findById(req.params.id);
-    if (apoyo === null) {
-        throw new NotFoundException("El Apoyo no existe.");
+    const ayudantia = await ayudantiaRepository.findById(req.params.id);
+    if (ayudantia === null) {
+        throw new NotFoundException("La Ayudantía no existe.");
     }
-    apiResponse.success(res, apoyo);
+    apiResponse.success(res, ayudantia);
 });
 
 module.exports.updateValidation = buildValidation([
     semestreIdValidation(),
     tutorIdValidation(),
-    alumnoIdValidation(),
+    materiaIdValidation(),
 ]);
 module.exports.update = asyncHandler(async function (req, res) {
-    const apoyo = await apoyoRepository.findById(req.params.id);
-    if (apoyo === null) {
-        throw new NotFoundException('El Apoyo no existe.');
+    const ayudantia = await ayudantiaRepository.findById(req.params.id);
+    if (ayudantia === null) {
+        throw new NotFoundException('La Ayudantia no existe.');
     }
     const validated = matchedData(req);
     const errors = {};
     const updated = {};
-    const existeApoyo = await apoyoRepository.findApoyoBySemestreTutorAndAlumno(validated.semestreId, validated.tutorId, validated.alumnoId);
-    const apoyoIsNotUnique = (existeApoyo !== null) && (existeApoyo.id !== apoyo.id);
-    if (apoyo.semestreId !== validated.semestreId) {
+    const existeAyudantia = await ayudantiaRepository.findAyudantiaBySemestreTutorAndMateria(validated.semestreId,
+        validated.tutorId, validated.materiaId);
+    const ayudantiaIsNotUnique = (existeAyudantia !== null) && (existeAyudantia.id !== ayudantia.id);
+    if (ayudantia.semestreId !== validated.semestreId) {
         updated.semestreId = validated.semestreId;
-        if (apoyoIsNotUnique) {
+        if (ayudantiaIsNotUnique) {
             errors.semestreId = {
                 type: 'field',
-                msg: 'El ID de Semestre ingresado ya se encuentra asociado al Tutor y Alumno.',
+                msg: 'El ID de Semestre ingresado ya se encuentra asociado al Tutor y Materia.',
                 path: 'semestreId',
                 location: 'body',
             };
         }
     }
-    if (apoyo.tutorId !== validated.tutorId) {
+    if (ayudantia.tutorId !== validated.tutorId) {
         updated.tutorId = validated.tutorId;
-        if (apoyoIsNotUnique) {
+        if (ayudantiaIsNotUnique) {
             errors.tutorId = {
                 type: 'field',
-                msg: 'El ID de Tutor ingresado ya se encuentra asociado al Semestre y Alumno.',
+                msg: 'El ID de Tutor ingresado ya se encuentra asociado al Semestre y Materia.',
                 path: 'tutorId',
                 location: 'body',
             };
         }
     }
-    if (apoyo.alumnoId !== validated.alumnoId) {
-        updated.alumnoId = validated.alumnoId;
-        if (apoyoIsNotUnique) {
-            errors.alumnoId = {
+    if (ayudantia.materiaId !== validated.materiaId) {
+        updated.materiaId = validated.materiaId;
+        if (ayudantiaIsNotUnique) {
+            errors.materiaId = {
                 type: 'field',
-                msg: 'El ID de Alumno ingresado ya se encuentra asociado al Semestre y Tutor.',
-                path: 'alumnoId',
+                msg: 'El ID de Materia ingresado ya se encuentra asociado al Semestre y Tutor.',
+                path: 'materiaId',
                 location: 'body',
             };
         }
     }
-    if (errors.semestreId || errors.tutorId || errors.alumnoId) {
+    if (errors.semestreId || errors.tutorId || errors.materiaId) {
         throw new ValidationException(errors);
     }
-    const result = await apoyoRepository.update(req.params.id, updated);
-    apiResponse.success(res, result, "Apoyo actualizado.");
+    const result = await ayudantiaRepository.update(req.params.id, updated);
+    apiResponse.success(res, result, "Ayudantía actualizada.");
 });
 
 module.exports.delete = asyncHandler(async function (req, res) {
-    await apoyoRepository.delete(req.params.id);
-    apiResponse.success(res, null, "Apoyo eliminado.");
+    await ayudantiaRepository.delete(req.params.id);
+    apiResponse.success(res, null, "Ayudantía eliminada.");
 });

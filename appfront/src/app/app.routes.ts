@@ -17,6 +17,7 @@ import {ForgotPasswordComponent} from './pages/auth/forgot-password/forgot-passw
 import {AbmTutoresComponent} from './pages/abms/abm-tutores/abm-tutores.component';
 import {AbmAlumnosComponent} from './pages/abms/abm-alumnos/abm-alumnos.component';
 import {AbmApoyosComponent} from './pages/abms/abm-apoyos/abm-apoyos.component';
+import {AbmAyudantiasComponent} from './pages/abms/abm-ayudantias/abm-ayudantias.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -37,6 +38,7 @@ export const routes: Routes = [
     children: [
       {path: 'alumnos', component: AbmAlumnosComponent},
       {path: 'apoyos', component: AbmApoyosComponent},
+      {path: 'ayudantias', component: AbmAyudantiasComponent},
       {path: 'eventos', component: AbmEventosComponent},
       {path: 'materias', component: AbmMateriasComponent},
       {path: 'medios-comunicacion', component: AbmMediosComunicacionComponent},
