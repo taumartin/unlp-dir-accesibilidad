@@ -26,6 +26,9 @@ router.use('/semestres', semestresRouter);
 const tiposMaterialesRouter = require('./api/tipos-materiales');
 router.use('/tipos-materiales', tiposMaterialesRouter);
 
+const materialesAccesibilizadosRouter = require('./api/materiales-accesibilizados');
+router.use('/materiales-accesibilizados', materialesAccesibilizadosRouter);
+
 const tiposEventosRouter = require('./api/tipos-eventos');
 router.use('/tipos-eventos', tiposEventosRouter);
 
