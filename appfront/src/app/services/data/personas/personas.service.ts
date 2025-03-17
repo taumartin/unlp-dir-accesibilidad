@@ -13,7 +13,7 @@ export class PersonasService extends CrudService<Persona> {
     super(apiService, "/personas");
   }
 
-  public isModified(original: Persona, newValues: Partial<Omit<Persona, 'id'>>): boolean {
+  public override isModified(original: Persona, newValues: Partial<Omit<Persona, 'id'>>): boolean {
     return (original.nombre !== newValues.nombre) || (original.apellido !== newValues.apellido)
       || (original.dni !== newValues.dni) || (original.email !== newValues.email)
       || (original.telefono !== newValues.telefono);

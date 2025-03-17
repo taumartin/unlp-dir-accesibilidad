@@ -147,6 +147,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
                       label: 'Ayudantías',
                       route: 'abm/ayudantias',
                     },
+                    {
+                      id: 21113,
+                      label: 'Materiales Accesibilizados',
+                      route: 'abm/materiales-accesibilizados',
+                    },
                   ]
                 },
               ],

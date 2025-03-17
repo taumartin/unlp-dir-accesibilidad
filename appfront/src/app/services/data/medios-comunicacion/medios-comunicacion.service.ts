@@ -13,7 +13,7 @@ export class MediosComunicacionService extends CrudService<MedioComunicacion> {
     super(apiService, "/medios-comunicacion");
   }
 
-  public isModified(original: MedioComunicacion, newValues: Partial<Omit<MedioComunicacion, "id">>): boolean {
+  public override isModified(original: MedioComunicacion, newValues: Partial<Omit<MedioComunicacion, "id">>): boolean {
     return (original.nombre !== newValues.nombre);
   }
 }

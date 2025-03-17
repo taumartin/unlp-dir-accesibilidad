@@ -13,7 +13,7 @@ export class MateriasService extends CrudService<Materia> {
     super(apiService, "/materias");
   }
 
-  public isModified(original: Materia, newValues: Partial<Omit<Materia, "id">>): boolean {
+  public override isModified(original: Materia, newValues: Partial<Omit<Materia, "id">>): boolean {
     return (original.nombre !== newValues.nombre) || (original.docentes !== newValues.docentes) ||
       (original.contacto !== newValues.contacto);
   }

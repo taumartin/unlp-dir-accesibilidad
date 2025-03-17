@@ -29,7 +29,7 @@ class AyudantiaRepository extends BaseRepository {
             orderBy = [[{model: Tutor, as: 'tutor'}, {model: Persona, as: 'persona'}, 'apellido'],
                 [{model: Tutor, as: 'tutor'}, {model: Persona, as: 'persona'}, 'nombre']];
         } else if (orderBy === "@materia") {
-            orderBy = [{model: Materia, as: 'materia'}, 'nombre'];
+            orderBy = [[{model: Materia, as: 'materia'}, 'nombre']];
         }
         return super.listAllPaginated({
             page, pageSize, search,

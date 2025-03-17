@@ -13,7 +13,7 @@ export class TiposMaterialesService extends CrudService<TipoMaterial> {
     super(apiService, "/tipos-materiales");
   }
 
-  public isModified(original: TipoMaterial, newValues: Partial<Omit<TipoMaterial, "id">>): boolean {
+  public override isModified(original: TipoMaterial, newValues: Partial<Omit<TipoMaterial, "id">>): boolean {
     return (original.nombre !== newValues.nombre);
   }
 }

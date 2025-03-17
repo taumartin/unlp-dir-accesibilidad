@@ -1,0 +1,87 @@
+<app-crud-layout [labels]="labels"
+                 [dtColumns]="dtColumns"
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
+    <div class="col-12 col-md-6">
+      <label for="inputTipoMaterialId" class="form-label required">Tipo:</label>
+      <input type="text" id="inputTipoMaterialId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(tipoMaterialId) || isInvalid(_tipoMaterial))"
+             [class.is-valid]="!readonlyInputs && isValid(tipoMaterialId)"
+             placeholder="Escriba un nombre" name="_tipoMaterial" formControlName="_tipoMaterial" required
+             aria-describedby="tipoMaterialIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="tipoMaterialFormatter" [resultFormatter]="tipoMaterialFormatter"
+             [ngbTypeahead]="searchTipoMaterial" (selectItem)="onSelectTipoMaterial($event)"
+             (blur)="onBlurTipoMaterial()" container="body">
+      <div id="tipoMaterialIdFeedback" class="invalid-feedback">
+        {{ tipoMaterialId?.errors?.['required'] || _tipoMaterial?.errors?.['required'] ? 'El Tipo es obligatorio.' : '' }}
+        {{ tipoMaterialId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputMateriaId" class="form-label required">Materia:</label>
+      <input type="text" id="inputMateriaId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(materiaId) || isInvalid(_materia))"
+             [class.is-valid]="!readonlyInputs && isValid(materiaId)"
+             placeholder="Escriba un nombre" name="_materia" formControlName="_materia" required
+             aria-describedby="materiaIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="materiaFormatter" [resultFormatter]="materiaFormatter" [ngbTypeahead]="searchMateria"
+             (selectItem)="onSelectMateria($event)" (blur)="onBlurMateria()" container="body">
+      <div id="materiaIdFeedback" class="invalid-feedback">
+        {{ materiaId?.errors?.['required'] || _materia?.errors?.['required'] ? 'La Materia es obligatoria.' : '' }}
+        {{ materiaId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputFechaPublicacion" class="form-label required">Fecha Publicación:</label>
+      <input type="datetime-local" id="inputFechaPublicacion" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(fechaPublicacion)"
+             [class.is-valid]="!readonlyInputs && isValid(fechaPublicacion)"
+             name="fechaPublicacion" formControlName="fechaPublicacion" required
+             aria-describedby="fechaPublicacionFeedback" [readonly]="readonlyInputs">
+      <div id="fechaPublicacionFeedback" class="invalid-feedback">
+        {{ fechaPublicacion?.errors?.['required'] ? 'La Fecha de Publicación es obligatoria' : '' }}
+        {{ fechaPublicacion?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputTitulo" class="form-label required">Título:</label>
+      <input type="text" id="inputTitulo" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(titulo)"
+             [class.is-valid]="!readonlyInputs && isValid(titulo)"
+             placeholder="Presentación de la materia" name="titulo" formControlName="titulo" required maxlength="100"
+             aria-describedby="tituloFeedback" [readonly]="readonlyInputs">
+      <div id="tituloFeedback" class="invalid-feedback">
+        {{ titulo?.errors?.['required'] ? 'El Título es obligatorio.' : '' }}
+        {{ titulo?.errors?.['maxlength'] ? 'El Título es muy largo.' : '' }}
+        {{ titulo?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputLink" class="form-label required">Link:</label>
+      <input type="text" id="inputLink" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(link)"
+             [class.is-valid]="!readonlyInputs && isValid(link)"
+             placeholder="http://example.com/path/file.ext" name="link" formControlName="link" required maxlength="255"
+             aria-describedby="linkFeedback" [readonly]="readonlyInputs">
+      <div id="linkFeedback" class="invalid-feedback">
+        {{ link?.errors?.['required'] ? 'El Link es obligatorio.' : '' }}
+        {{ link?.errors?.['maxlength'] ? 'El Link es muy largo.' : '' }}
+        {{ link?.errors?.['pattern'] ? 'Ingresa un Link válido.' : '' }}
+        {{ link?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>

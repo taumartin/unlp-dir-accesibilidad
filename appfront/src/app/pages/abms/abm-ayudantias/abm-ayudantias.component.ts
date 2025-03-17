@@ -68,7 +68,7 @@ export class AbmAyudantiasComponent extends GenericAbm<Ayudantia> implements OnI
         );
       }));
 
-  protected materiaFormatter = (m: Materia) => `${m.nombre}`;
+  protected materiaFormatter = (m: Materia) => m.nombre;
   protected searchMateria = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),

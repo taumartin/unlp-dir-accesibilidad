@@ -20,17 +20,10 @@ class MaterialAccesibilizadoRepository extends BaseRepository {
     }
 
     listMaterialesAccesibilizados(page, pageSize, search, orderBy, orderDirection) {
-        if (orderBy === "@semestre") {
-            orderBy = [[{model: Semestre, as: 'semestre'}, 'anio'], [{
-                model: Semestre,
-                as: 'semestre'
-            }, 'es_primer_semestre']];
-        } else if (orderBy === "@tutor") {
-            orderBy = [[{model: Tutor, as: 'tutor'}, {model: Persona, as: 'persona'}, 'apellido'],
-                [{model: Tutor, as: 'tutor'}, {model: Persona, as: 'persona'}, 'nombre']];
-        } else if (orderBy === "@alumno") {
-            orderBy = [[{model: Alumno, as: 'alumno'}, {model: Persona, as: 'persona'}, 'apellido'],
-                [{model: Alumno, as: 'alumno'}, {model: Persona, as: 'persona'}, 'nombre']];
+        if (orderBy === "@tipoMaterial") {
+            orderBy = [[{model: TipoMaterial, as: 'tipoMaterial'}, 'nombre']];
+        } else if (orderBy === "@materia") {
+            orderBy = [[{model: Materia, as: 'materia'}, 'nombre']];
         }
         return super.listAllPaginated({
             page, pageSize, search,

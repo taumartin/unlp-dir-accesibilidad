@@ -13,7 +13,7 @@ export class SemestresService extends CrudService<Semestre> {
     super(apiService, "/semestres");
   }
 
-  public isModified(original: Semestre, newValues: Partial<Omit<Semestre, "id">>): boolean {
+  public override isModified(original: Semestre, newValues: Partial<Omit<Semestre, "id">>): boolean {
     return (original.anio !== newValues.anio) || (original.esPrimerSemestre !== newValues.esPrimerSemestre);
   }
 }

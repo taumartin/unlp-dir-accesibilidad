@@ -13,7 +13,7 @@ export class UsuariosService extends CrudService<Usuario> {
     super(apiService, "/usuarios");
   }
 
-  public isModified(original: Usuario, newValues: Partial<Omit<Usuario, "id">>): boolean {
+  public override isModified(original: Usuario, newValues: Partial<Omit<Usuario, "id">>): boolean {
     return (original.username !== newValues.username) || (original.correo !== newValues.correo)
       || (original.fotoPerfil !== newValues.fotoPerfil) || (original.esAdmin !== newValues.esAdmin)
       || (original.estaActivo !== newValues.estaActivo);

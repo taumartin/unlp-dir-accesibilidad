@@ -33,7 +33,7 @@ export class EventosService extends CrudService<Evento> {
       );
   }
 
-  public isModified(original: Evento, newValues: Partial<Omit<Evento, "id">>): boolean {
+  public override isModified(original: Evento, newValues: Partial<Omit<Evento, "id">>): boolean {
     return (original.descripcion !== newValues.descripcion) || (original._dateTimeString !== newValues.fechaYHora);
   }
 }

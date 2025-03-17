@@ -18,6 +18,9 @@ import {AbmTutoresComponent} from './pages/abms/abm-tutores/abm-tutores.componen
 import {AbmAlumnosComponent} from './pages/abms/abm-alumnos/abm-alumnos.component';
 import {AbmApoyosComponent} from './pages/abms/abm-apoyos/abm-apoyos.component';
 import {AbmAyudantiasComponent} from './pages/abms/abm-ayudantias/abm-ayudantias.component';
+import {
+  AbmMaterialesAccesibilizadosComponent
+} from './pages/abms/abm-materiales-accesibilizados/abm-materiales-accesibilizados.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -41,6 +44,7 @@ export const routes: Routes = [
       {path: 'ayudantias', component: AbmAyudantiasComponent},
       {path: 'eventos', component: AbmEventosComponent},
       {path: 'materias', component: AbmMateriasComponent},
+      {path: 'materiales-accesibilizados', component: AbmMaterialesAccesibilizadosComponent},
       {path: 'medios-comunicacion', component: AbmMediosComunicacionComponent},
       {path: 'personas', component: AbmPersonasComponent},
       {path: 'semestres', component: AbmSemestresComponent},

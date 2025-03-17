@@ -14,7 +14,7 @@ export class ApoyosService extends CrudService<Apoyo> {
     super(apiService, "/apoyos");
   }
 
-  isModified(original: Apoyo, newValues: Partial<Omit<Apoyo, "id">>): boolean {
+  public override isModified(original: Apoyo, newValues: Partial<Omit<Apoyo, "id">>): boolean {
     return (original.semestreId !== newValues.semestreId) || (original.tutorId !== newValues.tutorId) ||
       (original.alumnoId !== newValues.alumnoId);
   }

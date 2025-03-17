@@ -13,7 +13,7 @@ export class TiposEventosService extends CrudService<TipoEvento> {
     super(apiService, "/tipos-eventos");
   }
 
-  public isModified(original: TipoEvento, newValues: Partial<Omit<TipoEvento, "id">>): boolean {
+  public override isModified(original: TipoEvento, newValues: Partial<Omit<TipoEvento, "id">>): boolean {
     return (original.nombre !== newValues.nombre);
   }
 }
