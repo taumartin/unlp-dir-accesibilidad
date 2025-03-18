@@ -25,7 +25,6 @@ Más detalles de dependencias en:
    * `API_BASE_URL` para configurar la URL pública para el acceso a la app. Sin barra al final.
    * `POSTGRES_USER` y `POSTGRES_PASSWORD` configuran las credenciales de acceso a la BD.
    * `POSGRES_DB` configura el nombre de la BD.
-   * `DB_CONNECTION_STRING_PROD` configura
    * `JWT_SECRET` y `JWT_REFRESH_SECRET` configuran claves de cifrado para la autenticación de los usuarios con JWT.
    * `JWT_TOKEN_EXPIRES_IN` y `JWT_REFRESH_EXPIRES_IN` configuran los tiempos de expiración para los tokens JWT.
    * `JWT_COOKIE_USE_HTTPS` configura el uso de cookies HTTPS, donde se almacenan temporalmente tokens JWT de sesión de usuarios.
