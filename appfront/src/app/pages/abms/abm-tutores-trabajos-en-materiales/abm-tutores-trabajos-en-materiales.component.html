@@ -1,0 +1,74 @@
+<app-crud-layout [labels]="labels"
+                 [dtColumns]="dtColumns"
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
+    <div class="col-12 col-md-6">
+      <label for="inputTutorId" class="form-label required">Tutor:</label>
+      <input type="text" id="inputTutorId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(tutorId) || isInvalid(_tutor))"
+             [class.is-valid]="!readonlyInputs && isValid(tutorId)"
+             placeholder="Escriba un nombre" name="_tutor" formControlName="_tutor" required
+             aria-describedby="tutorIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="tutorFormatter" [resultFormatter]="tutorFormatter" [ngbTypeahead]="searchTutor"
+             (selectItem)="onSelectTutor($event)" (blur)="onBlurTutor()" container="body">
+      <div id="tutorIdFeedback" class="invalid-feedback">
+        {{ tutorId?.errors?.['required'] || _tutor?.errors?.['required'] ? 'El Tutor es obligatorio.' : '' }}
+        {{ tutorId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputMaterialAccesibilizadoId" class="form-label required">Material Accesibilizado:</label>
+      <input type="text" id="inputMaterialAccesibilizadoId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(materialAccesibilizadoId) || isInvalid(_materialAccesibilizado))"
+             [class.is-valid]="!readonlyInputs && isValid(materialAccesibilizadoId)"
+             placeholder="Escriba un título" name="_materialAccesibilizado" formControlName="_materialAccesibilizado"
+             required
+             aria-describedby="materialAccesibilizadoIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="materialFormatter" [resultFormatter]="materialFormatter" [ngbTypeahead]="searchMaterial"
+             (selectItem)="onSelectMaterialAccesibilizado($event)" (blur)="onBlurMaterialAccesibilizado()"
+             container="body">
+      <div id="materialAccesibilizadoIdFeedback" class="invalid-feedback">
+        {{ materialAccesibilizadoId?.errors?.['required'] || _materialAccesibilizado?.errors?.['required'] ? 'El Material Accesibilizado es obligatorio.' : '' }}
+        {{ materialAccesibilizadoId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputFecha" class="form-label required">Fecha:</label>
+      <input type="date" id="inputFecha" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(fecha)"
+             [class.is-valid]="!readonlyInputs && isValid(fecha)"
+             name="fecha" formControlName="fecha" required
+             aria-describedby="fechaFeedback" [readonly]="readonlyInputs">
+      <div id="fechaFeedback" class="invalid-feedback">
+        {{ fecha?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputMinutosTrabajados" class="form-label required">Minutos Trabajados:</label>
+      <input type="number" id="inputMinutosTrabajados" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(minutosTrabajados)"
+             [class.is-valid]="!readonlyInputs && isValid(minutosTrabajados)"
+             placeholder="30" name="minutosTrabajados" formControlName="minutosTrabajados" required
+             minlength="1" maxlength="4" min="1" max="1440"
+             aria-describedby="minutosTrabajadosFeedback" [readonly]="readonlyInputs">
+      <div id="minutosTrabajadosFeedback" class="invalid-feedback">
+        {{ minutosTrabajados?.errors?.['required'] ? 'Los Minutos Trabajados son obligatorios.' : '' }}
+        {{ (minutosTrabajados?.errors?.['min'] || minutosTrabajados?.errors?.['max'] || minutosTrabajados?.errors?.['pattern']) ? 'Ingresa una cantidad válida.' : '' }}
+        {{ minutosTrabajados?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>

@@ -152,6 +152,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
                       label: 'Materiales Accesibilizados',
                       route: 'abm/materiales-accesibilizados',
                     },
+                    {
+                      id: 21114,
+                      label: 'Trabajos En Materiales',
+                      route: 'abm/trabajos-en-materiales',
+                    },
                   ]
                 },
               ],

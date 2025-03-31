@@ -21,6 +21,9 @@ import {AbmAyudantiasComponent} from './pages/abms/abm-ayudantias/abm-ayudantias
 import {
   AbmMaterialesAccesibilizadosComponent
 } from './pages/abms/abm-materiales-accesibilizados/abm-materiales-accesibilizados.component';
+import {
+  AbmTutoresTrabajosEnMaterialesComponent
+} from './pages/abms/abm-tutores-trabajos-en-materiales/abm-tutores-trabajos-en-materiales.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -51,6 +54,7 @@ export const routes: Routes = [
       {path: 'tipos-eventos', component: AbmTiposEventosComponent},
       {path: 'tipos-materiales', component: AbmTiposMaterialesComponent},
       {path: 'tutores', component: AbmTutoresComponent},
+      {path: 'trabajos-en-materiales', component: AbmTutoresTrabajosEnMaterialesComponent},
       {path: 'usuarios', component: AbmUsuariosComponent},
     ],
   },

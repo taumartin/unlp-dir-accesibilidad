@@ -19,8 +19,8 @@ export class EventosService extends CrudService<Evento> {
   }
 
   private parseDate(evento: Evento): Evento {
-    evento._timestamp = this.datesService.isoStringToDateLocale(evento.fechaYHora);
-    evento._dateTimeString = this.datesService.dateLocaleToInputString(evento._timestamp);
+    evento._timestamp = this.datesService.isoStringToDateTimeLocale(evento.fechaYHora);
+    evento._dateTimeString = this.datesService.dateTimeLocaleToInputString(evento._timestamp);
     return evento;
   }
 

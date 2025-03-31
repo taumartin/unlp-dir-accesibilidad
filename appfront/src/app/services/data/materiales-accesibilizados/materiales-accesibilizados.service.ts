@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {CrudService} from '../crud/crud.service';
 import {MaterialAccesibilizado} from '../../../models/material-accesibilizado';
 import {ApiService} from '../../network/api/api.service';
-import {Evento} from '../../../models/evento';
 import {ApiPageRequest} from '../../network/api/api-page-request';
 import {Observable, tap} from 'rxjs';
 import {ApiResponsePage} from '../../network/api/api-response-page';
@@ -19,10 +18,10 @@ export class MaterialesAccesibilizadosService extends CrudService<MaterialAccesi
     super(apiService, "/materiales-accesibilizados");
   }
 
-  private parseDate(evento: MaterialAccesibilizado): MaterialAccesibilizado {
-    evento._timestamp = this.datesService.isoStringToDateLocale(evento.fechaPublicacion);
-    evento._dateTimeString = this.datesService.dateLocaleToInputString(evento._timestamp);
-    return evento;
+  private parseDate(material: MaterialAccesibilizado): MaterialAccesibilizado {
+    material._timestamp = this.datesService.isoStringToDateTimeLocale(material.fechaPublicacion);
+    material._dateTimeString = this.datesService.dateTimeLocaleToInputString(material._timestamp);
+    return material;
   }
 
   public override listAll(pageRequested: ApiPageRequest): Observable<ApiResponsePage<MaterialAccesibilizado>> {
