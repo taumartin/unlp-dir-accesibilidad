@@ -9,15 +9,17 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'medioComunicacion',
                 foreignKey: 'medioComunicacionId',
             });
-
             Reunion.belongsTo(models.Tutor, {
                 as: 'tutor',
                 foreignKey: 'tutorId',
             });
-
             Reunion.belongsTo(models.Materia, {
                 as: 'materia',
                 foreignKey: 'materiaId',
+            });
+            Reunion.belongsTo(models.Alumno, {
+                as: 'alumno',
+                foreignKey: 'alumnoId',
             });
         }
     }
@@ -46,10 +48,14 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id',
             }
         },
-        fechaYHora: {
-            type: DataTypes.DATE,
+        alumnoId: {
+            type: DataTypes.INTEGER,
             allowNull: false,
-            field: 'fecha_y_hora'
+            field: 'alumno_id',
+            references: {
+                model: 'alumnos',
+                key: 'id',
+            }
         },
         materiaId: {
             type: DataTypes.INTEGER,
@@ -59,6 +65,16 @@ module.exports = (sequelize, DataTypes) => {
                 model: 'materias',
                 key: 'id',
             }
+        },
+        fechaYHora: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            field: 'fecha_y_hora'
+        },
+        observaciones: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+            defaultValue: '',
         },
     }, {
         sequelize,
