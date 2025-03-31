@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'materia',
                 foreignKey: 'materiaId',
             });
+            MaterialAccesibilizado.hasMany(models.TutorTrabajoEnMaterial, {
+                as: 'trabajosPorTutores',
+                foreignKey: 'materialAccesibilizadoId',
+            });
         }
     }
 
