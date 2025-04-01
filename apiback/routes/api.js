@@ -11,6 +11,9 @@ router.use('/alumnos', alumnosRouter);
 const tutoresRouter = require('./api/tutores');
 router.use('/tutores', tutoresRouter);
 
+const reunionesRouter = require('./api/reuniones');
+router.use('/reuniones', reunionesRouter);
+
 const apoyosRouter = require('./api/apoyos');
 router.use('/apoyos', apoyosRouter);
 

@@ -24,6 +24,7 @@ import {
 import {
   AbmTutoresTrabajosEnMaterialesComponent
 } from './pages/abms/abm-tutores-trabajos-en-materiales/abm-tutores-trabajos-en-materiales.component';
+import {AbmReunionesComponent} from './pages/abms/abm-reuniones/abm-reuniones.component';
 
 export const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -50,6 +51,7 @@ export const routes: Routes = [
       {path: 'materiales-accesibilizados', component: AbmMaterialesAccesibilizadosComponent},
       {path: 'medios-comunicacion', component: AbmMediosComunicacionComponent},
       {path: 'personas', component: AbmPersonasComponent},
+      {path: 'reuniones', component: AbmReunionesComponent},
       {path: 'semestres', component: AbmSemestresComponent},
       {path: 'tipos-eventos', component: AbmTiposEventosComponent},
       {path: 'tipos-materiales', component: AbmTiposMaterialesComponent},

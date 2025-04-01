@@ -1,0 +1,100 @@
+<app-crud-layout [labels]="labels"
+                 [dtColumns]="dtColumns"
+                 [dtSource]="dtSource"
+                 [entityModalBodyTemplate]="createModal"
+                 [formInvalid]="!modelForm.valid"
+                 [isSaving]="isCreating || isUpdating"
+                 [isDeleting]="isDeleting"
+                 [(isEditionEnabled)]="isEditing"
+                 [isEntityModified]="isModified()"
+                 (entityModalOpen)="onEntityModalOpen($event)"
+                 (entityModalSave)="onSave($event)"
+                 (entityModalDelete)="onDelete()"></app-crud-layout>
+
+<ng-template #createModal let-modal>
+  <form class="row g-3" [formGroup]="modelForm" (ngSubmit)="onSave(modal)" autocomplete="off">
+    <div class="col-12 col-md-6">
+      <label for="inputTutorId" class="form-label required">Tutor:</label>
+      <input type="text" id="inputTutorId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(tutorId) || isInvalid(_tutor))"
+             [class.is-valid]="!readonlyInputs && isValid(tutorId)"
+             placeholder="Escriba un nombre" name="_tutor" formControlName="_tutor" required
+             aria-describedby="tutorIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="relPersonaFormatter" [resultFormatter]="relPersonaFormatter" [ngbTypeahead]="searchTutor"
+             (selectItem)="onSelectTutor($event)" (blur)="onBlurTutor()" container="body">
+      <div id="tutorIdFeedback" class="invalid-feedback">
+        {{ tutorId?.errors?.['required'] || _tutor?.errors?.['required'] ? 'El Tutor es obligatorio.' : '' }}
+        {{ tutorId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputAlumnoId" class="form-label required">Alumno:</label>
+      <input type="text" id="inputAlumnoId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(alumnoId) || isInvalid(_alumno))"
+             [class.is-valid]="!readonlyInputs && isValid(alumnoId)"
+             placeholder="Escriba un nombre" name="_alumno" formControlName="_alumno" required
+             aria-describedby="alumnoIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="relPersonaFormatter" [resultFormatter]="relPersonaFormatter"
+             [ngbTypeahead]="searchAlumno" (selectItem)="onSelectAlumno($event)" (blur)="onBlurAlumno()"
+             container="body">
+      <div id="alumnoIdFeedback" class="invalid-feedback">
+        {{ alumnoId?.errors?.['required'] || _alumno?.errors?.['required'] ? 'El Alumno es obligatorio.' : '' }}
+        {{ alumnoId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputMedioComunicacionId" class="form-label required">Medio de Comunicación:</label>
+      <input type="text" id="inputMedioComunicacionId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(medioComunicacionId) || isInvalid(_medioComunicacion))"
+             [class.is-valid]="!readonlyInputs && isValid(medioComunicacionId)"
+             placeholder="Escriba un nombre" name="_medioComunicacion" formControlName="_medioComunicacion" required
+             aria-describedby="medioComunicacionIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="medioComunicacionFormatter" [resultFormatter]="medioComunicacionFormatter"
+             [ngbTypeahead]="searchMedioComunicacion" (selectItem)="onSelectMedioComunicacion($event)"
+             (blur)="onBlurMedioComunicacion()" container="body">
+      <div id="medioComunicacionIdFeedback" class="invalid-feedback">
+        {{ medioComunicacionId?.errors?.['required'] || _medioComunicacion?.errors?.['required'] ? 'El Medio de Cominicación es obligatorio.' : '' }}
+        {{ medioComunicacionId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputMateriaId" class="form-label">Materia:</label>
+      <input type="text" id="inputMateriaId" class="form-control"
+             [class.is-invalid]="!readonlyInputs && (isInvalid(materiaId) || isInvalid(_materia))"
+             [class.is-valid]="!readonlyInputs && isValid(materiaId)"
+             placeholder="Escriba un nombre" name="_materia" formControlName="_materia"
+             aria-describedby="materiaIdFeedback" [readonly]="readonlyInputs"
+             [inputFormatter]="materiaFormatter" [resultFormatter]="materiaFormatter" [ngbTypeahead]="searchMateria"
+             (selectItem)="onSelectMateria($event)" (blur)="onBlurMateria()" container="body">
+      <div id="materiaIdFeedback" class="invalid-feedback">
+        {{ materiaId?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <label for="inputFechaYHora" class="form-label required">Fecha y Hora:</label>
+      <input type="datetime-local" id="inputFechaYHora" class="form-control"
+             [class.is-invalid]="!readonlyInputs && isInvalid(fechaYHora)"
+             [class.is-valid]="!readonlyInputs && isValid(fechaYHora)"
+             name="fechaYHora" formControlName="fechaYHora" required
+             aria-describedby="fechaYHoraFeedback" [readonly]="readonlyInputs">
+      <div id="fechaYHoraFeedback" class="invalid-feedback">
+        {{ fechaYHora?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <div class="col-12">
+      <label for="inputObservaciones" class="form-label">Observaciones:</label>
+      <textarea id="inputObservaciones" class="form-control" rows="3"
+                [class.is-invalid]="!readonlyInputs && isInvalid(observaciones)"
+                [class.is-valid]="!readonlyInputs && isValid(observaciones)"
+                [class.textarea-readonly]="readonlyInputs"
+                placeholder="" name="observaciones" formControlName="observaciones" maxlength="5000"
+                aria-describedby="observacionesFeedback" [readonly]="readonlyInputs"></textarea>
+      <div id="observacionesFeedback" class="invalid-feedback">
+        {{ observaciones?.errors?.['maxlength'] ? 'El texto es muy largo.' : '' }}
+        {{ observaciones?.errors?.['backend'] ?? '' }}
+      </div>
+    </div>
+    <button type="submit" class="d-none"
+            [disabled]="!modelForm.valid || isCreating || isUpdating"><!--Permite hacer submit con ENTER--></button>
+  </form>
+</ng-template>

@@ -42,6 +42,10 @@ input[readonly]::placeholder {
 }
 
 table.dataTable {
+  thead th {
+    vertical-align: middle !important;
+  }
+
   tbody td {
     vertical-align: middle;
   }
